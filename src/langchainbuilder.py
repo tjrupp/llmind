@@ -18,5 +18,5 @@ for modello in modelli:
     vectorstore = Chroma.from_texts(
         texts=list_text,  # List of texts to generate embeddings for
         embedding=OllamaEmbeddings(model=modello, show_progress=True),  # Embedding model and settings
-        persist_directory=f"./vectorstore/chroma_db-full-{modello.replace(':','')}",  # Directory to persist the vector store
+        persist_directory=f"../vectorstore/chroma_db-full-{modello.replace(':','')}",  # Directory to persist the vector store
     )

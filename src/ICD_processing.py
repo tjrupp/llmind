@@ -91,7 +91,7 @@ def dataframe_to_prompts(df):
 
 # Create the prompts DataFrame and save it to CSV
 prompts_df = dataframe_to_prompts(filtered_df)
-prompts_df.to_csv("ICD-11_filtered.csv", index=False)
+prompts_df.to_csv("../data/input/ICD-11_filtered.csv", index=False)
 
 # ------------------------------
 # Step 3. Extract and Process PDF Content
