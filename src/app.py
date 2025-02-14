@@ -41,7 +41,7 @@ for model in models:
     )
 
     # Open the input CSV file
-    with open('../data/input/splitCases.csv', encoding="utf-8") as inputFile:
+    with open('../data/input/DSM-5-TR_Clinical_Cases_splitted.csv', encoding="utf-8") as inputFile:
         
         # Skip the header row
         heading = next(inputFile) 

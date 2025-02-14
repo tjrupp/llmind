@@ -1,60 +1,103 @@
 import re
 from pathlib import Path
-import os
 import pandas as pd
 
-f = open("../data/input/ClinicalCases.txt", "r")
-text = f.read()
-cases = re.split("Case [0-9].*",text)
-for i in range (len(cases)):
-    if i==0:
-            continue
-    iDiscussion = cases[i].index("Discussion")
+# Define file paths using pathlib for cross-platform compatibility.
+input_txt_path = Path("../data/input/DSM-5-TR_Clinical_Cases.txt")
+split_csv_path = Path("../data/input/DSM-5-TR_Clinical_Cases_splitted.csv")
+
+# Read the input text file using a context manager to ensure the file is closed after reading.
+with input_txt_path.open("r", encoding="utf-8") as file:
+    text = file.read()
+
+# Use a regular expression to split the text into individual cases.
+# The pattern looks for the string "Case " followed by one or more digits.
+# Note: You might want to refine this regex if case numbers have more complex formats.
+cases = re.split(r"Case \d+.*", text)
+
+# Initialize a list to store data for each case.
+data_rows = []
+
+# Process each case (skip the first element, which is the text before the first case).
+for idx, case_text in enumerate(cases[1:], start=1):
+    # Remove newline characters to work with a single-line version.
+    case_text_clean = case_text.replace('\n', ' ')
+
+    # Find the index where the "Discussion" section begins.
     try:
-        iDiagnosis = cases[i].index("Diagnoses")
-    except:
-        iDiagnosis = cases[i].index("Diagnosis")  
-    introduzione = cases[i][0:iDiscussion].replace('\n','')
-    discussione = cases[i][iDiscussion:iDiagnosis].replace('\n','')
-    diagnosi = cases[i][iDiagnosis:].replace('\n','')
-    with open("../data/input/splitCases.csv", "a", encoding="utf-8") as outputFile:
-                    outputFile.write(f"{i}§{introduzione}§{discussione}§{diagnosi}\n")
-    
+        discussion_idx = case_text_clean.index("Discussion")
+    except ValueError:
+        # If "Discussion" is not found, log a warning and skip this case.
+        print(f"Warning: 'Discussion' section not found in case {idx}. Skipping.")
+        continue
 
-output_file_path = "../data/input/splitCases.csv"
-df = pd.read_csv(output_file_path, sep='§', header=None, names=["Case_Number", "Introduction", "Discussion", "Diagnosis"])
-df = df.iloc[1:].reset_index(drop=True)
-df_gemma2latest = pd.read_csv("data/output/gemma2latest/answers-cases.csv", sep='§', engine='python')
-df_gemma227b = pd.read_csv("data/output/gemma227b/answers-cases.csv", sep='§', engine='python')
-df_llama3latest = pd.read_csv("data/output/llama3latest/answers-cases.csv", sep='§', engine='python')
-df_mistral_nemolatest = pd.read_csv("data/output/mistral-nemolatest/answers-cases.csv", sep='§', engine='python')
-df_mixtral8x7b = pd.read_csv("data/output/mixtral8x7b/answers-cases.csv", sep='§', engine='python')
-df_phi35latest = pd.read_csv("data/output/phi3.5latest/answers-cases.csv", sep='§', engine='python')
-df_phi3medium = pd.read_csv("data/output/phi3medium/answers-cases.csv", sep='§', engine='python')
+    # Find the index where the "Diagnoses" (or "Diagnosis") section begins.
+    try:
+        diagnosis_idx = case_text_clean.index("Diagnoses")
+    except ValueError:
+        try:
+            diagnosis_idx = case_text_clean.index("Diagnosis")
+        except ValueError:
+            print(f"Warning: Neither 'Diagnoses' nor 'Diagnosis' found in case {idx}. Skipping.")
+            continue
 
-df["Question"]=df_phi3medium["quesion"]
+    # Extract the three parts of the case:
+    # - Introduction: from the beginning to the start of the Discussion.
+    # - Discussion: from the Discussion start to the start of the Diagnosis section.
+    # - Diagnosis: from the Diagnosis section to the end of the case.
+    introduction = case_text_clean[:discussion_idx].strip()
+    discussion = case_text_clean[discussion_idx:diagnosis_idx].strip()
+    diagnosis = case_text_clean[diagnosis_idx:].strip()
 
-dfs = [
-    df_gemma2latest,
-    df_gemma227b,
-    df_llama3latest,
-    df_mistral_nemolatest,
-    df_mixtral8x7b,
-    df_phi35latest,
-    df_phi3medium
-]
+    # Append the parsed data as a dictionary to the list.
+    data_rows.append({
+        "Case_Number": idx,
+        "Introduction": introduction,
+        "Discussion": discussion,
+        "Diagnosis": diagnosis
+    })
 
-column_names = [
-    "gemma2latest_answer",
-    "gemma227b_answer",
-    "llama3latest_answer",
-    "mistral_nemolatest_answer",
-    "mixtral8x7b_answer",
-    "phi35latest_answer",
-    "phi3medium_answer"
-]
-for df_source, column_name in zip(dfs, column_names):
+# Convert the list of dictionaries into a DataFrame.
+cases_df = pd.DataFrame(data_rows)
+
+# Save the parsed cases to a CSV file using the custom separator (§).
+cases_df.to_csv(split_csv_path, sep='§', index=False, encoding='utf-8')
+
+# -------------------------------------------------------------------
+# Now, load the splitted cases CSV into a DataFrame.
+# -------------------------------------------------------------------
+df = pd.read_csv(split_csv_path, sep='§', encoding='utf-8')
+
+# Define a dictionary mapping the column names for the answer data to their respective file paths.
+data_sources = {
+    "gemma2latest_answer": "data/output/gemma2latest/answers-cases.csv",
+    "gemma227b_answer": "data/output/gemma227b/answers-cases.csv",
+    "llama3latest_answer": "data/output/llama3latest/answers-cases.csv",
+    "mistral_nemolatest_answer": "data/output/mistral-nemolatest/answers-cases.csv",
+    "mixtral8x7b_answer": "data/output/mixtral8x7b/answers-cases.csv",
+    "phi35latest_answer": "data/output/phi3.5latest/answers-cases.csv",
+    "phi3medium_answer": "data/output/phi3medium/answers-cases.csv",
+}
+
+# Iterate over each data source and add its 'answer' column to the main DataFrame.
+for column_name, file_path in data_sources.items():
+    # Read the CSV file containing answers.
+    # The engine is set to 'python' if needed for complex separators.
+    df_source = pd.read_csv(file_path, sep='§', engine='python')
+
+    # It's assumed that the answer CSV has a column named 'answer' and that rows align with the cases.
     df[column_name] = df_source['answer']
+
+# Optionally, if you want to add a "Question" column from the phi3medium data,
+# check for a typo (e.g., "quesion" vs. "question") and add it if present.
+phi3medium_df = pd.read_csv(data_sources["phi3medium_answer"], sep='§', engine='python')
+if 'quesion' in phi3medium_df.columns:
+    df["Question"] = phi3medium_df["quesion"]
+elif 'question' in phi3medium_df.columns:
+    df["Question"] = phi3medium_df["question"]
+else:
+    print("Warning: No question column found in phi3medium data.")
+
 l= [
     """Based on the information provided in this case study and using the ICD-11 classification system, a potential diagnosis for Brandon could be:\n\n6A02 Autism spectrum disorder\n\nSpecifically, this diagnosis is supported by several key features described in the case:\n\n1. Persistent deficits in social communication and social interaction:\n   - Difficulty making friends and mistrusting peers\' intentions\n   - Below-average eye contact\n   - Struggles with jokes and typical adolescent banter\n   - Taking things literally\n   - General avoidance of socializing\n\n2. Restricted, repetitive patterns of behavior, interests, or activities:\n   - Intense focus on trucks, cars, and trains since an early age\n   - Bringing toy vehicles to school\n   - Being a "stickler for routine"\n\n3. Symptoms present from early childhood:\n   - Always been "very shy" and never had a best friend\n   - Early focus on vehicles\n\n4. Symptoms causing significant impairment in social and academic functioning:\n   - Declining school performance\n   - Difficulties interacting with peers\n   - Reluctance to attend school\n\nAdditional features that support this diagnosis include:\n\n- Sensory sensitivities (e.g., "I hate loud noises")\n- Difficulty understanding social cues and interpreting others\' intentions\n- Attempts to mask autistic traits ("tries to appear \'normal\'")\n- Family history (father with similar traits)\n\nIt\'s important to note that Brandon is also experiencing symptoms of anxiety and depression, which are common co-occurring conditions in individuals with autism spectrum disorder. These include:\n\n- Anxiety: stomachaches on school mornings, feeling nervous around peers\n- Depression: saying he sometimes wished he had never been born, appearing sad\n\nAdditionally, Brandon\'s speech difficulties (stumbling over words, pausing excessively, repeating words) might suggest a co-occurring speech disorder, possibly 6A01.1 Developmental speech fluency disorder (stuttering).\n\nWhile this diagnosis of autism spectrum disorder seems most fitting based on the ICD-11 criteria and the information provided, it\'s crucial to emphasize that a comprehensive clinical assessment would be necessary to confirm this diagnosis and rule out other possibilities. The assessment should also consider Brandon\'s strengths and specific support needs to develop an appropriate treatment plan.""",
     """Based on the information provided and using the ICD-11 classification system, a comprehensive diagnosis for Carlos could include:\n\n1. 6A03 Developmental learning disorder\n   - Specifically, 6A03.0 Developmental learning disorder with impairment in reading\n   - And 6A03.1 Developmental learning disorder with impairment in written expression\n\nThis is supported by:\n- History of reading problems, particularly in fluency and comprehension\n- Current difficulties with reading, writing, and spelling\n- These difficulties are not attributable to intellectual developmental disorder, sensory issues, or language proficiency\n\n2. 6A05 Attention deficit hyperactivity disorder\n   - Specifically, 6A05.2 Attention deficit hyperactivity disorder, combined presentation\n\nThis is supported by:\n- Childhood diagnosis of ADHD, combined type\n- Ongoing difficulties with focus, task completion, and organization\n- Restlessness and agitation\n\n3. 6B01 Generalized anxiety disorder\n\nThis is supported by:\n- Persistent worry about academic performance\n- Difficulty managing anxiety\n- History of "nervousness" (ataque de nervios)\n- Recent panic-like episodes in social situations\n\n4. 6A80 Autism spectrum disorder (consider as a differential diagnosis)\n\nWhile not explicitly diagnosed, some features suggest the need to consider ASD:\n- Early language delay\n- Intense focus on specific interests (video games)\n- Social difficulties in college\n- Sensory sensitivities (pulling hoodie over face)\n\n5. MB23.E Adjustment disorder\n\nThis could be considered due to:\n- Difficulties adjusting to the college environment\n- Symptoms of anxiety and depression related to this transition\n\n6. 6B04 Depressive episode\n\nConsider as a possible comorbidity due to:\n- Feelings of hopelessness\n- Poor concentration\n- Insomnia\n- Low energy\n- Anhedonia ("inability to have fun")\n\nIt\'s important to note that Carlos is also dealing with several psychosocial factors that, while not diagnoses themselves, are crucial to consider in his overall assessment:\n\n- Acculturation stress (being the only Dominican in his college environment)\n- Identity development issues (questioning sexual orientation)\n- Academic pressure (being the first in his family to attend college)\n\nA comprehensive clinical assessment would be necessary to confirm these diagnoses and rule out other possibilities. The treatment plan should address not only the specific disorders but also Carlos\'s psychosocial stressors and cultural context. Additionally, it would be beneficial to explore supports and accommodations available through the university\'s disability services to help Carlos manage his learning difficulties.""",
@@ -67,6 +110,8 @@ l= [
 ]
 df['claude'] = pd.Series(l)
 df.iloc[4].claude
-df.to_csv('dsm_results.csv')
+
+# Save the final DataFrame with all cases and answers to a CSV file.
+df.to_csv('dsm_results.csv', index=False, encoding='utf-8')
 
 

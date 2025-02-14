@@ -7,7 +7,7 @@ import pandas as pd
 modelli = ["medllama2","cniongolo/biomistral"]
 
 # Read the CSV file containing the data into a DataFrame
-df = pd.read_csv('../data/input/joined_icd11_data.csv')
+df = pd.read_csv('../data/input/ICD-11_joined.csv')
 
 # Extract the 'prompt' column from the DataFrame as a list of texts
 list_text = df["prompt"]
