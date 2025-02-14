@@ -203,4 +203,4 @@ final_join_df = (
 )
 
 # Save the final merged data to CSV
-final_join_df.to_csv("ICD-11_joined.csv", index=False)
+final_join_df.to_csv("../data/input/ICD-11_joined.csv", index=False)

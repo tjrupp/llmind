@@ -17,7 +17,7 @@ for model in models:
     print(f"model: {model} -- {models.index(model)+1}/{len(models)}")
     
     # Initialize the vector store with the specified model
-    vectorstore = Chroma(persist_directory=f"./vectorstore/chroma_db-full-{model.replace(':','')}", embedding_function=OllamaEmbeddings(model=model))
+    vectorstore = Chroma(persist_directory=f"../data/vectorstore/chroma_db-full-{model.replace(':','')}", embedding_function=OllamaEmbeddings(model=model))
 
     # Load the LLM model
     llm = Ollama(model=model)
@@ -50,7 +50,7 @@ for model in models:
         reader_obj = csv.reader(inputFile, delimiter="§") 
         
         # Create output directory if it doesn't exist
-        directory = f"./output/{model.replace(':','')}"
+        directory = f"../data/output/{model.replace(':','')}"
         if not os.path.exists(directory):
             os.makedirs(directory)
         

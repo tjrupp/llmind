@@ -70,13 +70,13 @@ df = pd.read_csv(split_csv_path, sep='§', encoding='utf-8')
 
 # Define a dictionary mapping the column names for the answer data to their respective file paths.
 data_sources = {
-    "gemma2latest_answer": "data/output/gemma2latest/answers-cases.csv",
-    "gemma227b_answer": "data/output/gemma227b/answers-cases.csv",
-    "llama3latest_answer": "data/output/llama3latest/answers-cases.csv",
-    "mistral_nemolatest_answer": "data/output/mistral-nemolatest/answers-cases.csv",
-    "mixtral8x7b_answer": "data/output/mixtral8x7b/answers-cases.csv",
-    "phi35latest_answer": "data/output/phi3.5latest/answers-cases.csv",
-    "phi3medium_answer": "data/output/phi3medium/answers-cases.csv",
+    "gemma2latest_answer": "../data/output/gemma2latest/answers-cases.csv",
+    "gemma227b_answer": "../data/output/gemma227b/answers-cases.csv",
+    "llama3latest_answer": "../data/output/llama3latest/answers-cases.csv",
+    "mistral_nemolatest_answer": "../data/output/mistral-nemolatest/answers-cases.csv",
+    "mixtral8x7b_answer": "../data/output/mixtral8x7b/answers-cases.csv",
+    "phi35latest_answer": "../data/output/phi3.5latest/answers-cases.csv",
+    "phi3medium_answer": "../data/output/phi3medium/answers-cases.csv",
 }
 
 # Iterate over each data source and add its 'answer' column to the main DataFrame.
@@ -112,6 +112,6 @@ df['claude'] = pd.Series(l)
 df.iloc[4].claude
 
 # Save the final DataFrame with all cases and answers to a CSV file.
-df.to_csv('dsm_results.csv', index=False, encoding='utf-8')
+df.to_csv('../results/dsm_results.csv', index=False, encoding='utf-8')
 
 
