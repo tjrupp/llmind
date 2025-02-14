@@ -5,7 +5,7 @@ import math
 import re
 import pdfplumber
 
-output_file_path = "../data/input/icdoutput.csv"
+output_file_path = "../data/input/ICD-11.csv"
 with open(output_file_path, 'rb') as file:
     raw_data = file.read()
     detected = chardet.detect(raw_data)
@@ -56,9 +56,9 @@ def dataframe_to_prompts(df):
     })
     
 prompts = dataframe_to_prompts(filtered_df)
-prompts.to_csv("icdoutput_prompts.csv")
+prompts.to_csv("ICD-11_filtered.csv")
 
-with pdfplumber.open("../data/input/cddr.pdf") as pdf:
+with pdfplumber.open("../data/input/ICD-11-CDDR.pdf") as pdf:
     pages_content = []
     
     # Get total number of pages
@@ -159,7 +159,7 @@ df = pd.concat([codes, description], axis=1).drop("page_number", axis=1)
 
 final_join_df = pd.merge(filtered_df, df, on="codice")
 final_join_df = pd.merge(final_join_df, prompts, on="codice")
-final_join_df.to_csv("joined_icd11_data.csv")
+final_join_df.to_csv("ICD-11_joined.csv")
 
 
 
