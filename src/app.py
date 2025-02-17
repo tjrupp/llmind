@@ -12,14 +12,13 @@ from langchain_core.runnables import RunnablePassthrough
 # -------------------- Configuration -------------------- #
 
 # Paths to input data, log file, and output directory base.
-INPUT_CSV_PATH = '../data/input/DSM-5-TR_Clinical_Cases_splitted.csv'
-LOG_FILE_PATH = '../data/log.txt'
-OUTPUT_DIR_BASE = './output'
+INPUT_CSV_PATH = './data/input/DSM-5-TR_Clinical_Cases_splitted.csv'
+LOG_FILE_PATH = './data/log.txt'
+OUTPUT_DIR_BASE = './data/output'
 VECTORESTORE_BASE = './vectorstore'
 
 # List of models to be processed.
-MODELS = ["medllama2", "cniongolo/biomistral"]
-
+MODELS = ["deepseek-r1:1.5b"]
 # Total number of rows in the CSV (update if known dynamically)
 TOTAL_ROWS = 103
 

@@ -4,10 +4,10 @@ import pandas as pd
 
 # Define the list of models to be used for generating embeddings
 # modelli = ["gemma2:latest","phi3:medium","phi3.5:latest","mistral-nemo:latest","llama3:latest"]
-modelli = ["medllama2","cniongolo/biomistral"]
+modelli = ["deepseek-r1:1.5b"]
 
 # Read the CSV file containing the data into a DataFrame
-df = pd.read_csv('../data/input/ICD-11_joined.csv')
+df = pd.read_csv('./data/input/ICD-11_joined.csv')
 
 # Extract the 'prompt' column from the DataFrame as a list of texts
 list_text = df["prompt"]

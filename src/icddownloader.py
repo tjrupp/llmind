@@ -45,12 +45,12 @@ def retrieve_code(uri: str, session: requests.Session, results: List[Dict]) -> N
     # If this node is a leaf category (i.e., it has no 'child' field), process and record it.
     if data.get('classKind') == 'category' and 'child' not in data:
         entry = {
-            'code': data.get('code', ''),
-            'title': data.get('title', {}).get('@value', ''),
-            'definition': data.get('definition', {}).get('@value', ''),
-            'longdefinition': data.get('longdefinition', {}).get('@value', ''),
-            'inclusions': [inc.get('label', {}).get('@value', '') for inc in data.get('inclusion', [])],
-            'exclusions': [exc.get('label', {}).get('@value', '') for exc in data.get('exclusion', [])],
+            'code': data.get('code', '').replace(";", "~"),
+            'title': data.get('title', {}).get('@value', '').replace(";", "~"),
+            'definition': data.get('definition', {}).get('@value', '').replace(";", "~"),
+            'longdefinition': data.get('longdefinition', {}).get('@value', '').replace(";", "~"),
+            'inclusions': [inc.get('label', {}).get('@value', '').replace(";", "~") for inc in data.get('inclusion', [])],
+            'exclusions': [exc.get('label', {}).get('@value', '').replace(";", "~") for exc in data.get('exclusion', [])],
         }
         results.append(entry)
 
@@ -75,7 +75,7 @@ def save_results_to_json(results: List[Dict], filename: str) -> None:
         filename (str): The filename for the JSON output.
     """
     try:
-        with open(filename, "w", encoding="utf-8") as json_file:
+        with open(filename, "w+", encoding="utf-8") as json_file:
             json.dump(results, json_file, ensure_ascii=False, indent=4)
         print(f"Results successfully saved to {filename}")
     except Exception as e:
@@ -101,7 +101,7 @@ def convert_json_to_csv(json_filename: str, csv_filename: str) -> None:
     fieldnames = ["code", "title", "definition", "longdefinition", "inclusions", "exclusions"]
 
     try:
-        with open(csv_filename, "w", newline="", encoding="utf-8") as csv_file:
+        with open(csv_filename, "w+", newline="", encoding="utf-8") as csv_file:
             writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
             writer.writeheader()
             for row in data:
@@ -131,8 +131,8 @@ def main():
         retrieve_code(ROOT_URI, session, results)
 
     # Define filenames for JSON and CSV outputs
-    json_filename = "../dsm_results.json"
-    csv_filename = "../data/input/ICD-11.csv"
+    json_filename = "./results/dsm_results.json"
+    csv_filename = "./data/input/ICD-11.csv"
 
     # Save results to JSON and convert to CSV
     save_results_to_json(results, json_filename)
