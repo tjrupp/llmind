@@ -131,7 +131,7 @@ def main():
         retrieve_code(ROOT_URI, session, results)
 
     # Define filenames for JSON and CSV outputs
-    json_filename = "./results/dsm_results.json"
+    json_filename = "./results/icd-11.json"
     csv_filename = "./data/input/ICD-11.csv"
 
     # Save results to JSON and convert to CSV
