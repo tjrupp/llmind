@@ -1,0 +1,99 @@
+{
+    "Impulsivity or impulse-control problems": {
+        "question": "Due to the physiological effects of a substance (including medications)",
+        "yes": {
+            "question": "Associated with a disturbance in attention and awareness characterized by a fluctuating course",
+            "yes": "SUBSTANCE INTOXICATION DELIRIUM; SUBSTANCE WITHDRAWAL DELIRIUM; MEDICATION-INDUCED DELIRIUM (3.16.1)",
+            "no": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFFECT OF MEDICATION"
+        },
+        "no": {
+            "question": "Due to the physiological effects of a general medical condition",
+            "yes": {
+                "question": "Associated with a disturbance in attention and awareness characterized by a fluctuating course",
+                "yes": "DELIRIUM DUE TO ANOTHER MEDICAL CONDITION (3.16.1)",
+                "no": {
+                    "question": "Associated with evidence of decline in one or more of the following cognitive domains: complex attention, executive function, learning and memory, language, perceptual-motor, or social cognition",
+                    "yes": "MAJOR or MILD NEUROCOGNITIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION (3.16.2), WITH BEHAVIORAL DISTURBANCE",
+                    "no": {
+                        "question": "Occurring in a pattern representing a change from a previous personality pattern",
+                        "yes": "PERSONALITY CHANGE DUE TO ANOTHER MEDICAL CONDITION (3.17.11)",
+                        "no": "OTHER SPECIFIED MENTAL DISORDER DUE TO ANOTHER MEDICAL CONDITION; UNSPECIFIED MENTAL DISORDER DUE TO ANOTHER MEDICAL CONDITION"
+                    }
+                }
+            },
+            "no": {
+                "question": "Occurring in the context of an episode of elevated, expansive, or irritable mood accompanied by increased activity or energy",
+                "yes": "MANIC EPISODE in BIPOLAR I DISORDER (3.3.1) or SCHIZOAFFECTIVE DISORDER (3.3.2)",
+                "no": {
+                    "question": "Occurring in the context of an episode of depressed mood or diminished interest or pleasure, accompanied by characteristic depressive symptoms (e.g., suicidal behavior)",
+                    "yes": "MAJOR DEPRESSIVE EPISODE in MAJOR DEPRESSIVE DISORDER (3.4.1), BIPOLAR I (3.3.1) or BIPOLAR II (3.3.2) DISORDER, or SCHIZOAFFECTIVE DISORDER (3.2.2)",
+                    "no": {
+                        "question": "Associated with symptoms of inattention and hyperactivity with onset before age 12 and clear evidence of interference with functioning",
+                        "yes": "ATTENTION-DEFICIT/HYPERACTIVITY DISORDER (3.1.4)",
+                        "no": {
+                            "question": "Part of a pattern of violation of the basic rights of others and age-appropriate social norms",
+                            "yes": {
+                                "question": "Age over 18 years",
+                                "yes": "ANTISOCIAL PERSONALITY DISORDER (3.17.4)",
+                                "no": "CONDUCT DISORDER (3.14.3)"
+                            },
+                            "no": {
+                                "question": "Part of a pattern of impulsivity with onset in early adulthood",
+                                "yes": "BORDERLINE PERSONALITY DISORDER (3.17.5)",
+                                "no": {
+                                    "question": "Impaired ability to control use of substances",
+                                    "yes": "SUBSTANCE USE DISORDER (3.15.1)",
+                                    "no": {
+                                        "question": "Impaired ability to control gambling",
+                                        "yes": "GAMBLING DISORDER (3.15.2)",
+                                        "no": {
+                                            "question": "Failure to resist impulses to binge eat",
+                                            "yes": "BULIMIA NERVOSA (3.10.3); BINGE-EATING DISORDER (3.10.4)",
+                                            "no": {
+                                                "question": "Episodes of failure to resist an impulse to start fires",
+                                                "yes": "PYROMANIA",
+                                                "no": {
+                                                    "question": "Episodes of failure to resist an impulse to steal objects not needed for personal use",
+                                                    "yes": "KLEPTOMANIA",
+                                                    "no": {
+                                                        "question": "Episodes of failure to resist the impulse to pull out one's hair",
+                                                        "yes": "TRICHOTILLOMANIA (HAIR-PULLING DISORDER) (3.6.4)",
+                                                        "no": {
+                                                            "question": "Episodes of failure to resist impulses to pick one's skin",
+                                                            "yes": "EXCORIATION (SKIN-PICKING) DISORDER (3.6.5)",
+                                                            "no": {
+                                                                "question": "Episodes of failure to resist aggressive impulses",
+                                                                "yes": "INTERMITTENT EXPLOSIVE DISORDER (3.14.2)",
+                                                                "no": {
+                                                                    "question": "Impulsivity arising as a response to exposure to a traumatic stressor accompanied by intrusion symptoms, avoidance symptoms, and negative alterations in cognitions and mood",
+                                                                    "yes": {
+                                                                        "question": "Duration of more than 1 month",
+                                                                        "yes": "POSTTRAUMATIC STRESS DISORDER (3.7.1)",
+                                                                        "no": "ACUTE STRESS DISORDER (3.7.1)"
+                                                                    },
+                                                                    "no": {
+                                                                        "question": "Clinically significant impulsivity not covered above that represents a psychological or biological dysfunction in the individual",
+                                                                        "yes": {
+                                                                            "question": "Maladaptive response to a psychosocial stressor",
+                                                                            "yes": "ADJUSTMENT DISORDER (3.7.2)",
+                                                                            "no": "OTHER SPECIFIED DISRUPTIVE, IMPULSE-CONTROL, AND CONDUCT DISORDER; UNSPECIFIED DISRUPTIVE, IMPULSE-CONTROL, AND CONDUCT DISORDER"
+                                                                        },
+                                                                        "no": "\"Normal\" impulsivity"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

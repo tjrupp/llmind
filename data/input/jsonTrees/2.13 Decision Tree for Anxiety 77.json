@@ -1,0 +1,112 @@
+{
+  "decision_tree": {
+    "start": "Anxiety",
+    "children": [
+      {
+        "question": "Due to the physiological effects of a substance (including medications)?",
+        "answer_yes": {
+          "question": "Associated with a disturbance in attention and awareness characterized by a fluctuating course?",
+          "answer_yes": "SUBSTANCE INTOXICATION DELIRIUM; SUBSTANCE WITHDRAWAL DELIRIUM; MEDICATION-INDUCED DELIRIUM (3.16.1)",
+          "answer_no": {
+            "question": "Anxiety symptoms predominate in the clinical picture and are sufficiently severe to warrant clinical attention?",
+            "answer_yes": "SUBSTANCE/MEDICATION-INDUCED ANXIETY DISORDER",
+            "answer_no": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFFECT OF MEDICATION"
+          }
+        },
+        "answer_no": {
+          "question": "Due to the physiological effects of a general medical condition?",
+          "answer_yes": {
+            "question": "Associated with a disturbance in attention and awareness characterized by a fluctuating course?",
+            "answer_yes": "DELIRIUM DUE TO ANOTHER MEDICAL CONDITION (3.16.1)",
+            "answer_no": {
+              "question": "Associated with evidence of decline in one or more of the following cognitive domains: complex attention, executive function, learning and memory, language, perceptual-motor, or social cognition?",
+              "answer_yes": "MAJOR or MILD NEUROCOGNITIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION (3.16.2), WITH BEHAVIORAL DISTURBANCE",
+              "answer_no": "ANXIETY DISORDER DUE TO ANOTHER MEDICAL CONDITION"
+            }
+          },
+          "answer_no": {
+            "question": "Occurring in the context of an abrupt surge of intense fear and discomfort that reaches a peak within minutes?",
+            "answer_yes": {
+              "question": "Recurrent unexpected clinically significant Panic Attacks?",
+              "answer_yes": "PANIC DISORDER (3.5.5)",
+              "answer_no": "Panic Attack or limited-symptom attack (see Panic Attacks Tree [2.14] for differential diagnosis)"
+            },
+            "answer_no": {
+              "question": "Anxiety about being in places from which escape might be difficult or embarrassing in the event of having a Panic Attack or panic-like symptoms, without more generalized worries?",
+              "answer_yes": "AGORAPHOBIA (3.5.6)",
+              "answer_no": {
+                "question": "Anxiety or worry concerning separation from major attachment figures, without more generalized worries?",
+                "answer_yes": "SEPARATION ANXIETY DISORDER (3.5.1)",
+                "answer_no": {
+                  "question": "Anxiety or worry about social situations in which the person is exposed to scrutiny of others, without more generalized worries?",
+                  "answer_yes": "SOCIAL ANXIETY DISORDER (3.5.4)",
+                  "answer_no": {
+                    "question": "Anxiety about exposure to a feared object (e.g., spiders) or situation (e.g., getting an injection, flying)?",
+                    "answer_yes": "SPECIFIC PHOBIA (3.5.3)",
+                    "answer_no": {
+                      "question": "Anxiety about heath and about having or acquiring a serious illness, without more generalized worries?",
+                      "answer_yes": {
+                        "question": "Somatic symptoms that are distressing?",
+                        "answer_yes": "SOMATIC SYMPTOM DISORDER (3.9.1)",
+                        "answer_no": {
+                          "question": "Belief about serious physical illness is of delusional intensity?",
+                          "answer_yes": "Psychotic Disorder (see Delusions Tree [2.5] for differential diagnosis)",
+                          "answer_no": "ILLNESS ANXIETY DISORDER (3.9.2)"
+                        }
+                      },
+                      "answer_no": {
+                        "question": "Anxiety about discarding or parting with personal items, resulting in accumulation of possessions cluttering living areas?",
+                        "answer_yes": "HOARDING DISORDER (3.6.3)",
+                        "answer_no": {
+                          "question": "Anxiety or worry about an imagined defect in appearance?",
+                          "answer_yes": "BODY DYSMORPHIC DISORDER (3.6.2)",
+                          "answer_no": {
+                            "question": "Anxiety associated with recurrent worries, thoughts, or ruminations?",
+                            "answer_yes": {
+                              "question": "Recurrent thoughts are experienced as intrusive, unwanted, and ego-dystonic?",
+                              "answer_yes": "OBSESSIVE-COMPULSIVE DISORDER (3.6.1)",
+                              "answer_no": {
+                                "question": "Excessive worry and anxiety about several events or situations, persisting for at least 6 months?",
+                                "answer_yes": "GENERALIZED ANXIETY DISORDER (3.5.7)",
+                                "answer_no": null
+                              }
+                            },
+                            "answer_no": {
+                              "question": "Anxiety associated with exposure to a severe traumatic stressor?",
+                              "answer_yes": {
+                                "question": "Occurring with intrusion symptoms, avoidance of stimuli associated with the traumatic stressor, negative alterations in cognitions and mood, and alterations in arousal and activity?",
+                                "answer_yes": {
+                                  "question": "Duration of more than 1 month?",
+                                  "answer_yes": "POSTTRAUMATIC STRESS DISORDER (3.7.1)",
+                                  "answer_no": "ACUTE STRESS DISORDER (3.7.1)"
+                                },
+                                "answer_no": null
+                              },
+                              "answer_no": {
+                                "question": "Anxiety associated with a Manic Episode, a Hypomanic Episode, or a Major Depressive Episode?",
+                                "answer_yes": "MAJOR DEPRESSIVE EPISODE WITH ANXIOUS FEATURES in MAJOR DEPRESSIVE (3.4.1), BIPOLAR I (3.3.1), or BIPOLAR II (3.3.2) DISORDER; MANIC EPISODE WITH ANXIOUS FEATURES in BIPOLAR I DISORDER (3.3.1); HYPOMANIC EPISODE WITH ANXIOUS FEATURES in BIPOLAR I (3.3.1) or BIPOLAR II (3.3.2) DISORDER",
+                                "answer_no": {
+                                  "question": "Clinically significant anxiety not covered above that represents a psychological or biological dysfunction in the individual?",
+                                  "answer_yes": {
+                                    "question": "Occurring in response to a psychosocial stressor?",
+                                    "answer_yes": "ADJUSTMENT DISORDER WITH ANXIETY (3.7.2)",
+                                    "answer_no": "OTHER SPECIFIED ANXIETY DISORDER; UNSPECIFIED ANXIETY DISORDER"
+                                  },
+                                  "answer_no": "\"Normal\" anxiety"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

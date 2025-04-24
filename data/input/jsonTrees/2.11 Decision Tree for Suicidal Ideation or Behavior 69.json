@@ -1,0 +1,95 @@
+{
+  "decision_tree": {
+    "start": "Suicidal ideation or behavior",
+    "children": [
+      {
+        "question": "Self-injurious behavior without a desire to die?",
+        "answer_yes": "Not suicidal behavior (see Self-Injury or Self-Mutilation Tree [2.25] for differential diagnosis)",
+        "answer_no": {
+          "question": "Related to a delusion (e.g., delusional conviction of being possessed by the devil) or in response to a command hallucination?",
+          "answer_yes": "Psychotic Disorder (e.g., SCHIZOPHRENIA (3.2.1]). See Delusions Tree (2.5) or Hallucinations Tree (2.6) for differential diagnosis",
+          "answer_no": {
+            "question": "Occurring in the context of clinically significant depressive symptomatology without any accompanying manic symptomatology?",
+            "answer_yes": {
+              "question": "Depressive symptoms are due to the physiological effects of a general medical condition?",
+              "answer_yes": "DEPRESSIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION",
+              "answer_no": {
+                "question": "Depressive symptoms are due to the physiological effects of a substance (including medication)?",
+                "answer_yes": "SUBSTANCE/MEDICATION-INDUCED DEPRESSIVE DISORDER",
+                "answer_no": {
+                  "question": "Occurs in the context of an episode of depressed mood or diminished interest or pleasure accompanied by characteristic depressive symptoms?",
+                  "answer_yes": "MAJOR DEPRESSIVE EPISODE in MAJOR DEPRESSIVE DISORDER (3.4.1), BIPOLAR I (3.3.1) or BIPOLAR II (3.3.2) DISORDER, or SCHIZOAFFECTIVE DISORDER (3.2.2)",
+                  "answer_no": {
+                    "question": "Occurring in the context of depressed mood that has been present for more days than not for at least 2 years?",
+                    "answer_yes": "PERSISTENT DEPRESSIVE DISORDER (3.4.2)",
+                    "answer_no": {
+                      "question": "Occurring in the context of depressed mood that is regularly present in the final week before the onset of menses and that becomes absent in the week postmenses?",
+                      "answer_yes": "PREMENSTRUAL DYSPHORIC DISORDER (3.4.3)",
+                      "answer_no": {
+                        "question": "Occurring in the context of a mixture of manic and depressive symptomatology?",
+                        "answer_yes": {
+                          "question": "Manic and depressive symptoms are due to the physiological effects of a general medical condition?",
+                          "answer_yes": "BIPOLAR DISORDER DUE TO ANOTHER MEDICAL CONDITION",
+                          "answer_no": {
+                            "question": "Manic and depressive symptoms are due to the physiological effects of a substance (including medication)?",
+                            "answer_yes": "SUBSTANCE/MEDICATION-INDUCED BIPOLAR DISORDER",
+                            "answer_no": {
+                              "question": "Occurring in the context of an episode of depressed mood or diminished interest or pleasure accompanied by characteristic depressive symptoms?",
+                              "answer_yes": "MANIC EPISODE WITH MIXED FEATURES in BIPOLAR I DISORDER (3.3.1)",
+                              "answer_no": null
+                            }
+                          }
+                        },
+                        "answer_no": {
+                          "question": "Associated with confusion or lack of judgment in the context of a Neurocognitive Disorder?",
+                          "answer_yes": {
+                            "question": "Associated with a disturbance in attention and awareness characterized by a fluctuating course?",
+                            "answer_yes": "DELIRIUM DUE TO ANOTHER MEDICAL CONDITION; SUBSTANCE INTOXICATION DELIRIUM; SUBSTANCE WITHDRAWAL DELIRIUM; MEDICATION-INDUCED DELIRIUM (3.16.1)",
+                            "answer_no": null
+                          },
+                          "answer_no": {
+                            "question": "Associated with evidence of decline in one or more of the following cognitive domains: complex attention, executive function, learning and memory, language, perceptual-motor, or social cognition?",
+                            "answer_yes": "MAJOR NEUROCOGNITIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION; SUBSTANCE/MEDICATION-INDUCED MAJOR NEUROCOGNITIVE DISORDER (3.16.2)",
+                            "answer_no": {
+                              "question": "Associated with the disinhibition, dysphoria, or confusion related to Substance Intoxication or Substance Withdrawal or a medication side effect?",
+                              "answer_yes": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFFECT OF MEDICATION",
+                              "answer_no": {
+                                "question": "Associated with severe recurrent temper outbursts grossly out of proportion to provocation; with persistent angry, irritable mood in between outbursts; and with onset before age 10?",
+                                "answer_yes": "DISRUPTIVE MOOD DYSREGULATION DISORDER (3.4.4)",
+                                "answer_no": {
+                                  "question": "Related to irritability, aggressiveness, impulsivity, and/or legal problems?",
+                                  "answer_yes": "CONDUCT DISORDER (3.14.3); ANTISOCIAL PERSONALITY DISORDER (3.17.4)",
+                                  "answer_no": {
+                                    "question": "Related to a chronic pattern of fears of abandonment, intense anger, and poor impulse control?",
+                                    "answer_yes": "BORDERLINE PERSONALITY DISORDER (3.17.5)",
+                                    "answer_no": {
+                                      "question": "Suicidal ideation or behavior is feigned?",
+                                      "answer_yes": "FACTITIOUS DISORDER (3.9.5); MALINGERING",
+                                      "answer_no": {
+                                        "question": "Occurring in the context of severe demoralization associated with a mental disorder or general medical condition?",
+                                        "answer_yes": "MENTAL DISORDER plus Section III: Suicidal Behavior Disorder",
+                                        "answer_no": {
+                                          "question": "Occurring in response to a psychosocial stressor and behavior is not accounted for by another specific mental disorder?",
+                                          "answer_yes": "ADJUSTMENT DISORDER (3.7.2)",
+                                          "answer_no": "No mental disorder diagnosis necessarily present (e.g., motivation to terminate intractable physical symptoms or their consequences)"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

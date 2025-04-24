@@ -1,0 +1,100 @@
+{
+  "decision_tree": {
+    "start": "Irritable mood",
+    "children": [
+      {
+        "question": "Due to the physiological effects of a substance (including medication)?",
+        "answer_yes": "SUBSTANCE/MEDICATION-INDUCED BIPOLAR DISORDER",
+        "answer_no": {
+          "question": "Symptoms of irritable mood predominate in the clinical picture and are sufficiently severe to warrant clinical attention?",
+          "answer_yes": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFEECT OF MEDICATION",
+          "answer_no": {
+            "question": "Due to the physiological effects of a general medical condition?",
+            "answer_yes": {
+              "question": "Associated with evidence of decline in one or more of the following cognitive domains: complex attention, executive function, learning and memory, language, perceptual-motor, or social cognition?",
+              "answer_yes": "MAJOR or MILD NEUROCOGNITIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION (3.16.2), WITH BEHAVIORAL DISTURBANCE",
+              "answer_no": "BIPOLAR AND RELATED DISORDER DUE TO ANOTHER MEDICAL CONDITION"
+            },
+            "answer_no": {
+              "question": "Criteria met for a Manic Episode (i.e., at least 1 week of irritable mood accompanied by increased activity or energy and at least four other characteristic symptoms sufficiently severe to cause marked impairment)?",
+              "answer_yes": "Manic Episode",
+              "answer_no": {
+                "question": "Criteria met for a Hypomanic Episode (i.e., at least 4 days of irritable mood accompanied by increased activity or energy and at least four other characteristic symptoms not severe enough to cause marked impairment)?",
+                "answer_yes": "Hypomanic Episode",
+                "answer_no": {
+                  "question": "Present or past Manic Episode?",
+                  "answer_yes": {
+                    "question": "History of delusions or hallucinations?",
+                    "answer_yes": "BIPOLAR I DISORDER (3.3.1)",
+                    "answer_no": {
+                      "question": "Psychotic symptoms occur exclusively during Manic or Major Depressive Episodes?",
+                      "answer_yes": "BIPOLAR I DISORDER (3.3.1), WITH PSYCHOTIC FEATURES",
+                      "answer_no": "Schizophrenia Spectrum or Other Psychotic Disorder (see Delusions Tree [2.5] or Hallucinations Tree [2.6] for differential diagnosis)"
+                    }
+                  },
+                  "answer_no": {
+                    "question": "Present or past Hypomanic Episode and at least one Major Depressive Episode?",
+                    "answer_yes": {
+                      "question": "History of delusions or hallucinations?",
+                      "answer_yes": "BIPOLAR II DISORDER (3.3.2)",
+                      "answer_no": {
+                        "question": "Psychotic symptoms occur exclusively during Major Depressive Episodes?",
+                        "answer_yes": "BIPOLAR II DISORDER (3.3.2), WITH PSYCHOTIC FEATURES",
+                        "answer_no": "Schizophrenia Spectrum or Other Psychotic Disorder (see Delusions Tree [2.5] or Hallucinations Tree [2.6] for differential diagnosis)"
+                      }
+                    },
+                    "answer_no": {
+                      "question": "2+ years of hypomanic symptoms and periods of depressed mood?",
+                      "answer_yes": "CYCLOTHYMIC DISORDER (3.3.3)",
+                      "answer_no": {
+                        "question": "Occurring only in association with periods of depressed mood?",
+                        "answer_yes": {
+                          "question": "At least 2 weeks of depressed mood or diminished interest plus associated characteristic symptoms (e.g., changes in weight and appetite, changes in sleep, fatigue, suicidal thoughts)?",
+                          "answer_yes": "MAJOR DEPRESSIVE DISORDER (3.4.1)",
+                          "answer_no": {
+                            "question": "Depressed mood, more days than not, for at least 2 years with associated symptoms?",
+                            "answer_yes": "PERSISTENT DEPRESSIVE DISORDER (3.4.2)",
+                            "answer_no": {
+                              "question": "Depressed mood that is regularly present in the final week before the onset of menses and that becomes absent in the week postmenses?",
+                              "answer_yes": "PREMENSTRUAL DYSPHORIC DISORDER (3.4.3)",
+                              "answer_no": {
+                                "question": "Occurring in the context of severe temper outbursts that are grossly out of proportion to the situation with persistent anger and irritability between outbursts?",
+                                "answer_yes": "DISRUPTIVE MOOD DYSREGULATION DISORDER (3.4.4)",
+                                "answer_no": {
+                                  "question": "Occurring in association with a pattern of argumentativeness, defiance, and vindictiveness?",
+                                  "answer_yes": "OPPOSITIONAL DEFIANT DISORDER (3.14.1)",
+                                  "answer_no": {
+                                    "question": "Occurring as part of a persistent and pervasive pattern of instability of interpersonal relationships, self-image, and affects, and marked impulsivity, beginning by early adulthood?",
+                                    "answer_yes": "BORDERLINE PERSONALITY DISORDER (3.17.5)",
+                                    "answer_no": {
+                                      "question": "Occurring as part of a persistent and pervasive pattern of disregard for, and violation of, the rights of others, occurring since age 15?",
+                                      "answer_yes": "ANTISOCIAL PERSONALITY DISORDER (3.17.4)",
+                                      "answer_no": {
+                                        "question": "Clinically significant irritability not covered above that represents a psychological or biological dysfunction in the individual?",
+                                        "answer_yes": {
+                                          "question": "Maladaptive response to a stressor?",
+                                          "answer_yes": "ADJUSTMENT DISORDER (3.7.2)",
+                                          "answer_no": "OTHER SPECIFIED BIPOLAR AND RELATED DISORDER; UNSPECIFIED BIPOLAR AND RELATED DISORDER"
+                                        },
+                                        "answer_no": "\"Normal\" irritability"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "answer_no": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

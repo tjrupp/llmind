@@ -1,0 +1,147 @@
+{
+  "Etiological medical conditions": {
+    "Characterized by a disturbance in attention and awareness that has a fluctuating course": {
+      "N": {
+        "Evidence of decline in one or more of the following cognitive domains: complex attention, executive function, learning and memory, language, perceptual-motor, or social cognition, with substantial impairment preferably documented by neuropsychological testing or other quantified assessment, and the deficits interfere with independence": {
+          "Y": {
+            "Evidence that the disturbance has more than one etiology (e.g., cerebrovascular disease and Alzheimer's disease)": {
+              "Y": "MAJOR NEUROCOGNITIVE DISORDER DUE TO MULTIPLE ETIOLOGIES (3.16.2)",
+              "N": {
+                "Insidious onset and gradual impairment occurring in the setting of established Parkinson's disease": {
+                  "Y": {
+                    "No evidence of mixed etiology, and Parkinson's disease clearly precedes onset of the Neurocognitive Disorder": {
+                      "Y": "MAJOR NEUROCOGNITIVE DISORDER PROBABLY DUE TO PARKINSON'S DISEASE (code first the Parkinson's disease) (3.16.2)",
+                      "N": "MAJOR NEUROCOGNITIVE DISORDER POSSIBLY DUE TO PARKINSON'S DISEASE (3.16.2)"
+                    }
+                  },
+                  "N": {
+                    "Symptoms that manifest after traumatic brain injury and persist past the acute postinjury period": {
+                      "Y": "MAJOR NEUROCOGNITIVE DISORDER DUE TO TRAUMATIC BRAIN INJURY (3.16.2)",
+                      "N": {
+                        "Documented infection with HIV and not explained by secondary brain diseases such as herpes encephalitis or cryptococcosis": {
+                          "Y": "MAJOR NEUROCOGNITIVE DISORDER DUE TO HIV INFECTION (code first the HIV infection) (3.16.2)",
+                          "N": {
+                            "Insidious onset, gradual progression, and evidence that symptoms are the direct consequence of Huntington's disease": {
+                              "Y": "MAJOR NEUROCOGNITIVE DISORDER DUE TO HUNTINGTON'S DISEASE (code first the Huntington's disease) (3.16.2)",
+                              "N": {
+                                "Insidious onset, rapid progression, and biomarker evidence of prion disease": {
+                                  "Y": "MAJOR NEUROCOGNITIVE DISORDER DUE TO PRION DISEASE (code first the prion disease) (3.16.2)",
+                                  "N": {
+                                    "Insidious onset, gradual progression, and either behavioral symptoms (e.g., disinhibition, apathy, loss of empathy, compulsive behavior, hyperorality) or prominent decline in language ability; with sparing of learning, memory, and perceptual-motor function": {
+                                      "Y": {
+                                        "Causative frontotemporal neurocognitive disorder genetic mutation or disproportionate frontal or temporal lobe involvement as evidenced in neuroimaging": {
+                                          "Y": "PROBABLE MAJOR FRONTOTEMPORAL NEUROCOGNITIVE DISORDER (code first the frontotemporal disease) (3.16.2)",
+                                          "N": "POSSIBLE MAJOR FRONTOTEMPORAL NEUROCOGNITIVE DISORDER (3.16.2)"
+                                        }
+                                      },
+                                      "N": {
+                                        "Insidious onset and gradual progression, with any of the following: fluctuating cognition with pronounced variations in attention and alertness; recurrent well-formed and detailed visual hallucinations; spontaneous features of parkinsonism with onset after cognitive decline; Rapid Eye Movement Sleep Behavior Disorder; or severe neuroleptic sensitivity": {
+                                          "Y": {
+                                            "Two of the following core features: fluctuating cognition, visual hallucinations, spontaneous features of parkinsonism after cognitive decline; or one core feature and either Rapid Eye Movement Sleep Behavior Disorder or severe neuroleptic sensitivity": {
+                                              "Y": "PROBABLE MAJOR NEUROCOGNITIVE DISORDER WITH LEWY BODIES (code first the Lewy body disease) (3.16.2)",
+                                              "N": "POSSIBLE MAJOR NEUROCOGNITIVE DISORDER WITH LEWY BODIES (3.16.2)"
+                                            }
+                                          },
+                                          "N": {
+                                            "Presence of cerebrovascular disease and features consistent with vascular etiology (onset of cognitive deficits is related to vascular events or evidence of decline is prominent in complex attention and frontal-executive function)": {
+                                              "Y": {
+                                                "Neuroimaging supports parenchymal injury due to cerebrovascular disease, the neurocognitive syndrome is temporarily related to documented cerebrovascular events, or there is both clinical and genetic evidence of cerebrovascular disease": {
+                                                  "Y": "PROBABLE MAJOR VASCULAR NEUROCOGNITIVE DISORDER (3.16.2)",
+                                                  "N": "POSSIBLE MAJOR VASCULAR NEUROCOGNITIVE DISORDER (3.16.2)"
+                                                }
+                                              },
+                                              "N": {
+                                                "Insidious onset, gradual progression of impairment in at least two cognitive domains": {
+                                                  "N": {
+                                                    "Evidence from the history, physical exam, or laboratory findings that another medical condition is the cause of the symptoms": {
+                                                      "Y": "MAJOR NEUROCOGNITIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION (code first the other medical condition) (3.16.2)",
+                                                      "N": "UNSPECIFIED NEUROCOGNITIVE DISORDER"
+                                                    }
+                                                  },
+                                                  "Y": {
+                                                    "Causative Alzheimer's disease genetic mutation or all three of the following: clear evidence of decline in memory and one other cognitive domain, steadily progressive cognitive decline without extended plateaus, and no evidence of mixed etiology": {
+                                                      "Y": "PROBABLE MAJOR NEUROCOGNITIVE DISORDER DUE TO ALZHEIMER'S DISEASE (code first the Alzheimer's disease) (3.16.2)",
+                                                      "N": "POSSIBLE MAJOR NEUROCOGNITIVE DISORDER DUE TO ALZHEIMER'S DISEASE (3.16.2)"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "N": {
+            "Modest cognitive decline from a proven level of performance, accompanied by modest impairment in cognitive performance that is insufficient to interfere with capacity for independence in everyday activities": {
+              "Y": {
+                "Due to the direct effects of a general medical condition": {
+                  "Y": "MILD NEUROCOGNITIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION (based on etiological decision points above for Major Neurocognitive Disorder)",
+                  "N": "UNSPECIFIED NEUROCOGNITIVE DISORDER"
+                }
+              },
+              "N": "UNSPECIFIED NEUROCOGNITIVE DISORDER"
+            }
+          }
+        }
+      },
+      "Y": {
+        "Evidence that the Delirium has more than one etiology (e.g., more than one etiological general medical condition; a general medical condition and Substance Intoxication)": {
+          "Y": "DELIRIUM DUE TO MULTIPLE ETIOLOGIES (3.16.1)",
+          "N": "DELIRIUM DUE TO ANOTHER MEDICAL CONDITION (3.16.1)"
+        }
+      }
+    },
+    "Prominent delusions or hallucinations predominate": {
+      "Y": "PSYCHOTIC DISORDER DUE TO ANOTHER MEDICAL CONDITION",
+      "N": {
+        "Prominent and persistent abnormally elevated, expansive, and/or irritable mood and abnormally increased activity or energy predominates": {
+          "Y": "BIPOLAR AND RELATED DISORDER DUE TO ANOTHER MEDICAL CONDITION",
+          "N": {
+            "Prominent and persistent period of depressed mood or markedly diminished interest or pleasure predominates": {
+              "Y": "DEPRESSIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION",
+              "N": {
+                "Prominent Panic Attacks or anxiety": {
+                  "Y": "ANXIETY DISORDER DUE TO ANOTHER MEDICAL CONDITION",
+                  "N": {
+                    "Prominent obsessions; compulsions; preoccupations with appearance; hoarding behavior; skin-picking, hair-pulling, and other body-focused repetitive behaviors; or other symptoms characteristic of Obsessive-Compulsive and Related Disorders": {
+                      "Y": "OBSESSIVE-COMPULSIVE AND RELATED DISORDER DUE TO ANOTHER MEDICAL CONDITION",
+                      "N": {
+                        "At least three catatonia symptoms: stupor, catalepsy, waxy flexibility, mutism, negativism, posturing, mannerism, stereotypy, agitation, grimacing, echolalia, or echopraxia": {
+                          "Y": "CATATONIC DISORDER DUE TO ANOTHER MEDICAL CONDITION (3.2.5)",
+                          "N": {
+                            "Change in previous personality pattern": {
+                              "Y": "PERSONALITY CHANGE DUE TO ANOTHER MEDICAL CONDITION (3.17.11)",
+                              "N": {
+                                "Clinically significant symptoms etiologically related to a general medical condition not covered above that represent a psychological or biological dysfunction in the individual": {
+                                  "Y": "OTHER SPECIFIED MENTAL DISORDER DUE TO ANOTHER MEDICAL CONDITION",
+                                  "N": "No mental disorder (symptoms are not clinically significant)"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

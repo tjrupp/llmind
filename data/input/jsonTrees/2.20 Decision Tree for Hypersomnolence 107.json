@@ -1,0 +1,103 @@
+{
+    "Hypersomnolence": {
+        "question": "Due to the physiological effects of a substance (including medication)",
+        "yes": {
+            "question": "Hypersomnolence predominates in the clinical picture and is sufficiently severe to warrant clinical attention",
+            "yes": "SUBSTANCE/MEDICATION-INDUCED SLEEP DISORDER, DAYTIME SLEEPINESS TYPE",
+            "no": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL"
+        },
+        "no": {
+            "question": "Recurrent periods of an irresistible need to sleep accompanied by cataplexy, hypocretin deficiency, characteristic nocturnal polysomnography findings, or characteristic multiple sleep latency findings",
+            "yes": {
+                "question": "Hypersomnolence occurs exclusively during, and is better explained by the diagnosis of, Narcolepsy",
+                "yes": "NARCOLEPSY",
+                "no": null
+            },
+            "no": {
+                "question": "Accompanied by evidence on polysomnography of five or more obstructive apneas or hypopneas per hour of sleep, five or more central sleep apneas per hour of sleep, or decreased respiration associated with elevated CO2 levels",
+                "yes": {
+                    "question": "Hypersomnolence occurs exclusively during, and is better explained by the diagnosis of, a Breathing-Related Sleep Disorder",
+                    "yes": "BREATHING-RELATED SLEEP DISORDER (i.e., OBSTRUCTIVE SLEEP APNEA HYPOPNEA, CENTRAL SLEEP APNEA, SLEEP-RELATED HYPOVENTILATION)",
+                    "no": null
+                },
+                "no": {
+                    "question": "Daytime fatigue as a result of Sleepwalking or Sleep Terrors",
+                    "yes": {
+                        "question": "Hypersomnolence occurs exclusively during, and is better explained by the diagnosis of, Non-Rapid Eye Movement Sleep Arousal Disorder",
+                        "yes": "NON-RAPID EYE MOVEMENT SLEEP AROUSAL DISORDER",
+                        "no": null
+                    },
+                    "no": {
+                        "question": "Daytime fatigue as a result of repeated occurrences of extended, extremely dysphoric, and well-remembered dreams",
+                        "yes": {
+                            "question": "Hypersomnolence occurs exclusively during, and is better explained by the diagnosis of, Nightmare Disorder",
+                            "yes": "NIGHTMARE DISORDER",
+                            "no": null
+                        },
+                        "no": {
+                            "question": "Daytime fatigue as a result of repeated episodes of arousals during sleep that arise during rapid eye movement sleep with vocalizations or complex motor behaviors",
+                            "yes": {
+                                "question": "Hypersomnolence occurs exclusively during, and is better explained by the diagnosis of, Rapid Eye Movement Sleep Behavior Disorder",
+                                "yes": "RAPID EYE MOVEMENT SLEEP BEHAVIOR DISORDER",
+                                "no": null
+                            },
+                            "no": {
+                                "question": "Daytime fatigue as a result of urges to move the legs in response to unpleasant sensations",
+                                "yes": {
+                                    "question": "Hypersomnolence occurs exclusively during, and is better explained by the diagnosis of, Restless Legs Syndrome",
+                                    "yes": "RESTLESS LEGS SYNDROME",
+                                    "no": null
+                                },
+                                "no": {
+                                    "question": "Daytime fatigue related to a mismatch between the individual's schedule and natural sleep-wake pattern",
+                                    "yes": {
+                                        "question": "Hypersomnolence occurs exclusively during, and is better explained by the diagnosis of, Circadian Rhythm Sleep-Wake Disorder",
+                                        "yes": "CIRCADIAN RHYTHM SLEEP-WAKE DISORDER (i.e., DELAYED SLEEP PHASE TYPE, ADVANCED SLEEP PHASE TYPE, IRREGULAR SLEEP-WAKE TYPE, NON-24-HOUR SLEEP-WAKE TYPE, SHIFT WORK TYPE, UNSPECIFIED TYPE)",
+                                        "no": null
+                                    },
+                                    "no": {
+                                        "question": "Predominant complaint is dissatisfaction with quantity or quality of sleep associated with difficulty initiating or maintaining sleep or early-morning awakening",
+                                        "yes": {
+                                            "question": "Hypersomnolence occurs exclusively during, and is better explained by the diagnosis of, Insomnia Disorder",
+                                            "yes": "INSOMNIA DISORDER (3.11.1)",
+                                            "no": null
+                                        },
+                                        "no": {
+                                            "question": "Presence of a comorbid mental disorder characterized by daytime fatigue (e.g., Major Depressive Disorder)",
+                                            "yes": {
+                                                "question": "Hypersomnolence is adequately explained by the mental disorder",
+                                                "yes": "Mental Disorder associated with hypersomnolence",
+                                                "no": null
+                                            },
+                                            "no": {
+                                                "question": "Presence of a comorbid general medical condition characterized by daytime fatigue (e.g., mononucleosis)",
+                                                "yes": {
+                                                    "question": "Hypersomnolence is adequately explained by the general medical condition",
+                                                    "yes": "General medical condition associated with hypersomnolence",
+                                                    "no": null
+                                                },
+                                                "no": {
+                                                    "question": "Due to \"voluntary\" sleep deprivation",
+                                                    "yes": "No sleep disorder",
+                                                    "no": {
+                                                        "question": "Occurring at least three times per week for at least 3 months",
+                                                        "yes": "HYPERSOMNOLENCE DISORDER (3.11.2)",
+                                                        "no": {
+                                                            "question": "Causes clinically significant distress or impairment and represents a psychological or biological dysfunction in the individual",
+                                                            "yes": "OTHER SPECIFIED HYPERSOMNOLENCE DISORDER; UNSPECIFIED HYPERSOMNOLENCE DISORDER",
+                                                            "no": "\"Normal\" need for sleep (e.g., \"long sleeper\")"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

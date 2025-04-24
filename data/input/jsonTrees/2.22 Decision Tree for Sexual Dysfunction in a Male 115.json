@@ -1,0 +1,55 @@
+{
+    "Sexual dysfunction in a male": {
+        "question": "Entirely explained by lack of adequate stimulation",
+        "yes": "Not a sexual dysfunction",
+        "no": {
+            "question": "Due to the physiological effects of a general medical condition (e.g., vascular disease)",
+            "yes": "Sexual dysfunction caused by a general medical condition",
+            "no": {
+                "question": "Due to the physiological effects of a substance (including medication)",
+                "yes": {
+                    "question": "Sexual dysfunction symptoms predominate in the clinical picture and are sufficiently severe to warrant clinical attention",
+                    "yes": "SUBSTANCE/MEDICATION-INDUCED SEXUAL DYSFUNCTION",
+                    "no": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFFECT OF MEDICATION"
+                },
+                "no": {
+                    "question": "Better explained by another mental disorder (e.g., Major Depressive Disorder)",
+                    "yes": "Mental Disorder diagnosis (no additional sexual dysfunction diagnosis necessary)",
+                    "no": {
+                        "question": "Better explained as a consequence of severe relationship distress",
+                        "yes": "RELATIONAL PROBLEM",
+                        "no": {
+                            "question": "Deficient sexual or erotic thoughts or fantasies and desire for sexual activity, lasting at least 6 months and causing clinically significant distress",
+                            "yes": {
+                                "question": "Occurring in the context of a \"desire discrepancy\" in which the man has lower desire for sexual activity than his partner",
+                                "no": "MALE HYPOACTIVE SEXUAL DESIRE DISORDER",
+                                "yes": null
+                            },
+                            "no": {
+                                "question": "Marked difficulty obtaining or maintaining an erection during sexual activity, lasting at least 6 months and causing clinically significant distress",
+                                "yes": "ERECTILE DISORDER",
+                                "no": {
+                                    "question": "Ejaculation during partnered sexual activity within 1 minute following penetration and before the individual wishes it, lasting at least 6 months and causing clinically significant distress",
+                                    "yes": "PREMATURE (EARLY) EJACULATION",
+                                    "no": {
+                                        "question": "Marked delay in ejaculation or marked infrequency or absence of ejaculation lasting at least 6 months and causing clinically significant distress",
+                                        "yes": "DELAYED EJACULATION",
+                                        "no": {
+                                            "question": "Clinically significant sexual dysfunction not covered above that represents a biological or psychological dysfunction in the individual",
+                                            "yes": {
+                                                "question": "Occurring in response to a psychosocial stressor",
+                                                "yes": "ADJUSTMENT DISORDER (3.7.2)",
+                                                "no": "OTHER SPECIFIED SEXUAL DYSFUNCTION; UNSPECIFIED SEXUAL DYSFUNCTION"
+                                            },
+                                            "no": "\"Normal\" variability in sexual functioning"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

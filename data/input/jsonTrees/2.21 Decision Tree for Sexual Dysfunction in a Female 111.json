@@ -1,0 +1,51 @@
+{
+    "Sexual dysfunction in a female": {
+        "question": "Entirely explained by lack of adequate stimulation",
+        "yes": "Not a sexual dysfunction",
+        "no": {
+            "question": "Due to the physiological effects of a general medical condition (e.g., pelvic nerve damage)",
+            "yes": "Sexual dysfunction caused by a general medical condition",
+            "no": {
+                "question": "Due to the physiological effects of a substance (including medication)",
+                "yes": {
+                    "question": "Sexual dysfunction symptoms predominate in the clinical picture and are sufficiently severe to warrant clinical attention",
+                    "yes": "SUBSTANCE/MEDICATION-INDUCED SEXUAL DYSFUNCTION",
+                    "no": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFFECT OF MEDICATION"
+                },
+                "no": {
+                    "question": "Better explained by another mental disorder (e.g., Major Depressive Disorder)",
+                    "yes": "Mental Disorder diagnosis (no additional sexual dysfunction diagnosis necessary)",
+                    "no": {
+                        "question": "Better explained as a consequence of severe relationship distress",
+                        "yes": "RELATIONAL PROBLEM",
+                        "no": {
+                            "question": "Significantly reduced sexual interest or arousal (i.e., reduced interest, erotic thoughts, initiation of sexual activity, excitement or pleasure during sexual activity, genital sensations during sexual activity), lasting at least 6 months and causing clinically significant distress",
+                            "yes": {
+                                "question": "Occurring in the context of a \"desire discrepancy\" in which the woman has lower desire for sexual activity than her partner",
+                                "no": "FEMALE SEXUAL INTEREST/AROUSAL DISORDER",
+                                "yes": null
+                            },
+                            "no": {
+                                "question": "Marked delay in, infrequency of, or absence of orgasm or reduced intensity of orgasmic sensation lasting at least 6 months and causing clinically significant distress",
+                                "yes": "FEMALE ORGASMIC DISORDER",
+                                "no": {
+                                    "question": "Difficulties with having vaginal intercourse or penetration, vulvovaginal or pelvic pain during intercourse, fear or anxiety about vulvovaginal pain, or tensing or tightening of pelvic floor during attempted penetration, lasting at least 6 months and causing clinically significant distress",
+                                    "yes": "GENITO-PELVIC PAIN/PENETRATION DISORDER",
+                                    "no": {
+                                        "question": "Clinically significant sexual dysfunction not covered above that represents a biological or psychological dysfunction in the individual",
+                                        "yes": {
+                                            "question": "Occurring in response to a psychosocial stressor",
+                                            "yes": "ADJUSTMENT DISORDER (3.7.2)",
+                                            "no": "OTHER SPECIFIED SEXUAL DYSFUNCTION; UNSPECIFIED SEXUAL DYSFUNCTION"
+                                        },
+                                        "no": "\"Normal\" variability in sexual functioning"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

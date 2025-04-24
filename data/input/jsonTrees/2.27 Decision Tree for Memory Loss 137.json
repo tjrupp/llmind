@@ -1,0 +1,121 @@
+{
+  "decision_tree": {
+    "name": "Memory loss",
+    "start": "Memory loss",
+    "nodes": [
+      {
+        "id": "1",
+        "question": "Due to the physiological effects of a substance (including medication)",
+        "yes": {
+          "id": "2",
+          "question": "Associated with a disturbance in attention and awareness characterized by a fluctuating course",
+          "yes": {
+            "id": "SUBSTANCE INTOXICATION DELIRIUM; SUBSTANCE WITHDRAWAL DELIRIUM; MEDICATION-INDUCED DELIRIUM (3.16.1)",
+            "diagnosis": "SUBSTANCE INTOXICATION DELIRIUM; SUBSTANCE WITHDRAWAL DELIRIUM; MEDICATION-INDUCED DELIRIUM (3.16.1)"
+          },
+          "no": {
+            "id": "3",
+            "question": "Memory loss predominates in the clinical picture and is sufficiently severe to warrant clinical attention",
+            "yes": {
+              "id": "SUBSTANCE/MEDICATION-INDUCED MAJOR or MILD NEUROCOGNITIVE DISORDER (3.16.2)",
+              "diagnosis": "SUBSTANCE/MEDICATION-INDUCED MAJOR or MILD NEUROCOGNITIVE DISORDER (3.16.2)"
+            },
+            "no": {
+              "id": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFFECT OF MEDICATION",
+              "diagnosis": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFFECT OF MEDICATION"
+            }
+          }
+        },
+        "no": {
+          "id": "4",
+          "question": "Due to the physiological effects of a general medical condition",
+          "yes": {
+            "id": "5",
+            "question": "Associated with a disturbance in attention and awareness characterized by a fluctuating course",
+            "yes": {
+              "id": "DELIRIUM DUE TO ANOTHER MEDICAL CONDITION (3.16.1)",
+              "diagnosis": "DELIRIUM DUE TO ANOTHER MEDICAL CONDITION (3.16.1)"
+            },
+            "no": {
+              "id": "MAJOR or MILD NEUROCOGNITIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION (3.16.2) (see Cognitive Impairment Tree [2.28] for differentiation between Major and Mild Neurocognitive Disorder and for determination of etiological type)",
+              "diagnosis": "MAJOR or MILD NEUROCOGNITIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION (3.16.2) (see Cognitive Impairment Tree [2.28] for differentiation between Major and Mild Neurocognitive Disorder and for determination of etiological type)"
+            }
+          },
+          "no": {
+            "id": "6",
+            "question": "Occurring in the context of a disruption of identity characterized by two or more distinct personality states",
+            "yes": {
+              "id": "DISSOCIATIVE IDENTITY DISORDER",
+              "diagnosis": "DISSOCIATIVE IDENTITY DISORDER"
+            },
+            "no": {
+              "id": "7",
+              "question": "Memory loss for aspects of an extremely traumatic event",
+              "yes": {
+                "id": "8",
+                "question": "Occurring with intrusion symptoms, avoidance of stimuli associated with the event, negative alterations in cognition and mood, and alterations in arousal and activity",
+                "yes": {
+                  "id": "9",
+                  "question": "Duration of more than 1 month",
+                  "yes": {
+                    "id": "POSTTRAUMATIC STRESS DISORDER (3.7.1)",
+                    "diagnosis": "POSTTRAUMATIC STRESS DISORDER (3.7.1)"
+                  },
+                  "no": {
+                    "id": "ACUTE STRESS DISORDER (3.7.1)",
+                    "diagnosis": "ACUTE STRESS DISORDER (3.7.1)"
+                  }
+                },
+                "no": null
+              },
+              "no": {
+                "id": "10",
+                "question": "Memory loss for other autobiographical information that is inconsistent with ordinary forgetting",
+                "yes": {
+                  "id": "DISSOCIATIVE AMNESIA (3.8.1)",
+                  "diagnosis": "DISSOCIATIVE AMNESIA (3.8.1)"
+                },
+                "no": {
+                  "id": "11",
+                  "question": "Feigned memory loss or impairment",
+                  "yes": {
+                    "id": "12",
+                    "question": "The deceptive behavior is evident in the absence of obvious external rewards",
+                    "yes": {
+                      "id": "FACTITIOUS DISORDER (3.9.5)",
+                      "diagnosis": "FACTITIOUS DISORDER (3.9.5)"
+                    },
+                    "no": {
+                      "id": "MALINGERING",
+                      "diagnosis": "MALINGERING"
+                    }
+                  },
+                  "no": {
+                    "id": "13",
+                    "question": "Occurring as an associated feature of Major Depressive Episode (\"pseudodementia\")",
+                    "yes": {
+                      "id": "MAJOR DEPRESSIVE EPISODE in MAJOR DEPRESSIVE DISORDER (3.4.1), BIPOLAR I (3.3.1) or BIPOLAR II (3.3.2) DISORDER, or SCHIZOAFFECTIVE DISORDER (3.2.2)",
+                      "diagnosis": "MAJOR DEPRESSIVE EPISODE in MAJOR DEPRESSIVE DISORDER (3.4.1), BIPOLAR I (3.3.1) or BIPOLAR II (3.3.2) DISORDER, or SCHIZOAFFECTIVE DISORDER (3.2.2)"
+                    },
+                    "no": {
+                      "id": "14",
+                      "question": "Consequent to aging process but within normal limits given person's age",
+                      "yes": {
+                        "id": "Aging-associated cognitive decline",
+                        "diagnosis": "Aging-associated cognitive decline"
+                      },
+                      "no": {
+                        "id": "\"Normal\" forgetfulness",
+                        "diagnosis": "\"Normal\" forgetfulness"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "decision_tree": {
+    "node": "Speech disturbance (including disorganized, impaired, or unusual speech)",
+    "children": [
+      {
+        "condition": "Due to the physiological effects of a substance (including medications)",
+        "yes": {
+          "condition": "Associated with a disturbance in attention and awareness characterized by a fluctuating course",
+          "yes": "SUBSTANCE INTOXICATION DELIRIUM; SUBSTANCE WITHDRAWAL DELIRIUM; MEDICATION-INDUCED DELIRIUM (3.16.1)",
+          "no": {
+            "condition": "Associated with evidence of decline in one or more of the following cognitive domains: complex attention, executive function, learning and memory, language, perceptual-motor, or social cognition",
+            "yes": "SUBSTANCE/MEDICATION-INDUCED NEUROCOGNITIVE DISORDER (3.16.2)",
+            "no": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFFECT OF MEDICATION"
+          }
+        },
+        "no": {
+          "condition": "Due to the physiological effects of a general medical condition",
+          "yes": {
+            "condition": "Associated with a disturbance in attention and awareness characterized by a fluctuating course",
+            "yes": "DELIRIUM DUE TO ANOTHER MEDICAL CONDITION (3.16.1)",
+            "no": {
+              "condition": "Associated with evidence of decline in one or more of the following cognitive domains: complex attention, executive function, learning memory, language, perceptual-motor, or social cognition",
+              "yes": "MAJOR or MILD NEUROCOGNITIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION (3.16.2)",
+              "no": "Aphasia (not a mental disorder)"
+            }
+          },
+          "no": {
+            "condition": "Rapid pressured speech with subjective sense of racing thoughts associated with euphoric, expansive, or irritable mood and increased energy",
+            "yes": "MANIC EPISODE in BIPOLAR I DISORDER (3.3.1) or SCHIZOAFFECTIVE DISORDER (3.2.2)",
+            "no": {
+              "condition": "Slowed speech occurring in the context of an episode of depressed mood, diminished interest or pleasure, and other characteristic symptoms of depression",
+              "yes": "MAJOR DEPRESSIVE EPISODE in MAJOR DEPRESSIVE DISORDER (3.4.1), BIPOLAR II (3.3.2) DISORDER, or SCHIZOAFFECTIVE DISORDER (3.2.2)",
+              "no": {
+                "condition": "Mimicking another's speech (echolalia)",
+                "yes": "Catatonic symptom [see Catatonic Symptoms Tree (2.7) for differential diagnosis]",
+                "no": {
+                  "condition": "Disorganized speech in association with delusions, hallucinations, grossly disorganized or catatonic behavior, or negative symptoms (e.g., diminished emotional expression or avolition)",
+                  "yes": {
+                    "condition": "Duration at least 6 months",
+                    "yes": "SCHIZOPHRENIA (3.2.1)",
+                    "no": {
+                      "condition": "Duration between 1 month and 6 months",
+                      "yes": "SCHIZOPHRENIFORM DISORDER (3.2.1)",
+                      "no": "BRIEF PSYCHOTIC DISORDER (3.2.4)"
+                    }
+                  },
+                  "no": {
+                    "condition": "Speech difficulties associated with problems in the acquisition and use of language due to deficits in comprehension and production",
+                    "yes": "LANGUAGE DISORDER (3.1.2)",
+                    "no": {
+                      "condition": "Difficulties with speech sound production that interferes with intelligibility",
+                      "yes": "SPEECH SOUND DISORDER (3.1.2)",
+                      "no": {
+                        "condition": "Disturbances in the normal fluency and time patterning of speech that are inappropriate for age and language skills",
+                        "yes": "CHILDHOOD-ONSET FLUENCY DISORDER (STUTTERING) (3.1.2)",
+                        "no": {
+                          "condition": "Deficit in social use of verbal and nonverbal communication",
+                          "yes": {
+                            "condition": "Accompanied by deficits in developing and understanding relationships, deficits in social-emotional reciprocity, and restricted, repetitive patterns of behavior, interests, or activities",
+                            "yes": "AUTISM SPECTRUM DISORDER (3.1.3)",
+                            "no": "SOCIAL (PRAGMATIC) COMMUNICATION DISORDER (3.1.2)"
+                          },
+                          "no": {
+                            "condition": "Repetitive, rhythmic vocal outbursts",
+                            "yes": "TIC DISORDER (3.1.6)",
+                            "no": {
+                              "condition": "Clinically significant speech disturbance not covered above that represents a psychological or biological dysfunction in the individual",
+                              "yes": "UNSPECIFIED COMMUNICATION DISORDER",
+                              "no": "\"Normal\" variations in speech"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

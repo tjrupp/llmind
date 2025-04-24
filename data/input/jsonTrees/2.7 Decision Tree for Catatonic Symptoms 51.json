@@ -1,0 +1,56 @@
+{
+  "decision_tree": {
+    "node": "Catatonic symptoms (i.e., marked psychomotor disturbance that may involve decreased motor activity, decreased engagement during interview or physical exam, or excessive and peculiar motor activity)",
+    "children": [
+      {
+        "condition": "Catatonic syndrome is present (i.e., clinical picture is dominated by three or more of the following catatonic symptoms: stupor, catalepsy, waxy flexibility, mutism, negativism, posturing, mannerism, stereotypy, agitation, grimacing, echolalia, echopraxia)",
+        "yes": {
+          "condition": "Due to Substance Intoxication (e.g., Phencyclidine Intoxication) or Substance Withdrawal",
+          "yes": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL",
+          "no": {
+            "condition": "Judged to be due to the use of a neuroleptic medication",
+            "yes": {
+              "condition": "Accompanied by muscular rigidity and elevated temperature",
+              "yes": "NEUROLEPTIC MALIGNANT SYNDROME",
+              "no": {
+                "condition": "Abnormal posturing or muscle spasm",
+                "yes": "MEDICATION-INDUCED ACUTE DYSTONIA",
+                "no": {
+                  "condition": "Muscular rigidity, usually with tremor and/or akinesia",
+                  "yes": "NEUROLEPTIC-INDUCED PARKINSONISM",
+                  "no": "OTHER MEDICATION-INDUCED MOVEMENT DISORDER"
+                }
+              }
+            },
+            "no": "UNSPECIFIED CATATONIA. If restricted to decreased motor activity, see Psychomotor Retardation Tree (2.12) for differential diagnosis"
+          }
+        },
+        "no": {
+          "condition": "Judged to be due to a neurological or other medical condition",
+          "yes": {
+            "condition": "Associated with a disturbance in attention and awareness characterized by a fluctuating course",
+            "yes": "DELIRIUM DUE TO ANOTHER MEDICAL CONDITION (3.16.1)",
+            "no": "CATATONIC DISORDER DUE TO ANOTHER MEDICAL CONDITION (3.2.5)"
+          },
+          "no": {
+            "condition": "Occurs in the context of an episode of elevated, expansive, or irritable mood accompanied by increased energy",
+            "yes": "CATATONIA ASSOCIATED WITH A MANIC EPISODE in BIPOLAR I DISORDER (3.3.1)",
+            "no": {
+              "condition": "Occurs in the context of an episode of depressed mood or diminished interest or pleasure accompanied by characteristic depressive symptoms",
+              "yes": "CATATONIA ASSOCIATED WITH A MAJOR DEPRESSIVE EPISODE in MAJOR DEPRESSIVE DISORDER (3.4.1) or BIPOLAR I (3.3.1) or BIPOLAR II (3.3.2) DISORDER",
+              "no": {
+                "condition": "Occurs in the context of other psychotic symptoms (e.g., delusions, hallucinations, disorganized speech)",
+                "yes": "CATATONIA ASSOCIATED WITH SCHIZOPHRENIA (3.2.1), SCHIZOAFFECTIVE DISORDER (3.2.2), SCHIZOPHRENIFORM DISORDER (3.2.1), or BRIEF PSYCHOTIC DISORDER (3.2.4)",
+                "no": {
+                  "condition": "Clinically significant catatonic symptoms not covered above that represent a psychological or biological dysfunction in the individual",
+                  "yes": "UNSPECIFIED CATATONIA (3.2.5)",
+                  "no": "\"Normal\" change in psychomotor behavior or activity"
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "decision_tree": {
+    "node1": {
+      "question": "Physical symptoms are intentionally produced or feigned",
+      "yes_branch": {
+        "node2": {
+          "question": "The deceptive behavior is evident even in the absence of obvious external rewards",
+          "yes_branch": "FACTITIOUS DISORDER (3.9.5)",
+          "no_branch": "MALINGERING"
+        }
+      },
+      "no_branch": {
+        "node3": {
+          "question": "Due to the direct physiological effects of a substance (including medication)",
+          "yes_branch": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFFECT OF MEDICATION",
+          "no_branch": {
+            "node4": {
+              "question": "Associated with delusions involving bodily functions or sensations",
+              "yes_branch": "Psychotic Disorder (see Delusions Tree [2.5] for differential diagnosis)",
+              "no_branch": {
+                "node5": {
+                  "question": "Development of a symptom or deficit affecting voluntary motor or sensory function that is not better explained by a neurological or other medical condition or mental disorder",
+                  "yes_branch": "CONVERSION DISORDER (3.9.3)",
+                  "no_branch": {
+                    "node6": {
+                      "question": "Preoccupation with imagined defects or flaws in physical appearance that are not observable to others",
+                      "yes_branch": "BODY DYSMORPHIC DISORDER (3.6.2)",
+                      "no_branch": {
+                        "node7": {
+                          "question": "Occurring as part of an abrupt surge of intense fear or discomfort that reaches a peak within minutes",
+                          "yes_branch": "PANIC ATTACK (see Panic Attacks Tree [2.14] for differential diagnosis)",
+                          "no_branch": {
+                            "node8": {
+                              "question": "Somatic symptoms (e.g., dry mouth, palpitations) accompanying anxiety that is part of an Anxiety Disorder",
+                              "yes_branch": "Anxiety Disorders (see Anxiety Tree [2.13] for differential diagnosis)",
+                              "no_branch": {
+                                "node9": {
+                                  "question": "High level of anxiety about health",
+                                  "yes_branch": {
+                                    "node10": {
+                                      "question": "Accompanied by one or more somatic symptoms that are distressing or that disrupt everyday life",
+                                      "yes_branch": "SOMATIC SYMPTOM DISORDER (3.9.1)",
+                                      "no_branch": {
+                                        "node11": {
+                                          "question": "Preoccupation with having or acquiring a serious illness",
+                                          "yes_branch": {
+                                            "node12": {
+                                              "question": "The belief that one has a serious illness is held with delusional intensity",
+                                              "yes_branch": "Psychotic Disorder (see Delusions Tree [2.5] for differential diagnosis)",
+                                              "no_branch": "ILLNESS ANXIETY DISORDER (3.9.2)"
+                                            }
+                                          },
+                                          "no_branch": null
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "no_branch": {
+                                    "node13": {
+                                      "question": "One or more somatic symptoms that are distressing or disrupt everyday life",
+                                      "yes_branch": {
+                                          "node14": {
+                                            "question": "Accompanied by disproportionate thoughts about seriousness of illness or excessive time and energy devoted to symptoms",
+                                            "yes_branch": "SOMATIC SYMPTOM DISORDER (3.9.1)",
+                                            "no_branch": {
+                                              "node15": {
+                                                "question": "A general medical condition is present, and psychological factors adversely affect the medical condition",
+                                                "yes_branch": "PSYCHOLOGICAL FACTORS AFFECTING OTHER MEDICAL CONDITION (3.9.4)",
+                                                "no_branch": {
+                                                  "node16": {
+                                                    "question": "Clinically significant somatic complaints that interfere with functioning and represent a psychological dysfunction in the individual",
+                                                    "yes_branch": {
+                                                      "node17": {
+                                                        "question": "Occurring in response to a psychosocial stressor",
+                                                        "yes_branch": "ADJUSTMENT DISORDER (3.7.2)",
+                                                        "no_branch": "OTHER SPECIFIED SOMATIC SYMPTOM AND RELATED DISORDER; UNSPECIFIED SOMATIC SYMPTOM AND RELATED DISORDER"
+                                                      }
+                                                    },
+                                                    "no_branch": "\"Normal\" everyday aches and pains"
+                                                  }
+                                                }
+                                            }
+                                          }
+                                      },
+                                      "no_branch": null
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

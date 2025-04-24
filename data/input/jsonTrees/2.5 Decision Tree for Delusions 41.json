@@ -1,0 +1,92 @@
+{
+  "decision_tree": {
+    "node": "Delusions",
+    "children": [
+      {
+        "condition": "Manifestation of a culturally or religiously sanctioned belief system",
+        "yes": "Nonpathological strongly held beliefs; no mental disorder",
+        "no": {
+          "condition": "Due to the physiological effects of a substance (including medication)",
+          "yes": {
+            "condition": "Associated with a disturbance in attention and awareness characterized by a fluctuating course",
+            "yes": "SUBSTANCE INTOXICATION DELIRIUM; SUBSTANCE WITHDRAWAL DELIRIUM; MEDICATION-INDUCED DELIRIUM (3.16.1)",
+            "no": {
+              "condition": "Delusions predominate in the clinical picture and are sufficiently severe to warrant clinical attention",
+              "yes": "SUBSTANCE/MEDICATION-INDUCED PSYCHOTIC DISORDER",
+              "no": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFFECT OF MEDICATION"
+            }
+          },
+          "no": {
+            "condition": "Due to the physiological effects of a general medical condition",
+            "yes": {
+              "condition": "Associated with a disturbance in attention and awareness characterized by a fluctuating course",
+              "yes": "DELIRIUM DUE TO ANOTHER MEDICAL CONDITION (3.16.1)",
+              "no": {
+                "condition": "Associated with evidence of decline in one or more of the following cognitive domains: complex attention, executive function, learning memory, language, perceptual-motor, or social cognition",
+                "yes": "MAJOR or MILD NEUROCOGNITIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION (3.16.2), WITH BEHAVIORAL DISTURBANCE",
+                "no": "PSYCHOTIC DISORDER DUE TO ANOTHER MEDICAL CONDITION"
+              }
+            },
+            "no": {
+              "condition": "Occurring only in the context of an episode of elevated, expansive, or irritable mood accompanied by increased energy",
+              "yes": "MANIC EPISODE WITH PSYCHOTIC FEATURES in BIPOLAR I DISORDER (3.3.1)",
+              "no": {
+                "condition": "Occurring only in the context of an episode of depressed mood or diminished interest or pleasure accompanied by characteristic depressive symptoms",
+                "yes": "MAJOR DEPRESSIVE EPISODE WITH PSYCHOTIC FEATURES in MAJOR DEPRESSIVE DISORDER (3.4.1) or BIPOLAR I (3.3.1) or BIPOLAR II (3.3.2) DISORDER",
+                "no": {
+                  "condition": "Duration of delusions 1 month or more",
+                  "yes": {
+                    "condition": "Accompanied by hallucinations, disorganized speech, grossly disorganized or catatonic behavior, or negative symptoms",
+                    "yes": {
+                      "condition": "History of Major Depressive or Manic Episodes",
+                      "yes": {
+                        "condition": "During an uninterrupted period of illness, psychotic symptoms concurrent with mood episodes",
+                        "yes": {
+                          "condition": "During an uninterrupted period of illness, the mood episodes have been present for a minority of the total duration of the active and residual periods of the illness",
+                          "yes": {
+                            "condition": "Duration at least 6 months",
+                            "yes": "SCHIZOPHRENIA (3.2.1) (plus comorbid BIPOLAR I [3.3.1], BIPOLAR II [3.3.2], or MAJOR DEPRESSIVE [3.4.1] DISORDER if history of Major Depressive or Manic Episodes)",
+                            "no": "SCHIZOPHRENIFORM DISORDER (3.2.1) (plus comorbid BIPOLAR I [3.3.1], BIPOLAR II [3.3.2], or MAJOR DEPRESSIVE [3.4.1] DISORDER if history of Major Depressive or Manic Episodes)"
+                          },
+                          "no": "SCHIZOAFFECTIVE DISORDER (3.2.2)"
+                        },
+                        "no": "BIPOLAR I (3.3.1), BIPOLAR II (3.3.2), or MAJOR DEPRESSIVE (3.4.1) DISORDER, WITH PSYCHOTIC FEATURES"
+                      },
+                      "no": "OTHER SPECIFIED SCHIZOPHRENIA SPECTRUM AND OTHER PSYCHOTIC DISORDER; UNSPECIFIED SCHIZOPHRENIA SPECTRUM AND OTHER PSYCHOTIC DISORDER"
+                    },
+                    "no": {
+                      "condition": "History of Major Depressive or Manic Episodes",
+                      "yes": {
+                        "condition": "Total duration of mood episodes has been brief relative to duration of delusional periods",
+                        "yes": {
+                          "condition": "Apart from delusions, functioning is not markedly impaired",
+                          "yes": "DELUSIONAL DISORDER (3.2.3) (plus comorbid BIPOLAR I [3.3.1], BIPOLAR II [3.3.2], or MAJOR DEPRESSIVE [3.4.1] DISORDER if history of Major Depressive or Manic Episodes)",
+                          "no": "OTHER SPECIFIED SCHIZOPHRENIA SPECTRUM AND OTHER PSYCHOTIC DISORDER; UNSPECIFIED SCHIZOPHRENIA SPECTRUM AND OTHER PSYCHOTIC DISORDER"
+                        },
+                        "no": "OTHER SPECIFIED SCHIZOPHRENIA SPECTRUM AND OTHER PSYCHOTIC DISORDER; UNSPECIFIED SCHIZOPHRENIA SPECTRUM AND OTHER PSYCHOTIC DISORDER"
+                      },
+                      "no": {
+                        "condition": "Delusions occur only during mood episodes",
+                        "yes": "BIPOLAR I (3.3.1), BIPOLAR II (3.3.2), or MAJOR DEPRESSIVE (3.4.1) DISORDER, WITH PSYCHOTIC FEATURES",
+                        "no": {
+                          "condition": "Duration of delusions more than 1 day but less than 1 month",
+                          "yes": "BRIEF PSYCHOTIC DISORDER (3.2.4)",
+                          "no": {
+                            "condition": "Delusions not covered above that cause clinically significant impairment or distress",
+                            "yes": "OTHER SPECIFIED SCHIZOPHRENIA SPECTRUM AND OTHER PSYCHOTIC DISORDER; UNSPECIFIED SCHIZOPHRENIA SPECTRUM AND OTHER PSYCHOTIC DISORDER",
+                            "no": "Nonpathological delusion"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "no": null
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

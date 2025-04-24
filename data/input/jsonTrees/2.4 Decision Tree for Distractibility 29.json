@@ -1,0 +1,60 @@
+{
+  "decision_tree": {
+    "node": "Distractibility",
+    "children": [
+      {
+        "condition": "Due to the direct effects of a substance (including medications)",
+        "yes": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL",
+        "no": {
+          "condition": "Due to the direct effects of a general medical condition",
+          "yes": {
+            "condition": "Associated with a disturbance in attention and awareness characterized by a fluctuating course",
+            "yes": "DELIRIUM DUE TO ANOTHER MEDICAL CONDITION (3.16.1)",
+            "no": {
+              "condition": "Associated with evidence of decline in one or more of the following cognitive domains: complex attention, executive function, learning and memory, language, perceptual-motor, or social cognition",
+              "yes": "MAJOR or MILD NEUROCOGNITIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION (3.16.2)",
+              "no": "OTHER SPECIFIED MENTAL DISORDER DUE TO ANOTHER MEDICAL CONDITION; UNSPECIFIED MENTAL DISORDER DUE TO ANOTHER MEDICAL CONDITION"
+            }
+          },
+          "no": {
+            "condition": "Related to an inability to filter out unimportant external stimuli accompanied by other symptoms of mania",
+            "yes": "MANIC EPISODE in BIPOLAR I DISORDER (3.3.1) or SCHIZOAFFECTIVE DISORDER (3.2.2)",
+            "no": {
+              "condition": "Related to an inability to concentrate accompanied by other symptoms of depression",
+              "yes": "MAJOR DEPRESSIVE EPISODE in MAJOR DEPRESSIVE DISORDER (3.4.1), BIPOLAR I (3.3.1) or BIPOLAR II (3.3.2) DISORDER, or SCHIZOAFFECTIVE DISORDER (3.2.2); PERSISTENT DEPRESSIVE DISORDER (3.4.2)",
+              "no": {
+                "condition": "Associated with delusions or hallucinations",
+                "yes": "Psychotic Disorder [e.g., SCHIZOPHRENIA (3.2.1)]. See Delusions Tree (2.5) or Hallucinations Tree (2.6) for differential diagnosis",
+                "no": {
+                  "condition": "Accompanied by other symptoms of inattention and/or hyperactivity/impulsivity",
+                  "yes": "ATTENTION-DEFICIT/HYPERACTIVITY DISORDER (3.1.4)",
+                  "no": {
+                    "condition": "Associated with problems in concentration arising as a response to exposure to a traumatic stressor",
+                    "yes": {
+                      "condition": "Persists for at least 1 month",
+                      "yes": "POSTTRAUMATIC STRESS DISORDER (3.7.1)",
+                      "no": "ACUTE STRESS DISORDER (3.7.1)"
+                    },
+                    "no": {
+                      "condition": "Associated with difficulty concentrating, accompanied by at least 6 months of excessive anxiety and worry",
+                      "yes": "GENERALIZED ANXIETY DISORDER (3.5.7)",
+                      "no": {
+                        "condition": "Clinically significant distractibility not covered above that represents a psychological or biological dysfunction in the individual",
+                        "yes": {
+                          "condition": "Occurring in response to a psychosocial stressor",
+                          "yes": "ADJUSTMENT DISORDER (3.7.2)",
+                          "no": "OTHER SPECIFIED ATTENTION-DEFICIT/HYPERACTIVITY DISORDER; UNSPECIFIED ATTENTION-DEFICIT/HYPERACTIVITY DISORDER"
+                        },
+                        "no": "\"Normal\" distractibility"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

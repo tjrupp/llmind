@@ -1,0 +1,71 @@
+{
+    "Self-injury or self-mutilation": {
+        "question": "Part of a failed suicide attempt",
+        "yes": "See Suicidal Ideation or Behavior Tree (2.11) for differential diagnosis",
+        "no": {
+            "question": "Culturally sanctioned behavior (e.g., piercings)",
+            "yes": "\"Normal\" self-mutilation",
+            "no": {
+                "question": "Due to the physiological effects of a substance (including medication)",
+                "yes": {
+                    "question": "A direct consequence of cognitive impairment or psychotic symptoms",
+                    "yes": "DELIRIUM (3.16.1); SUBSTANCE WITHDRAWAL DELIRIUM (3.16.1); MEDICATION-INDUCED DELIRIUM (3.16.1); SUBSTANCE/MEDICATION-INDUCED PSYCHOTIC DISORDER",
+                    "no": "SUBSTANCE/MEDICATION-INDUCED MAJOR NEUROCOGNITIVE DISORDER (3.16.2); SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFFECT OF MEDICATION"
+                },
+                "no": {
+                    "question": "Due to the physiological effects of a general medical condition",
+                    "yes": {
+                        "question": "A direct consequence of cognitive impairment (e.g., confusion) or psychotic symptoms",
+                        "yes": "DELIRIUM DUE TO ANOTHER MEDICAL CONDITION (3.16.1); PSYCHOTIC DISORDER DUE TO ANOTHER MEDICAL CONDITION",
+                        "no": "MAJOR NEUROCOGNITIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION (3.16.2); PERSONALITY CHANGE DUE TO ANOTHER MEDICAL CONDITION (3.17.11)"
+                    },
+                    "no": {
+                        "question": "Motivation of self-injury is to reduce dysphoria, vent angry feelings, or reduce feelings of numbness or \"being dead,\" in association with a pattern of impulsivity and identity disturbance",
+                        "yes": "BORDERLINE PERSONALITY DISORDER (3.17.5)",
+                        "no": {
+                            "question": "In response to a delusion or command hallucination",
+                            "yes": "Psychotic Disorder (e.g., SCHIZOPHRENIA [3.2.1]). See Delusions Tree (2.5) or Hallucinations Tree (2.6) for differential diagnosis",
+                            "no": {
+                                "question": "A consequence of a compulsion (e.g., frequent vigorous hand washing)",
+                                "yes": "OBSESSIVE-COMPULSIVE DISORDER (3.6.1)",
+                                "no": {
+                                    "question": "Associated with recurrent hair pulling with resulting hair loss",
+                                    "yes": "TRICHOTILLOMANIA (HAIR-PULLING DISORDER) (3.6.4)",
+                                    "no": {
+                                        "question": "Associated with recurrent skin picking with resulting skin lesions",
+                                        "yes": "EXCORIATION (SKIN-PICKING) DISORDER (3.6.5)",
+                                        "no": {
+                                            "question": "Motivation is for sexual pleasure",
+                                            "yes": "SEXUAL MASOCHISM DISORDER (3.18.1)",
+                                            "no": {
+                                                "question": "A consequence of stereotyped movements (e.g., head banging)",
+                                                "yes": "STEREOTYPIC MOVEMENT DISORDER",
+                                                "no": {
+                                                    "question": "Falsification of self-injury",
+                                                    "yes": {
+                                                        "question": "Deceptive behavior is evident even in the absence of obvious external rewards",
+                                                        "yes": "FACTITIOUS DISORDER (3.9.5)",
+                                                        "no": "MALINGERING"
+                                                    },
+                                                    "no": {
+                                                        "question": "Clinically significant self-injurious behavior not covered above that represents a psychological or biological dysfunction in the individual",
+                                                        "yes": {
+                                                            "question": "Occurring as a maladaptive response to a stressor",
+                                                            "yes": "ADJUSTMENT DISORDER (3.7.2)",
+                                                            "no": "Section III: Nonsuicidal Self-Injury"
+                                                        },
+                                                        "no": "\"Normal\" self-injurious behavior"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

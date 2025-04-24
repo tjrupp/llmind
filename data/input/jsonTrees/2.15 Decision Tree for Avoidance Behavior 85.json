@@ -1,0 +1,115 @@
+{
+  "decision_tree": {
+    "node1": {
+      "question": "Avoidance of two or more types of situations (i.e., public transportation, open spaces, enclosed spaces, standing in a line or being in a crowd, being outside of the home alone)",
+      "yes_branch": {
+        "node2": {
+          "question": "Avoidance of situations due to thoughts that escape might be difficult or help might not be available in the event of developing panic-like symptoms",
+          "yes_branch": "AGORAPHOBIA (3.5.6)",
+          "no_branch": null
+        }
+      },
+      "no_branch": {
+        "node3": {
+          "question": "Avoidance of social situations because of fear of embarrassment",
+          "yes_branch": {
+            "node4": {
+              "question": "Related to embarrassment about another medical condition (e.g., Parkinson's disease)",
+              "yes_branch": null,
+              "no_branch": {
+                "node5": {
+                  "question": "The fear, anxiety, or avoidance is excessive",
+                  "yes_branch": "SOCIAL ANXIETY DISORDER (3.5.4) (also consider AVOIDANT PERSONALITY DISORDER [3.17.8])",
+                  "no_branch": "No mental disorder (contextual anxiety)"
+                }
+              }
+            }
+          },
+          "no_branch": {
+            "node6": {
+              "question": "Avoidance of specific feared objects (e.g., spiders) or situations (e.g., heights, seeing blood)",
+              "yes_branch": "SPECIFIC PHOBIA (3.5.3)",
+              "no_branch": {
+                "node7": {
+                  "question": "Avoidance of situations in which the individual is separated from major attachment figures",
+                  "yes_branch": "SEPARATION ANXIETY DISORDER (3.5.1)",
+                  "no_branch": {
+                    "node8": {
+                      "question": "Avoidance of stimuli associated with a traumatic event",
+                      "yes_branch": {
+                        "node9": {
+                          "question": "Duration of more than 1 month",
+                          "yes_branch": "POSTTRAUMATIC STRESS DISORDER (3.7.1)",
+                          "no_branch": "ACUTE STRESS DISORDER (3.7.1)"
+                        }
+                      },
+                      "no_branch": {
+                        "node10": {
+                          "question": "Avoidance of stimuli that might trigger an obsession or compulsion (e.g., contamination, knives)",
+                          "yes_branch": "OBSESSIVE-COMPULSIVE DISORDER (3.6.1)",
+                          "no_branch": {
+                            "node11": {
+                              "question": "Avoidance of situations that might jeopardize health (e.g., visiting sick family members) because they will lead to preoccupation with a serious illness",
+                              "yes_branch": "ILLNESS ANXIETY DISORDER (3.9.2)",
+                              "no_branch": {
+                                "node12": {
+                                  "question": "Avoidance of situations related to delusional fears (e.g., not leaving home because the individual is convinced that he or she is the target of a murder plot)",
+                                  "yes_branch": "Psychotic Disorder (e.g., SCHIZOPHRENIA [3.2.1]). See Delusions Tree (2.5) for differential diagnosis",
+                                  "no_branch": {
+                                    "node13": {
+                                      "question": "Avoidance of situations related to lack of energy, anhedonia, or avolition",
+                                      "yes_branch": "MAJOR DEPRESSIVE DISORDER (3.4.1); SCHIZOPHRENIA (3.2.1)",
+                                      "no_branch": {
+                                        "node14": {
+                                          "question": "Avoidance of sexual situations because of concerns about sexual performance",
+                                          "yes_branch": "SEXUAL DYSFUNCTION (3.12.1)",
+                                          "no_branch": {
+                                            "node15": {
+                                              "question": "Avoidance of foods, leading to significant weight loss",
+                                              "yes_branch": {
+                                                "node16": {
+                                                  "question": "Accompanied by an intense fear of gaining weight or being fat",
+                                                  "yes_branch": "ANOREXIA NERVOSA (3.10.2)",
+                                                  "no_branch": "AVOIDANT/RESTRICTIVE FOOD INTAKE DISORDER (3.10.1)"
+                                                }
+                                              },
+                                              "no_branch": {
+                                                "node17": {
+                                                  "question": "Pattern of avoidance related to fears of negative evaluation with onset by early adulthood",
+                                                  "yes_branch": "AVOIDANT PERSONALITY DISORDER (3.17.8)",
+                                                  "no_branch": {
+                                                    "node18": {
+                                                      "question": "Clinically significant avoidance not covered above that represents a psychological or biological dysfunction in the individual",
+                                                      "yes_branch": {
+                                                        "question": "Occurring in response to a stressor",
+                                                        "yes_branch": "ADJUSTMENT DISORDER (3.7.2)",
+                                                        "no_branch": "OTHER SPECIFIED ANXIETY DISORDER; UNSPECIFIED ANXIETY DISORDER"
+                                                      },
+                                                      "no_branch": "\"Normal\" avoidance behavior"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

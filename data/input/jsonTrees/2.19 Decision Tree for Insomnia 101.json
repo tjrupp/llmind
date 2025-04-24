@@ -1,0 +1,147 @@
+{
+  "decision_tree": {
+    "node1": {
+      "question": "Due to the physiological effects of a substance (including medication)",
+      "yes_branch": {
+        "node2": {
+          "question": "Insomnia predominates in the clinical picture and is sufficiently severe to warrant clinical attention",
+          "yes_branch": "SUBSTANCE/MEDICATION-INDUCED SLEEP DISORDER, INSOMNIA TYPE",
+          "no_branch": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFFECT OF MEDICATION"
+        }
+      },
+      "no_branch": {
+        "node3": {
+          "question": "Recurrent periods of an irrepressible need to sleep accompanied by cataplexy, hypocretin deficiency, characteristic nocturnal polysomnography findings, or characteristic multiple sleep latency findings",
+          "yes_branch": {
+            "node4": {
+              "question": "Insomnia occurs exclusively during, and is better explained by the diagnosis of, Narcolepsy",
+              "yes_branch": "NARCOLEPSY",
+              "no_branch": null
+            }
+          },
+          "no_branch": {
+            "node5": {
+              "question": "Accompanied by evidence on polysomnography of five or more obstructive apneas or hypopneas per hour of sleep, five or more central sleep apneas per hour of sleep, or decreased respiration associated with elevated CO2 levels",
+              "yes_branch": {
+                "node6": {
+                  "question": "Insomnia occurs exclusively during, and is better explained by the diagnosis of, a Breathing-Related Sleep Disorder",
+                  "yes_branch": "BREATHING-RELATED SLEEP DISORDER (i.e., OBSTRUCTIVE SLEEP APNEA HYPOPNEA, CENTRAL SLEEP APNEA, SLEEP-RELATED HYPOVENTILATION)",
+                  "no_branch": null
+                }
+              },
+              "no_branch": {
+                "node7": {
+                  "question": "Occurring as a result of Sleepwalking or Sleep Terrors",
+                  "yes_branch": {
+                    "node8": {
+                      "question": "Insomnia occurs exclusively during, and is better explained by the diagnosis of, Non-Rapid Eye Movement Sleep Arousal Disorder",
+                      "yes_branch": "NON-RAPID EYE MOVEMENT SLEEP AROUSAL DISORDER",
+                      "no_branch": null
+                    }
+                  },
+                  "no_branch": {
+                    "node9": {
+                      "question": "Occurring as a result of repeated awakenings because of extended, extremely dysphoric, and well-remembered dreams",
+                      "yes_branch": {
+                        "node10": {
+                          "question": "Insomnia occurs exclusively during, and is better explained by the diagnosis of, Nightmare Disorder",
+                          "yes_branch": "NIGHTMARE DISORDER",
+                          "no_branch": null
+                        }
+                      },
+                      "no_branch": {
+                        "node11": {
+                          "question": "Repeated episodes of arousals during sleep that arise during rapid eye movement sleep with vocalizations or complex motor behaviors",
+                          "yes_branch": {
+                            "node12": {
+                              "question": "Insomnia occurs exclusively during, and is better explained by the diagnosis of, Rapid Eye Movement Sleep Behavior Disorder",
+                              "yes_branch": "RAPID EYE MOVEMENT SLEEP BEHAVIOR DISORDER",
+                              "no_branch": null
+                            }
+                          },
+                          "no_branch": {
+                            "node13": {
+                              "question": "Occurring as a result of urges to move the legs in response to unpleasant sensations",
+                              "yes_branch": {
+                                "node14": {
+                                  "question": "Insomnia occurs exclusively during, and is better explained by the diagnosis of, Restless Legs Syndrome",
+                                  "yes_branch": "RESTLESS LEGS SYNDROME",
+                                  "no_branch": null
+                                }
+                              },
+                              "no_branch": {
+                                "node15": {
+                                  "question": "Occurring as a result of a mismatch between the individual's schedule and natural sleep-wake pattern",
+                                  "yes_branch": {
+                                    "node16": {
+                                      "question": "Insomnia occurs exclusively during, and is better explained by the diagnosis of, Circadian Rhythm Sleep Disorder",
+                                      "yes_branch": "CIRCADIAN RHYTHM SLEEP-WAKE DISORDER (i.e., DELAYED SLEEP PHASE TYPE, ADVANCED SLEEP PHASE TYPE, IRREGULAR SLEEP-WAKE TYPE, NON-24-HOUR SLEEP-WAKE TYPE, SHIFT WORK TYPE, UNSPECIFIED TYPE)",
+                                      "no_branch": null
+                                    }
+                                  },
+                                  "no_branch": {
+                                    "node17": {
+                                      "question": "Presence of a comorbid mental disorder characterized by insomnia (e.g., Major Depressive Disorder)",
+                                      "yes_branch": {
+                                        "node18": {
+                                          "question": "Insomnia is adequately explained by the mental disorder",
+                                          "yes_branch": "Mental Disorder associated with insomnia",
+                                          "no_branch": null
+                                        }
+                                      },
+                                      "no_branch": {
+                                        "node19": {
+                                          "question": "Presence of a comorbid general medical condition associated with insomnia (e.g., back pain)",
+                                          "yes_branch": {
+                                            "node20": {
+                                              "question": "Insomnia is adequately explained by the general medical condition",
+                                              "yes_branch": "General medical condition associated with insomnia",
+                                              "no_branch": {
+                                                "node21": {
+                                                  "question": "Lack of adequate opportunity for sleep",
+                                                  "yes_branch": "No sleep disorder",
+                                                  "no_branch": {
+                                                    "node22": {
+                                                      "question": "Occurring at least 3 nights per week for at least 3 months",
+                                                      "yes_branch": "INSOMNIA DISORDER (3.11.1)",
+                                                      "no_branch": {
+                                                        "node23": {
+                                                          "question": "Causes clinically significant distress or impairment and represents a psychological or biological dysfunction in the individual",
+                                                          "yes_branch": {
+                                                            "node24": {
+                                                              "question": "Insomnia occurs as a maladaptive response to a psychosocial stressor",
+                                                              "yes_branch": "ADJUSTMENT DISORDER (3.7.2)",
+                                                              "no_branch": "OTHER SPECIFIED INSOMNIA DISORDER; UNSPECIFIFIED INSOMNIA DISORDER"
+                                                            }
+                                                          },
+                                                          "no_branch": "\"Normal\" need for sleep (e.g., \"short sleeper\")"
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "no_branch": null
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

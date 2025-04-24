@@ -1,0 +1,83 @@
+{
+    "Excessive substance use": {
+        "question": "Problematic pattern of substance use leading to clinically significant impairment or distress (e.g., substance often taken in larger amounts than intended; social, occupational, or recreational activities given up because of substance use; repeated use in situations in which it is physically hazardous)",
+        "yes": {
+            "question": "Presence of psychiatric symptoms due to direct physiological effects of the substance on the central nervous system (CNS)",
+            "yes": "SUBSTANCE USE DISORDER (3.15.1); continue to determine whether Substance-Induced Disorder is also present",
+            "no": "SUBSTANCE USE DISORDER (3.15.1)"
+        },
+        "no": {
+            "question": "Presence of clinically significant psychiatric symptoms due to direct physiological effects of the substance on CNS",
+            "yes": {
+                "question": "Disturbance in attention and awareness characterized by a fluctuating course",
+                "yes": {
+                    "question": "Evidence that the disturbance has more than one etiology (e.g., substance and a general medical condition)",
+                    "yes": "DELIRIUM DUE TO MULTIPLE ETIOLOGIES (3.16.1)",
+                    "no": {
+                        "question": "Delirium caused by medication use",
+                        "yes": "MEDICATION-INDUCED DELIRIUM (3.16.1)",
+                        "no": {
+                            "question": "Onset of Delirium during Substance Withdrawal",
+                            "yes": "SUBSTANCE WITHDRAWAL DELIRIUM (3.16.1)",
+                            "no": "SUBSTANCE INTOXICATION DELIRIUM (3.16.1)"
+                        }
+                    }
+                },
+                "no": {
+                    "question": "Evidence of decline in one or more of the following cognitive domains: complex attention, executive function, learning and memory, language, perceptual-motor, or social cognition",
+                    "yes": {
+                        "question": "Evidence that the disturbance has more than one etiology (e.g., substance and a general medical condition)",
+                        "yes": "MAJOR or MILD NEUROCOGNITIVE DISORDER DUE TO MULTIPLE ETIOLOGIES (3.16.2)",
+                        "no": "SUBSTANCE/MEDICATION-INDUCED MAJOR or MILD NEUROCOGNITIVE DISORDER (3.16.2)"
+                    },
+                    "no": {
+                        "question": "Reexperiencing of perceptual symptoms experienced while intoxicated with a hallucinogen",
+                        "yes": "HALLUCINOGEN PERSISTING PERCEPTION DISORDER (flashbacks)",
+                        "no": {
+                            "question": "Delusions or hallucinations predominate in the clinical picture and are sufficiently severe to warrant clinical attention",
+                            "yes": "SUBSTANCE/MEDICATION-INDUCED PSYCHOTIC DISORDER (specify if With Onset During Intoxication or Withdrawal)",
+                            "no": {
+                                "question": "Elevated, expansive, and/or irritable mood predominates in the clinical picture and is sufficiently severe to warrant clinical attention",
+                                "yes": "SUBSTANCE/MEDICATION-INDUCED BIPOLAR AND RELATED DISORDER (specify if With Onset During Intoxication or Withdrawal)",
+                                "no": {
+                                    "question": "Depressed mood and/or markedly diminished interest or pleasure predominate in the clinical picture and are sufficiently severe to warrant clinical attention",
+                                    "yes": "SUBSTANCE/MEDICATION-INDUCED DEPRESSIVE DISORDER (specify if With Onset During Intoxication or Withdrawal)",
+                                    "no": {
+                                        "question": "Anxiety and/or Panic Attacks predominate in the clinical picture and are sufficiently severe to warrant clinical attention",
+                                        "yes": "SUBSTANCE/MEDICATION-INDUCED ANXIETY DISORDER (specify if With Onset During Intoxication, Withdrawal, or After Medication Use)",
+                                        "no": {
+                                            "question": "Obsessions, compulsions, skin picking, hair pulling, other body-focused repetitive behaviors, or other symptoms characteristic of the Obsessive-Compulsive and Related Disorders predominate in the clinical picture and are sufficiently severe to warrant clinical attention",
+                                            "yes": "SUBSTANCE/MEDICATION-INDUCED OBSESSIVE-COMPULSIVE AND RELATED DISORDER (specify if With Onset During Intoxication, Withdrawal, or After Medication Use)",
+                                            "no": {
+                                                "question": "Clinically significant sexual dysfunction predominates in the clinical picture and is sufficiently severe to warrant clinical attention",
+                                                "yes": "SUBSTANCE/MEDICATION-INDUCED SEXUAL DYSFUNCTION (specify if With Onset During Intoxication, Withdrawal, or After Medication Use)",
+                                                "no": {
+                                                    "question": "A prominent and severe disturbance in sleep predominates in the clinical picture and is sufficiently severe to warrant clinical attention",
+                                                    "yes": "SUBSTANCE/MEDICATION-INDUCED SLEEP DISORDER (specify if With Onset During Intoxication or Discontinuation/Withdrawal)",
+                                                    "no": {
+                                                        "question": "Clinically significant problematic behavioral or psychological changes that developed during substance use",
+                                                        "yes": "SUBSTANCE INTOXICATION",
+                                                        "no": {
+                                                            "question": "Development of a syndrome due to reduction or cessation of use of a substance",
+                                                            "yes": "SUBSTANCE WITHDRAWAL",
+                                                            "no": {
+                                                                "question": "Substance-induced clinically significant symptoms not covered above",
+                                                                "yes": "UNSPECIFIED SUBSTANCE-RELATED DISORDER",
+                                                                "no": "No Substance-Induced Disorder (substance-induced symptoms that are not clinically significant)"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "no": "No Substance-Induced Disorder"
+        }
+    }
+}

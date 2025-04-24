@@ -1,0 +1,81 @@
+{
+  "decision_tree": {
+    "node1": {
+      "question": "Exposure to a traumatic stressor (e.g., life-threatening situation)",
+      "yes_branch": {
+        "node2": {
+          "question": "Response characterized by intrusion symptoms, avoidance of stimuli associated with the event, negative alterations in cognition and mood, and alterations in arousal and activity",
+          "yes_branch": {
+            "node3": {
+              "question": "Duration of at least 1 month",
+              "yes_branch": "POSTTRAUMATIC STRESS DISORDER (3.7.1)",
+              "no_branch": "ACUTE STRESS DISORDER (3.7.1)"
+            }
+          },
+          "no_branch": null
+        }
+      },
+      "no_branch": {
+        "node4": {
+          "question": "History of extremes of insufficient care, such as persistent social neglect or deprivation, repeated changes of primary caregiver, or being reared in settings that severely limited opportunities to form selective attachments",
+          "yes_branch": {
+            "node5": {
+              "question": "Pattern of inhibited emotionally withdrawn behavior toward adult caregivers and persistent social and emotional disturbance (e.g., minimal emotional responsiveness, unexplained irritability, sadness, or fearfulness)",
+              "yes_branch": "REACTIVE ATTACHMENT DISORDER",
+              "no_branch": {
+                "node6": {
+                  "question": "Pattern of reduced reticence in approaching unfamiliar adults, overly familiar verbal or physical behavior, and a willingness to go off with unfamiliar adults",
+                  "yes_branch": "DISINHIBITED SOCIAL ENGAGEMENT DISORDER",
+                  "no_branch": null
+                }
+              }
+            }
+          },
+          "no_branch": {
+            "node7": {
+              "question": "Psychotic symptoms lasted less than 1 month in response to marked stressor",
+              "yes_branch": "BRIEF PSYCHOTIC DISORDER (3.2.4) WITH MARKED STRESSOR",
+              "no_branch": {
+                "node8": {
+                  "question": "Inability to recall important autobiographical information after exposure to a stressor",
+                  "yes_branch": "DISSOCIATIVE AMNESIA (3.8.1)",
+                  "no_branch": {
+                    "node9": {
+                      "question": "Development of symptoms of altered voluntary motor or sensory function after exposure to a stressor",
+                      "yes_branch": "CONVERSION DISORDER (3.9.3) WITH PSYCHOLOGICAL STRESSOR",
+                      "no_branch": {
+                        "node10": {
+                          "question": "Stressor is the death of a loved one",
+                          "yes_branch": {
+                            "node11": {
+                              "question": "Persistent yearning/longing for the deceased, intense sorrow and emotional pain, preoccupation with the deceased or the circumstances of the death, lasting at least 12 months",
+                              "yes_branch": "Section III: Persistent Complex Bereavement Disorder",
+                              "no_branch": null
+                            }
+                          },
+                          "no_branch": {
+                            "node12": {
+                              "question": "Symptoms in response to a stressor that meet criteria for a specific mental disorder (other than Adjustment Disorder)",
+                              "yes_branch": "Specified mental disorder (e.g., Major Depressive Disorder)",
+                              "no_branch": {
+                                "node13": {
+                                  "question": "Reaction is maladaptive and in excess of what would be expected",
+                                  "yes_branch": "ADJUSTMENT DISORDER (3.7.2)",
+                                  "no_branch": "\"Normal\" reaction to stressor"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

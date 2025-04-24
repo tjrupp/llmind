@@ -1,0 +1,61 @@
+{
+  "decision_tree": {
+    "start": "Psychomotor retardation",
+    "children": [
+      {
+        "question": "Due to the direct effects of a substance (including medication)?",
+        "answer_yes": {
+          "question": "Related to the use of neuroleptic medication?",
+          "answer_yes": "NEUROLEPTIC-INDUCED PARKINSONISM; NEUROLEPTIC MALIGNANT SYNDROME",
+          "answer_no": {
+            "question": "Associated with a disturbance in attention and awareness characterized by a fluctuating course?",
+            "answer_yes": "SUBSTANCE INTOXICATION DELIRIUM, HYPOACTIVE TYPE; SUBSTANCE WITHDRAWAL DELIRIUM, HYPOACTIVE TYPE; MEDICATION-INDUCED DELIRIUM, HYPOACTIVE ΤΥΡΕ (3.16.1)",
+            "answer_no": {
+              "question": "Associated with evidence of decline in one or more of the following cognitive domains: complex attention, executive function, learning and memory, language, perceptual-motor, or social cognition?",
+              "answer_yes": "SUBSTANCE/MEDICATION-INDUCED MAJOR NEUROCOGNITIVE DISORDER (3.16.2)",
+              "answer_no": {
+                "question": "Occurring in the context of severe depressive symptoms?",
+                "answer_yes": "SUBSTANCE/MEDICATION-INDUCED DEPRESSIVE DISORDER",
+                "answer_no": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFFECT OF MEDICATION"
+              }
+            }
+          }
+        },
+        "answer_no": {
+          "question": "Due to the physiological effects of a general medical condition?",
+          "answer_yes": {
+            "question": "Associated with a disturbance in attention and awareness characterized by a fluctuating course?",
+            "answer_yes": "DELIRIUM DUE TO ANOTHER MEDICAL CONDITION, HYPOACTIVE TΥΡΕ (3.16.1)",
+            "answer_no": {
+              "question": "Associated with evidence of decline in one of more of the following cognitive domains: complex attention, executive function, learning and memory, language, perceptual-motor, or social cognition?",
+              "answer_yes": "MAJOR NEUROCOGNITIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION (3.16.2)",
+              "answer_no": {
+                "question": "Catatonic mutism plus at least two other catatonic symptoms?",
+                "answer_yes": "CATATONIC DISORDER DUE TO ANOTHER MEDICAL CONDITION (3.2.5)",
+                "answer_no": {
+                  "question": "Occurring in the context of severe depressive symptoms?",
+                  "answer_yes": "DEPRESSIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION",
+                  "answer_no": {
+                    "question": "Associated with at least two characteristic symptoms of Catatonia (e.g., catalepsy, waxy flexibility, negativism, posturing, stereotypy, echolalia)?",
+                    "answer_yes": "Catatonia (See Catatonic Symptoms Tree [2.7] for differential diagnosis)",
+                    "answer_no": {
+                      "question": "Occurring in the context of an episode of depressed mood or diminished interest or pleasure accompanied by characteristic depressive symptoms?",
+                      "answer_yes": "MAJOR DEPRESSIVE EPISODE in MAJOR DEPRESSIVE DISORDER (3.4.1), BIPOLAR I (3.3.1) or BIPOLAR II (3.3.2) DISORDER, or SCHIZOAFFECTIVE DISORDER (3.2.2)",
+                      "answer_no": {
+                        "question": "Associated with delusions, hallucinations, or disorganized speech?",
+                        "answer_yes": "Schizophrenia Spectrum or Other Psychotic Disorder (see Delusions Tree [2.5], Hallucinations Tree [2.6], or Speech Disturbance Tree [2.3] for differential diagnosis)",
+                        "answer_no": "\"Normal\" variation in psychomotor activity"
+                      }
+                    },
+                    "answer_no": "Symptom of a general medical condition (e.g., hypothyroidism)"
+                  }
+                }
+              }
+            }
+          },
+          "answer_no": null
+        }
+      }
+    ]
+  }
+}

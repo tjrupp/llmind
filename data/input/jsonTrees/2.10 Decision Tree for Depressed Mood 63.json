@@ -1,0 +1,109 @@
+{
+  "decision_tree": {
+    "start": "Depressed mood",
+    "children": [
+      {
+        "question": "Due to the physiological effects of a substance (including medications)?",
+        "answer_yes": {
+          "question": "Depressive symptoms predominate in the clinical picture and are sufficiently severe to warrant clinical attention?",
+          "answer_yes": "SUBSTANCE/MEDICATION-INDUCED DEPRESSIVE DISORDER",
+          "answer_no": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFFECT OF MEDICATION"
+        },
+        "answer_no": {
+          "question": "Due to the physiological effects of a general medical condition?",
+          "answer_yes": {
+            "question": "Associated with evidence of decline in one or more of the following cognitive domains: complex attention, executive function, learning and memory, language, perceptual-motor, or social cognition?",
+            "answer_yes": "MAJOR or MILD NEUROCOGNITIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION (3.16.2), WITH BEHAVIORAL DISTURBANCE",
+            "answer_no": "DEPRESSIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION"
+          },
+          "answer_no": {
+            "question": "At least 2 weeks of depressed mood or diminished interest plus associated characteristic symptoms (e.g., changes in weight and appetite, changes in sleep, fatigue, suicidal thoughts)?",
+            "answer_yes": {
+              "question": "Criteria also met at the same time for a Manic Episode (i.e., at least 1 week of elevated, expansive, or irritable mood accompanied by increased energy and other characteristic symptoms sufficiently severe to cause marked impairment)?",
+              "answer_yes": "Manic Episode, With Mixed Features",
+              "answer_no": "Major Depressive Episode"
+            },
+            "answer_no": {
+              "question": "Clinically significant manic or hypomanic symptoms?",
+              "answer_yes": {
+                "question": "Criteria met for a Manic Episode (i.e., at least 1 week of elevated, expansive, or irritable mood accompanied by increased activity or energy and other characteristic symptoms sufficiently severe to cause marked impairment)?",
+                "answer_yes": {
+                  "question": "History of delusions or hallucinations?",
+                  "answer_yes": "BIPOLAR I DISORDER (3.3.1)",
+                  "answer_no": {
+                    "question": "Psychotic symptoms occur exclusively during Manic or Major Depressive Episodes?",
+                    "answer_yes": "BIPOLAR I DISORDER (3.3.1), WITH PSYCHOTIC FEATURES",
+                    "answer_no": "Schizophrenia Spectrum or Other Psychotic Disorder (see Delusions Tree [2.5] or Hallucinations Tree [2.6] for differential diagnosis)"
+                  }
+                },
+                "answer_no": {
+                  "question": "Criteria met for a Hypomanic Episode (i.e., at least 4 days of elevated, expansive, or irritable mood accompanied by increased activity or energy and other characteristic symptoms not severe enough to cause marked impairment) and has at other times met criteria for a Major Depressive Episode?",
+                  "answer_yes": {
+                    "question": "History of delusions or hallucinations?",
+                    "answer_yes": {
+                      "question": "Psychotic symptoms occur exclusively during Major Depressive Episodes?",
+                      "answer_yes": "BIPOLAR II DISORDER (3.3.2), WITH PSYCHOTIC FEATURES",
+                      "answer_no": "Schizophrenia Spectrum or Other Psychotic Disorder (see Delusions Tree [2.5] or Hallucinations Tree [2.6] for differential diagnosis)"
+                    },
+                    "answer_no": "BIPOLAR II DISORDER (3.3.2)"
+                  },
+                  "answer_no": null
+                }
+              },
+              "answer_no": {
+                "question": "One or more Major Depressive Episodes without any Manic or Hypomanic Episodes?",
+                "answer_yes": {
+                  "question": "History of delusions or hallucinations?",
+                  "answer_yes": {
+                    "question": "Duration of episode 2 years or longer?",
+                    "answer_yes": "MAJOR DEPRESSIVE DISORDER (3.4.1) plus PERSISTENT DEPRESSIVE DISORDER (3.4.2)",
+                    "answer_no": "MAJOR DEPRESSIVE DISORDER (3.4.1)"
+                  },
+                  "answer_no": {
+                    "question": "Psychotic symptoms occur exclusively during Major Depressive Episodes?",
+                    "answer_yes": {
+                      "question": "Duration of episode 2 years or longer?",
+                      "answer_yes": "MAJOR DEPRESSIVE DISORDER (3.4.1), WITH PSYCHOTIC FEATURES, plus PERSISTENT DEPRESSIVE DISORDER (3.4.2)",
+                      "answer_no": "MAJOR DEPRESSIVE DISORDER (3.4.1), WITH PSYCHOTIC FEATURES"
+                    },
+                    "answer_no": "Schizophrenia Spectrum or Other Psychotic Disorder (see Delusions Tree [2.5] or Hallucinations Tree [2.6] for differential diagnosis)"
+                  }
+                },
+                "answer_no": {
+                  "question": "2+ years of hypomanic symptoms and periods of depressed mood?",
+                  "answer_yes": "CYCLOTHYMIC DISORDER (3.3.3)",
+                  "answer_no": "OTHER SPECIFIED BIPOLAR AND RELATED DISORDER; UNSPECIFIED BIPOLAR AND RELATED DISORDER"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "question": "Depressed mood, more days than not, for at least 2 years with associated symptoms?",
+        "answer_yes": "PERSISTENT DEPRESSIVE DISORDER (3.4.2)",
+        "answer_no": {
+          "question": "Depressed mood that is regularly present in the final week before the onset of menses and that becomes absent in the week postmenses and is associated with clinically significant distress or interference with work, school, usual social activities, or relationships with others?",
+          "answer_yes": "PREMENSTRUAL DYSPHORIC DISORDER (3.4.3)",
+          "answer_no": {
+            "question": "Depressed or dysphoric mood as an associated feature of another mental disorder (e.g., \"demoralization\" about having Obsessive-Compulsive Disorder)?",
+            "answer_yes": {
+              "question": "Mood disturbance clinically significant?",
+              "answer_yes": "OTHER SPECIFIED DEPRESSIVE DISORDER; UNSPECIFIED DEPRESSIVE DISORDER",
+              "answer_no": "No mood disorder diagnosis needed"
+            },
+            "answer_no": {
+              "question": "Clinically significant depressive symptoms not covered above that represent a psychological or biological dysfunction in the individual?",
+              "answer_yes": {
+                "question": "Maladaptive response to a psychosocial stressor?",
+                "answer_yes": "ADJUSTMENT DISORDER WITH DEPRESSED MOOD (3.7.2)",
+                "answer_no": "OTHER SPECIFIED DEPRESSIVE DISORDER; UNSPECIFIED DEPRESSIVE DISORDER"
+              },
+              "answer_no": "\"Normal\" everyday blues"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

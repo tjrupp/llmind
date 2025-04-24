@@ -1,0 +1,139 @@
+{
+  "decision_tree": {
+    "node1": {
+      "question": "Decreased appetite, weight loss, or failure to make expected weight gains",
+      "yes_branch": {
+        "node2": {
+          "question": "Fully accounted for by the physiological effects of a general medical condition (e.g., cancer)",
+          "yes_branch": "Etiological general medical condition",
+          "no_branch": {
+            "node3": {
+              "question": "Fully accounted for by substance use (e.g., cocaine) or medication side effect",
+              "yes_branch": "SUBSTANCE-RELATED DISORDER; OTHER ADVERSE EFFECT OF MEDICATION",
+              "no_branch": {
+                "node4": {
+                  "question": "Not eating in response to a delusion (e.g., fear that food is poisoned) or hallucination (e.g., command hallucination not to eat)",
+                  "yes_branch": "Psychotic Disorder (e.g., SCHIZOPHRENIA [3.2.1]). See Delusions Tree (2.5) or Hallucinations Tree (2.6) for differential diagnosis",
+                  "no_branch": {
+                    "node5": {
+                      "question": "Occurring in the context of depressive symptoms",
+                      "yes_branch": "MAJOR DEPRESSIVE EPISODE in MAJOR DEPRESSIVE DISORDER (3.4.1), BIPOLAR I (3.3.1) or BIPOLAR II (3.3.2) DISORDER, or SCHIZOAFFECTIVE DISORDER (3.2.2); PERSISTENT DEPRESSIVE DISORDER (3.4.2)",
+                      "no_branch": {
+                        "node6": {
+                          "question": "Occurring in the context of a Manic Episode, secondary to increase in activity and neglect of regular mealtimes",
+                          "yes_branch": "MANIC EPISODE in BIPOLAR I DISORDER (3.3.1) or SCHIZOAFFECTIVE DISORDER (3.2.2)",
+                          "no_branch": {
+                            "node7": {
+                              "question": "Accompanied by an intense fear of gaining weight or being fat",
+                              "yes_branch": "ANOREXIA NERVOSA (3.10.2)",
+                              "no_branch": {
+                                "node8": {
+                                  "question": "Associated with repeated regurgitation of food, which may be rechewed, reswallowed, or spit out",
+                                  "yes_branch": "RUMINATION DISORDER",
+                                  "no_branch": {
+                                    "node9": {
+                                      "question": "Occurring in association with a lack of interest in eating, the avoidance of food based on its sensory characteristics, or concern about aversive consequences of eating (e.g., choking)",
+                                      "yes_branch": "AVOIDANT/RESTRICTIVE FOOD INTAKE DISORDER (3.10.1)",
+                                      "no_branch": {
+                                        "node10": {
+                                          "question": "Increased appetite or weight gain (not due to binge eating)",
+                                          "yes_branch": {
+                                            "node11": {
+                                              "question": "Fully accounted for by the physiological effects of a general medical condition (e.g., hypothyroidism) or obesity",
+                                              "yes_branch": "Etiological general medical condition",
+                                              "no_branch": {
+                                                "node12": {
+                                                  "question": "Fully accounted for by substance use (e.g., Cannabis Intoxication, Cocaine Withdrawal) or medication side effects",
+                                                  "yes_branch": "SUBSTANCE-RELATED DISORDER; OTHER ADVERSE EFFECT OF MEDICATION",
+                                                  "no_branch": {
+                                                    "node13": {
+                                                      "question": "Occurring in the context of depressive symptoms",
+                                                      "yes_branch": "MAJOR DEPRESSIVE EPISODE in MAJOR DEPRESSIVE DISORDER (3.4.1), BIPOLAR I (3.3.1) or BIPOLAR II (3.3.2) DISORDER, or SCHIZOAFFECTIVE DISORDER (3.2.2); PERSISTENT DEPRESSIVE DISORDER (3.4.2)",
+                                                      "no_branch": {
+                                                        "node14": {
+                                                          "question": "Binge eating",
+                                                          "yes_branch": {
+                                                            "node15": {
+                                                              "question": "Accompanied by an abnormally low body weight",
+                                                              "yes_branch": "ANOREXIA NERVOSA (3.10.2)",
+                                                              "no_branch": {
+                                                                "node16": {
+                                                                  "question": "Recurrent and frequent binge eating",
+                                                                  "yes_branch": {
+                                                                    "node17": {
+                                                                      "question": "Accompanied by regular, inappropriate, compensatory behaviors (e.g., purging)",
+                                                                      "yes_branch": "BULIMIA NERVOSA (3.10.3)",
+                                                                      "no_branch": {
+                                                                        "node18": {
+                                                                          "question": "Binge eating accompanied by symptoms such as eating until uncomfortably full or when not hungry, eating alone because of embarrassment, and feeling disgusted, depressed, or guilty",
+                                                                          "yes_branch": "BINGE-EATING DISORDER (3.10.4)",
+                                                                          "no_branch": {
+                                                                            "node19": {
+                                                                              "question": "Occurring as part of a pattern of impulsivity, mood dysregulation, and identity disturbance with onset by early adulthood",
+                                                                              "yes_branch": "BORDERLINE PERSONALITY DISORDER (3.17.5)",
+                                                                              "no_branch": {
+                                                                                "node20": {
+                                                                                  "question": "Repeated regurgitation of food, which may be rechewed, reswallowed, or spit out",
+                                                                                  "yes_branch": "RUMINATION DISORDER",
+                                                                                  "no_branch": {
+                                                                                    "node21": {
+                                                                                      "question": "Persistent eating of nonnutritive, nonfood substances",
+                                                                                      "yes_branch": "PICA",
+                                                                                      "no_branch": {
+                                                                                        "node22": {
+                                                                                          "question": "Clinically significant changes in weight or pathological eating behavior not covered above (e.g., purging without binge eating) that represent a psychological or biological dysfunction in the individual",
+                                                                                          "yes_branch": {
+                                                                                            "node23": {
+                                                                                              "question": "Occurring as a maladaptive response to a stressor",
+                                                                                              "yes_branch": "ADJUSTMENT DISORDER (3.7.2)",
+                                                                                              "no_branch": "OTHER SPECIFIED FEEDING OR EATING DISORDER; UNSPECIFIED FEEDING OR EATING DISORDER"
+                                                                                            }
+                                                                                          },
+                                                                                          "no_branch": "\"Normal\" variations in eating or weight (e.g., fad dieting)"
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          },
+                                                          "no_branch": null
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "no_branch": null
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

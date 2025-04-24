@@ -1,0 +1,64 @@
+{
+  "decision_tree": {
+    "start": "Panic Attacks",
+    "children": [
+      {
+        "question": "Due to the physiological effects of a substance (including medication)",
+        "answer_yes": {
+          "question": "Panic Attacks predominate in the clinical picture and are sufficiently severe to warrant clinical attention",
+          "answer_yes": "SUBSTANCE/MEDICATION-INDUCED ANXIETY DISORDER",
+          "answer_no": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL: OTHER ADVERSE EFFECT OF MEDICATION"
+        },
+        "answer_no": {
+          "question": "Due to the physiological effects of a general medical condition",
+          "answer_yes": "ANXIETY DISORDER DUE TO ANOTHER MEDICAL CONDITION, WITH PANIC ATTACKS",
+          "answer_no": {
+            "question": "Recurrent unexpected Panic Attacks accompanied by at least 1 month of concern or maladaptive changes in behavior",
+            "answer_yes": "PANIC DISORDER (3.5.5)",
+            "answer_no": {
+              "question": "Trigger for Panic Attack is fear of embarrassment in social situations",
+              "answer_yes": "SOCIAL ANXIETY DISORDER (3.5.4) WITH PANIC ATTACKS",
+              "answer_no": {
+                "question": "Trigger for Panic Attack is fear of specific object (e.g., spiders) or situation (e.g., heights, seeing blood)",
+                "answer_yes": "SPECIFIC PHOBIA (3.5.3) WITH PANIC ATTACKS",
+                "answer_no": {
+                  "question": "Trigger for Panic Attack is fear of separation from major attachment figures",
+                  "answer_yes": "SEPARATION ANXIETY DISORDER (3.5.1) WITH PANIC ATTACKS",
+                  "answer_no": {
+                    "question": "Trigger for Panic Attack is exposure to situation resembling prior traumatic experience occurring in the context of intrusion symptoms, avoidance of stimuli associated with the traumatic stressor, negative alterations in cognition and mood, and alterations in arousal and activity",
+                    "answer_yes": {
+                      "question": "Duration of more than 1 month",
+                      "answer_yes": "POSTTRAUMATIC STRESS DISORDER (3.7.1) WITH PANIC ATTACKS",
+                      "answer_no": "ACUTE STRESS DISORDER (3.7.1) WITH PANIC ATTACKS"
+                    },
+                    "answer_no": {
+                      "question": "Trigger for Panic Attack is the threat of having a serious illness",
+                      "answer_yes": "ILLNESS ANXIETY DISORDER (3.9.2) WITH PANIC ATTACKS",
+                      "answer_no": {
+                        "question": "Trigger for Panic Attack is exposure to a focus of an obsessional concern (e.g., to dirt for an individual with a contamination obsession)",
+                        "answer_yes": "OBSESSIVE-COMPULSIVE DISORDER (3.6.1) WITH PANIC ATTACKS",
+                        "answer_no": {
+                          "question": "Trigger for Panic Attack is excessive anxiety and worry about a number of events or activities such as work or school performance",
+                          "answer_yes": "GENERALIZED ANXIETY DISORDER (3.5.7) WITH PANIC ATTACKS",
+                          "answer_no": {
+                            "question": "Clinically significant discrete periods of anxiety not covered above that represent a psychological or biological dysfunction in the individual",
+                            "answer_yes": {
+                              "question": "Occurring in response to a stressor",
+                              "answer_yes": "ADJUSTMENT DISORDER (3.7.2) WITH ANXIETY",
+                              "answer_no": "OTHER SPECIFIED ANXIETY DISORDER; UNSPECIFIED ANXIETY DISORDER"
+                            },
+                            "answer_no": "\"Normal\" context-justified Panic Attacks (e.g., an immediate response to a severe threat)"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

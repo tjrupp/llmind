@@ -1,0 +1,72 @@
+{
+  "decision_tree": {
+    "start": "Elevated or expansive mood",
+    "children": [
+      {
+        "question": "Due to the physiological effects of a substance (including medication)?",
+        "answer_yes": "SUBSTANCE/MEDICATION-INDUCED BIPOLAR DISORDER",
+        "answer_no": {
+          "question": "Symptoms of elevated or expansive mood predominate in the clinical picture and are sufficiently severe to warrant clinical attention?",
+          "answer_yes": "SUBSTANCE INTOXICATION; SUBSTANCE WITHDRAWAL; OTHER ADVERSE EFFECT OF MEDICATION",
+          "answer_no": {
+            "question": "Due to the physiological effects of a general medical condition?",
+            "answer_yes": {
+              "question": "Associated with evidence of decline in one or more of the following cognitive domains: complex attention, executive function, learning and memory, language, perceptual-motor, or social cognition?",
+              "answer_yes": "MAJOR or MILD NEUROCOGNITIVE DISORDER DUE TO ANOTHER MEDICAL CONDITION (3.16.2), WITH BEHAVIORAL DISTURBANCE",
+              "answer_no": "BIPOLAR AND RELATED DISORDER DUE TO ANOTHER MEDICAL CONDITION"
+            },
+            "answer_no": {
+              "question": "Criteria met for a Manic Episode (i.e., at least 1 week of elevated or expansive mood accompanied by increased activity or energy and at least three other characteristic symptoms sufficiently severe to cause marked impairment)?",
+              "answer_yes": "Manic Episode",
+              "answer_no": {
+                "question": "Criteria met for a Hypomanic Episode (i.e., at least 4 days of elevated or expansive mood accompanied by increased activity or energy and at least three other characteristic symptoms that are not severe enough to cause marked impairment)?",
+                "answer_yes": "Hypomanic Episode",
+                "answer_no": {
+                  "question": "Present or past Manic Episode?",
+                  "answer_yes": {
+                    "question": "History of delusions or hallucinations?",
+                    "answer_yes": "BIPOLAR I DISORDER (3.3.1)",
+                    "answer_no": {
+                      "question": "Psychotic symptoms occur exclusively during Manic or Major Depressive Episodes?",
+                      "answer_yes": "BIPOLAR I DISORDER (3.3.1), WITH PSYCHOTIC FEATURES",
+                      "answer_no": "Schizophrenia Spectrum or Other Psychotic Disorder (see Delusions Tree [2.5] or Hallucinations Tree [2.6] for differential diagnosis)"
+                    }
+                  },
+                  "answer_no": {
+                    "question": "Present or past Hypomanic Episode and at least one Major Depressive Episode?",
+                    "answer_yes": {
+                      "question": "History of delusions or hallucinations?",
+                      "answer_yes": {
+                        "question": "Psychotic symptoms occur exclusively during Major Depressive Episodes?",
+                        "answer_yes": "BIPOLAR II DISORDER (3.3.2), WITH PSYCHOTIC FEATURES",
+                        "answer_no": "Schizophrenia Spectrum or Other Psychotic Disorder (see Delusions Tree [2.5] or Hallucinations Tree [2.6] for differential diagnosis)"
+                      },
+                      "answer_no": "BIPOLAR II DISORDER (3.3.2)"
+                    },
+                    "answer_no": {
+                      "question": "2+ years of hypomanic symptoms and periods of depressed mood?",
+                      "answer_yes": "CYCLOTHYMIC DISORDER (3.3.3)",
+                      "answer_no": {
+                        "question": "Elevated or euphoric mood confined to periods of gambling?",
+                        "answer_yes": {
+                          "question": "Persistent and problematic gambling behavior leading to clinically significant impairment or distress?",
+                          "answer_yes": "GAMBLING DISORDER (3.15.2)",
+                          "answer_no": "Normal gambling behavior"
+                        },
+                        "answer_no": {
+                          "question": "Clinically significant manic or hypomanic symptoms not covered above that represent a psychological or biological dysfunction in the individual?",
+                          "answer_yes": "OTHER SPECIFIED BIPOLAR AND RELATED DISORDER; UNSPECIFIED BIPOLAR AND RELATED DISORDER",
+                          "answer_no": "\"Normal\" elevated or euphoric mood"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}
