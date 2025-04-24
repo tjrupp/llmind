@@ -4,23 +4,26 @@ import logging
 from typing import List  # Added import
 import re
 import db_config # Import db_config
+from difflib import SequenceMatcher
 
 # ------------------------------
 # Configuration
 # ------------------------------
 
 # Path to the CSV file
-csv_file_path = "./data/input/kg.csv"  # Update the path
+csv_file_path = "../data/input/kg.csv"  # Update the path
 
 # Database connection string (replace with your actual connection details)
 SQL_SERVER_CONNECTION_STRING = db_config.SQL_SERVER_CONNECTION_STRING # Use the connection string from db_config
 
 # Table name in SQL Server
-table_name = "mimic_hosp_stays"  # You can change this if needed
+table_name = "KGPrime_db"  # You can change this if needed
 
 # CSV Header
 csv_header = ['relation', 'display_relation', 'x_index', 'x_id', 'x_type', 'x_name', 'x_source', 'y_index', 'y_id', 'y_type', 'y_name', 'y_source']
-
+icd11_table_name = "ICD11_Codes"
+icd11_chapter_6_code = "6"
+icd11_match_threshold = 0.8
 
 # ------------------------------
 # Logging Setup
@@ -112,8 +115,9 @@ def insert_data_into_table(connection_string: str, table_name: str, df: pd.DataF
 
 def main():
     """
-    Reads the CSV file into a Pandas DataFrame, creates the table in SQL Server (if
-    it doesn't exist), and inserts the data into the table.
+    Reads the CSV file into a Pandas DataFrame, filters the DataFrame and
+    creates the table in SQL Server (if it doesn't exist), and inserts
+    the data into the table.
     """
     try:
         # 1. Read the CSV file into a Pandas DataFrame
@@ -121,11 +125,50 @@ def main():
         df = pd.read_csv(csv_file_path, encoding='utf-8', header=0)
         logging.info(f"CSV data read into Pandas DataFrame with {len(df)} rows and columns: {', '.join(df.columns)}.")
 
-        # 2. Create the table in SQL Server (if it doesn't exist)
+        # 2. Filter the DataFrame for rows where 'relation' is 'indication'
+        logging.info("Filtering DataFrame: relation == 'indication'")
+        df_filtered = df[df["relation"] == "indication"]
+        logging.info(f"DataFrame filtered to {len(df_filtered)} rows.")
+
+        # 3. Connect to SQL Server to query the ICD-11 table
+        conn = pyodbc.connect(SQL_SERVER_CONNECTION_STRING)
+        cursor = conn.cursor()
+
+        # 4. Fetch the titles of diseases from ICD-11 Chapter 6
+        logging.info(f"Fetching diseases from {icd11_table_name} in Chapter 6")
+        cursor.execute(f"SELECT title FROM {icd11_table_name} WHERE code LIKE '{icd11_chapter_6_code}%'")
+        icd11_chapter_6_diseases = {row[0].lower() for row in cursor.fetchall()}  # Store titles in a set, for faster matching, and lower case them
+        logging.info(f"Found {len(icd11_chapter_6_diseases)} diseases in ICD-11 Chapter 6.")
+
+        # 5. Further filter the DataFrame to include only diseases from ICD-11 Chapter 6
+        def find_closest_match(disease_name: str, icd11_diseases: List[str], threshold:float) -> str:
+            """Checks if a disease name is present in the set of ICD-11 Chapter 6 diseases."""
+            best_match = None
+            best_similarity = 0
+            for icd11_disease in icd11_diseases:
+                similarity = SequenceMatcher(None, disease_name.lower(), icd11_disease).ratio()
+                if similarity > best_similarity:
+                    best_similarity = similarity
+                    best_match = icd11_disease
+            if best_similarity >= threshold:
+                return best_match
+            else:
+                return None
+
+        def is_psychological_disease(disease_name: str) -> bool:
+            """Checks if a disease name is present in the set of ICD-11 Chapter 6 diseases."""
+            match = find_closest_match(disease_name, icd11_chapter_6_diseases, icd11_match_threshold)
+            return match is not None
+
+        logging.info("Filtering DataFrame by ICD-11 Chapter 6 diseases")
+        df_filtered = df_filtered[df_filtered["y_name"].apply(is_psychological_disease)]
+        logging.info(f"DataFrame filtered to {len(df_filtered)} rows after ICD-11 Chapter 6 filtering.")
+
+        # 5. Create the table in SQL Server (if it doesn't exist)
         create_table_if_not_exists(SQL_SERVER_CONNECTION_STRING, table_name, csv_header)
 
-        # 3. Insert the data into the SQL Server table
-        insert_data_into_table(SQL_SERVER_CONNECTION_STRING, table_name, df)
+        # 6. Insert the data into the SQL Server table
+        insert_data_into_table(SQL_SERVER_CONNECTION_STRING, table_name, df_filtered)
 
         logging.info("Data transfer to SQL Server complete.")
 
