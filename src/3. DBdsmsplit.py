@@ -1,188 +1,339 @@
-import re
-from pathlib import Path
-import pyodbc  # For database interaction
-import db_config  # Import the db_config.py file
+from flask import Flask, request, jsonify
+from langchain_chroma import Chroma
+from langchain_community.embeddings import OllamaEmbeddings
+from langchain import hub
+from langchain_community.llms import Ollama
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+import pyodbc  # Import the pyodbc library
+import importlib.util  # Import the importlib module
+import re  # Import the re module for regular expressions
+from difflib import SequenceMatcher # Import SequenceMatcher
+import db_config # Import db_config
 
-# ------------------------------
-# Configuration
-# ------------------------------------------------------
+app = Flask(__name__)
 
-# Path to the input text file
-input_txt_path = Path("./data/input/DSM-5-TR_Clinical_Cases.txt")
-
-# Database connection string (replace with your actual connection details)
-SQL_SERVER_CONNECTION_STRING = db_config.SQL_SERVER_CONNECTION_STRING  # Use the connection string from db_config.py
-
-# ------------------------------
-# Helper Functions
-# ------------------------------
-
-def create_table_if_not_exists(connection_string: str) -> None:
-    """
-    Creates the DSM5_Cases table in the SQL Server database if it does not already exist.
-
-    Args:
-        connection_string (str): The connection string for the SQL Server database.
-    """
+# Load database configuration from file
+def load_db_config(config_file_path):
     try:
-        cnxn = pyodbc.connect(connection_string)
-        cursor = cnxn.cursor()
-
-        # Check if the table exists
-        cursor.execute("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'DSM5_Cases'")
-        table_exists = cursor.fetchone()
-
-        if not table_exists:
-            # Create the table with appropriate data types.  Use NVARCHAR for Unicode support and specify collation for all NVARCHAR columns.
-            cursor.execute("""
-                CREATE TABLE DSM5_Cases (
-                    Case_Number INT PRIMARY KEY,
-                    Introduction NVARCHAR(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS,
-                    Discussion NVARCHAR(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS,
-                    Diagnosis NVARCHAR(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS
-                )
-            """)
-            cnxn.commit()
-            print("DSM5_Cases table created successfully.")
-        else:
-            print("DSM5_Cases table already exists.")
-        cursor.close()
-        cnxn.close()
+        # Load the module from the file path.
+        spec = importlib.util.spec_from_file_location("db_config", config_file_path)
+        db_config = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(db_config)
+        connection_string = db_config.SQL_SERVER_CONNECTION_STRING
+        if not connection_string:
+            raise ValueError("Missing SQL_SERVER_CONNECTION_STRING in db_config.py")
+        return connection_string
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Error: Database configuration file not found at {config_file_path}")
+    except AttributeError:
+        raise AttributeError(
+            f"Error: Could not find SQL_SERVER_CONNECTION_STRING in {config_file_path}.  Make sure it is defined correctly.")
     except Exception as e:
-        print(f"Error creating table: {e}")
-        raise  # Re-raise to stop execution if table creation fails.
+        raise Exception(f"An unexpected error occurred while reading the database configuration: {e}")
 
-
-def insert_or_update_case_data(connection_string: str, case_number: int, introduction: str, discussion: str, diagnosis: str) -> None:
+# Function to fetch differential diagnoses from the database
+def get_differential_diagnoses(conn, initial_diagnosis, confidence_interval=0.8):
     """
-    Inserts or updates a single case's data in the DSM5_Cases table.
-    It checks if the case_number exists.  If it does, it updates the row, otherwise it inserts a new row.
+    Fetches differential diagnoses from the SQL Server database based on the initial diagnosis,
+    using a confidence interval for fuzzy matching.
 
     Args:
-        connection_string (str): The connection string for the SQL Server database.
-        case_number (int): The case number.
-        introduction (str): The introduction text.
-        discussion (str): The discussion text.
-        diagnosis (str): The diagnosis text.
-    """
-    try:
-        cnxn = pyodbc.connect(connection_string)
-        cursor = cnxn.cursor()
-
-        # Check if the case_number already exists
-        cursor.execute("SELECT Introduction, Discussion, Diagnosis FROM DSM5_Cases WHERE Case_Number = ?", (case_number,))
-        existing_row = cursor.fetchone()
-
-        if existing_row:
-            # Case exists, check if the data is different
-            existing_introduction, existing_discussion, existing_diagnosis = existing_row
-            if (introduction != existing_introduction or
-                    discussion != existing_discussion or
-                    diagnosis != existing_diagnosis):
-                # Data is different, update the row
-                sql = """
-                    UPDATE DSM5_Cases
-                    SET Introduction = ?, Discussion = ?, Diagnosis = ?
-                    WHERE Case_Number = ?
-                """
-                cursor.execute(sql, (introduction, discussion, diagnosis, case_number))
-                cnxn.commit()
-                print(f"Case {case_number} data updated.")
-            else:
-                print(f"Case {case_number} data is the same, no update needed.")
-        else:
-            # Case does not exist, insert a new row
-            sql = """
-                INSERT INTO DSM5_Cases (Case_Number, Introduction, Discussion, Diagnosis)
-                VALUES (?, ?, ?, ?)
-            """
-            cursor.execute(sql, (case_number, introduction, discussion, diagnosis))
-            cnxn.commit()
-            print(f"Case {case_number} data inserted.")
-        cursor.close()
-        cnxn.close()
-    except Exception as e:
-        print(f"Error inserting/updating data for case {case_number}: {e}")
-        cnxn.rollback()
-        raise  # Re-raise to stop execution after logging
-
-
-def clean_text(text: str) -> str:
-    """
-    Cleans the input text by removing unwanted characters and patterns.  This version is more strict.
-
-    Args:
-        text (str): The text to clean.
+        conn (pyodbc.Connection): The database connection object.
+        initial_diagnosis (str): The initial diagnosis from the LLM.
+        confidence_interval (float, optional): The minimum similarity score (0 to 1) for a match.
+            Defaults to 0.8.
 
     Returns:
-        str: The cleaned text.
+        list: A list of dictionaries, where each dictionary represents a differential diagnosis.
+              Returns an empty list if no differential diagnoses are found.
     """
-    # Remove control characters, including newlines, tabs, and carriage returns
-    text = re.sub(r'[\x00-\x1F\x7F-\x9F]', '', text)
-    # Replace curly quotes, smart quotes, and similar characters with standard quotes
-    text = re.sub(r'[\u2018\u2019\u201c\u201d]', '"', text)
-    # Replace non-breaking spaces and other whitespace variants with standard spaces
-    text = re.sub(r'[\u00A0\u2002-\u200B\u202F\u3000]', ' ', text)
-    # Remove any remaining unusual unicode characters
-    text = re.sub(r'[^\x00-\x7F\u00A0-\uFFFF]', '', text)
-    # Replace multiple spaces with single spaces
-    text = re.sub(r'\s+', ' ', text)
-    return text.strip()
-
-
-
-def main():
-    """
-    Main function to:
-    1.  Read the DSM-5-TR Clinical Cases text file.
-    2.  Parse the text to extract individual cases.
-    3.  Create the DSM5_Cases table in the SQL Server database.
-    4.  Insert or update the extracted case data into the database.
-    """
-    # Read the input text file
     try:
-        with input_txt_path.open("r", encoding="utf-8") as file:
-            text = file.read()
+        cursor = conn.cursor()
+        # SQL query to fetch differential diagnoses
+        query = """
+            SELECT 
+                [level], 
+                [type], 
+                [value],
+                [parent_condition]
+            FROM 
+                [dbo].[DiagnosisData]
+            WHERE 
+                [level_0_info] LIKE ?
+            ORDER BY 
+                [level];  -- Order by level for a more organized result
+        """
+        # Convert the initial diagnosis to a SQL Server compatible pattern.
+        pattern = f"%{initial_diagnosis}%"
+        cursor.execute(query, pattern)
+        results = cursor.fetchall()
+
+        # Process the results into a list of dictionaries
+        diagnoses = []
+        for row in results:
+            diagnoses.append({
+                "level": row.level,
+                "type": row.type,
+                "value": row.value,
+                "parent_condition": row.parent_condition
+            })
+        return diagnoses
+    except pyodbc.Error as e:
+        print(f"Error fetching differential diagnoses: {e}")
+        return []  # Return an empty list in case of error
     except Exception as e:
-        print(f"Error reading input file: {e}")
-        return
+        print(f"An unexpected error occurred: {e}")
+        return []
 
-    # Split the text into individual cases
-    cases = re.split(r"Case \d+.*", text)
+def get_similar_case(conn, case_description, confidence_threshold=0.8):
+    """
+    Finds the most similar case in the database based on the introduction text.
 
-    # Create the table in the database if it doesn't exist
-    create_table_if_not_exists(SQL_SERVER_CONNECTION_STRING)
+    Args:
+        conn (pyodbc.Connection): The database connection object.
+        case_description (str): The input clinical case description.
+        confidence_threshold (float): The minimum similarity score.
 
-    # Process each case and insert/update the database
-    for idx, case_text in enumerate(cases[1:], start=1):
-        case_text_clean = clean_text(case_text.replace('\n', ' ')) # Clean the text *before* further processing.
-        try:
-            discussion_idx = case_text_clean.index("Discussion")
-        except ValueError:
-            print(f"Warning: 'Discussion' section not found in case {idx}. Skipping.")
-            continue
+    Returns:
+        dict: A dictionary containing the case details if a similar case is found,
+              otherwise None.
+    """
+    try:
+        cursor = conn.cursor()
+        query = "SELECT [Case_Number], [Introduction], [Diagnosis] FROM [dbo].[DSM5_Cases]"
+        cursor.execute(query)
+        cases = cursor.fetchall()
 
-        try:
-            diagnosis_idx = case_text_clean.index("Diagnoses")
-        except ValueError:
-            try:
-                diagnosis_idx = case_text_clean.index("Diagnosis")
-            except ValueError:
-                print(f"Warning: Neither 'Diagnoses' nor 'Diagnosis' found in case {idx}. Skipping.")
-                continue
+        best_match = None
+        best_similarity = 0
 
-        introduction = clean_text(case_text_clean[:discussion_idx].strip()) # Clean each extracted part
-        discussion = clean_text(case_text_clean[discussion_idx:diagnosis_idx].strip())
-        diagnosis = clean_text(case_text_clean[diagnosis_idx:].strip())
+        for case in cases:
+            similarity = SequenceMatcher(None, case_description, case.Introduction).ratio()
+            if similarity > best_similarity and similarity >= confidence_threshold:
+                best_similarity = similarity
+                best_match = {
+                    "Case_Number": case.Case_Number,
+                    "Introduction": case.Introduction,
+                    "Diagnosis": case.Diagnosis,
+                    "similarity": similarity
+                }
 
-        # Insert/update the data into the database
-        try:
-            insert_or_update_case_data(SQL_SERVER_CONNECTION_STRING, idx, introduction, discussion, diagnosis)
-        except Exception:
-            print(f"Failed to insert/update case {idx}.  Continuing to the next case.")
+        return best_match
+    except pyodbc.Error as e:
+        print(f"Error fetching similar case: {e}")
+        return None
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return None
+    
+def get_icd11_codes(conn, diagnosis_name, use_inclusions=True):
+    """
+    Fetches ICD-11 codes based on the diagnosis name, including related codes from inclusions.
 
-    print("Data processing and database operations complete.")
+    Args:
+        conn (pyodbc.Connection): The database connection.
+        diagnosis_name (str): The diagnosis name.
+        use_inclusions (bool): Whether to include codes from the inclusions field.
+
+    Returns:
+        list: A list of dictionaries containing ICD-11 code details.
+    """
+    try:
+        cursor = conn.cursor()
+        query = """
+            SELECT [code], [title], [definition], [longdefinition], [inclusions], [exclusions]
+            FROM [dbo].[ICD11_Codes]
+            WHERE [code] LIKE ? 
+        """
+        params = [f"%{diagnosis_name}%"]
+        if use_inclusions:
+            query += "OR [inclusions] LIKE ?"
+            params.append(f"%{diagnosis_name}%")
+        cursor.execute(query, params)
+        results = cursor.fetchall()
+
+        codes = []
+        for row in results:
+            codes.append({
+                "code": row.code,
+                "title": row.title,
+                "definition": row.definition,
+                "longdefinition": row.longdefinition,
+                "inclusions": row.inclusions,
+                "exclusions": row.exclusions
+            })
+        return codes
+    except pyodbc.Error as e:
+        print(f"Error fetching ICD-11 codes: {e}")
+        return []
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return []
 
 
-if __name__ == "__main__":
-    main()
+def get_next_question(diagnoses, current_level, previous_answer=None):
+    """
+    Determines the next question to ask the user based on the differential diagnoses.
+
+    Args:
+        diagnoses (list): A list of dictionaries representing the differential diagnoses.
+        current_level (int): The current level in the diagnosis graph.
+        previous_answer (str, optional): The user's answer to the previous question ("yes" or "no").
+
+    Returns:
+        tuple: (str, int) - The next question to ask, and the next level, or (None, current_level) if no further questions.
+    """
+    next_level = current_level + 1
+    possible_questions = []
+
+    for diagnosis in diagnoses:
+        if diagnosis['level'] == next_level:
+            if previous_answer is None or diagnosis['type'] == previous_answer:
+                if diagnosis['type'] == 'condition':
+                    return diagnosis['value'], next_level
+                elif diagnosis['level'] == next_level:
+                    possible_questions.append(diagnosis)
+
+    if possible_questions:
+        # Prioritize questions
+        for question in possible_questions:
+            if question['type'] == 'condition':
+                return question['value'], next_level
+
+    return None, current_level  # No suitable question found
+
+
+@app.route('/askLLM', methods=['POST'])
+def askLLM():
+    """
+    Endpoint that takes a clinical case as input, queries the LLM, and guides the user
+    through a series of questions to refine the differential diagnosis.
+    """
+    # Get the "input_string" parameter from the JSON request body
+    input_data = request.get_json()
+    input_string = input_data.get('input_string')
+    previous_answers = input_data.get('previous_answers', [])  # Get previous answers
+
+    # Return an error if "input_string" is missing
+    if input_string is None:
+        return jsonify({"error": "Missing 'input_string' parameter"}), 400
+
+    # Model name to be used
+    modello = "gemma2:27b"
+
+    # Initialize the vector store with the specified model
+    vectorstore = Chroma(persist_directory=f"./vectorstore/chroma_db-full-{modello.replace(':','')}",
+                        embedding_function=OllamaEmbeddings(model=modello))
+
+    # Load the Llama3 model
+    llm = Ollama(model=modello)
+
+    # Use the vector store as the retriever
+    retriever = vectorstore.as_retriever()
+
+    # Function to format documents for the QA chain
+    def format_docs(docs):
+        return "\n\n".join(doc.page_content for doc in docs)
+
+    # Load the QA chain prompt from langchain hub
+    rag_prompt = hub.pull("rlm/rag-prompt")
+
+    # Create the QA chain
+    qa_chain = (
+        {"context": retriever | format_docs, "question": RunnablePassthrough()}
+        | rag_prompt
+        | llm
+        | StrOutputParser()
+    )
+
+    # Prepare the question from the input string
+    question = f"{input_string}"
+
+    # Invoke the QA chain to get the answer
+    answer = qa_chain.invoke(question)
+    pattern = "6[0-9a-zA-Z]{3}"
+    match = re.search(pattern, answer)
+    if match:
+        first_occurrence = match.group(0)
+        print(f"The first occurrence found is: {first_occurrence}")
+        initial_diagnosis = first_occurrence
+    else:
+        print("No occurrence found.")
+        initial_diagnosis = answer.replace("\n", "")
+
+    # Get differential diagnoses from the database
+    try:
+        SQL_SERVER_CONNECTION_STRING = db_config.SQL_SERVER_CONNECTION_STRING  # Use the connection string from db_config.py
+        conn = pyodbc.connect(SQL_SERVER_CONNECTION_STRING)
+        similar_case = get_similar_case(conn, input_string, confidence_threshold=0.7) # Get similar case
+        icd11_codes = get_icd11_codes(conn, initial_diagnosis) # Get ICD11 codes
+        if similar_case:
+            icd11_codes_similar = get_icd11_codes(conn, similar_case["Diagnosis"])
+        else:
+            icd11_codes_similar = []
+        
+        # Check for perfect ICD-11 code match
+        for code_data in icd11_codes:
+            if code_data["code"] in initial_diagnosis:
+                conn.close()
+                return jsonify({
+                    "output_string": initial_diagnosis,
+                    "icd11_codes": [code_data],  # Return only the matching code
+                    "match_type": "ICD11_match"
+                })
+
+        differential_diagnoses = get_differential_diagnoses(conn, initial_diagnosis,
+                                                        confidence_interval=0.7)  # Set confidence interval
+    except Exception as e:
+        print(f"Error: {e}")
+        conn = None  # Set conn to None to avoid using an invalid connection
+        differential_diagnoses = []  # Ensure that differential_diagnoses is always defined
+        icd11_codes = []
+        icd11_codes_similar = []
+
+    # if not differential_diagnoses:
+    #    if conn:
+    #      conn.close()
+    #    return jsonify({"output_string": initial_diagnosis, "differential_diagnoses": []})
+
+    # Start interactive questioning
+    current_level = 0
+    final_diagnosis = None
+    
+    if similar_case:
+        if conn:
+            conn.close()
+        return jsonify(
+            {"output_string": initial_diagnosis, "similar_case": similar_case, "icd11_codes": icd11_codes_similar})  # Return similar case
+    else:
+        for previous_answer in previous_answers:
+            next_question, current_level = get_next_question(differential_diagnoses, current_level, previous_answer)
+            if next_question is None:
+                break
+
+        next_question, current_level = get_next_question(differential_diagnoses, current_level)
+
+        if next_question is None:
+            # If no more questions, get the final diagnosis
+            for diagnosis in differential_diagnoses:
+                if diagnosis['level'] == current_level + 1:
+                    final_diagnosis = diagnosis['value']
+                    break
+            if conn:
+                conn.close()
+            return jsonify(
+                {"output_string": initial_diagnosis, "final_diagnosis": final_diagnosis,
+                 "differential_diagnoses": differential_diagnoses, "icd11_codes": icd11_codes})  # Return the final diagnosis
+
+        # Return the next question
+        if conn:
+            conn.close()
+        return jsonify(
+            {"output_string": initial_diagnosis, "next_question": next_question, "current_level": current_level,
+             "differential_diagnoses": differential_diagnoses, "icd11_codes": icd11_codes})
+    
+
+if __name__ == '__main__':
+    # Run the server
+    app.run(host="0.0.0.0", debug=True)
