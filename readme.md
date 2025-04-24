@@ -65,7 +65,7 @@ pip install -r requirements.txt
 6. **Expose LLM-based API**
 
    ```bash
-   python api.py
+   python api_main.py
    ```
 
    Provides a Flask API endpoint (`/askLLM`) that allows querying an LLM.
