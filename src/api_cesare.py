@@ -7,6 +7,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 import re  # Import the regular expression module
 import pyodbc  # Import the pyodbc module
+import difflib
 
 app = Flask(__name__)
 
@@ -57,70 +58,134 @@ def askLLM():
     # Remove newline characters from the answer
     answer = answer.replace("\n", "")
     
-    # Extract the disease code using a regular expression
-    disease_code_pattern = r"6[a-zA-Z0-9]{3}"
-    match = re.search(disease_code_pattern, answer)
-    if match:
-        disease_code = match.group(0)
-    else:
-        disease_code = None  # Or handle the case where no code is found, e.g., "" or an error
+    # # Extract the disease code using a regular expression
+    # disease_code_pattern = r"6[a-zA-Z0-9]{3}"
+    # match = re.search(disease_code_pattern, answer)
+    # if match:
+    #     disease_code = match.group(0)
+    # else:
+    #     disease_code = None  # Or handle the case where no code is found, e.g., "" or an error
+
+    # import db_config
+    # # Construct the connection string
+    # cnxn_str = db_config.SQL_SERVER_CONNECTION_STRING
+    
+    # # Initialize an empty list to store drug information
+    # drugs = []
+    # disease_definition = None
+
+    # # If a disease code was found, query the database
+    # if disease_code:
+    #     try:
+    #         # Establish a database connection
+    #         cnxn = pyodbc.connect(cnxn_str)
+    #         cursor = cnxn.cursor()
+
+    #         # SQL query to find disease definition
+    #         sql_query_icd11 = """
+    #             SELECT title
+    #             FROM [dbo].[ICD11_Codes]
+    #             WHERE code = ?
+    #         """
+    #         cursor.execute(sql_query_icd11, disease_code)
+    #         icd11_result = cursor.fetchone()
+    #         if icd11_result:
+    #             disease_definition = icd11_result[0]
+
+    #         # SQL query to find drugs for the given disease definition
+    #         sql_query = """
+    #             SELECT x_name
+    #             FROM [dbo].[KGPrime_db]
+    #             WHERE y_name = ?
+    #         """
+    #         cursor.execute(sql_query, disease_definition)
+            
+    #         # Fetch all rows and append drug names to the list
+    #         rows = cursor.fetchall()
+    #         for row in rows:
+    #             drugs.append(row[0])  # Assuming x_name is the first column
+
+    #         # Close the cursor and connection
+    #         cursor.close()
+    #         cnxn.close()
+
+    #     except pyodbc.Error as ex:
+    #         sqlstate = ex.args[0]
+    #         if sqlstate == '08001':
+    #             return jsonify({"error": "Error: Could not connect to the database.  Check your server name, instance name, and port number."}), 500
+    #         elif sqlstate == '28000':
+    #             return jsonify({"error": "Error: Login failed. Check your username and password."}), 500
+    #         else:
+    #             return jsonify({"error": f"Database error: {ex}"}), 500
+    #     except Exception as e:
+    #          return jsonify({"error": f"An unexpected error occurred: {e}"}), 500
+    
+    # # Return the response, including the disease code and drug list
+    # return jsonify({"output_string": answer, "disease_code": disease_code, "drugs": drugs, "disease_definition": disease_definition})
+
+    # Find the disease name by matching answer text against all titles
+    
+    # Initialize an empty list to store drug information
+    disease_name = None
+    disease_definition = None
+    drugs = []
 
     import db_config
     # Construct the connection string
     cnxn_str = db_config.SQL_SERVER_CONNECTION_STRING
-    
-    # Initialize an empty list to store drug information
-    drugs = []
-    disease_definition = None
+    try:
+        # Establish a database connection
+        cnxn = pyodbc.connect(cnxn_str)
+        cursor = cnxn.cursor()
 
-    # If a disease code was found, query the database
-    if disease_code:
-        try:
-            # Establish a database connection
-            cnxn = pyodbc.connect(cnxn_str)
-            cursor = cnxn.cursor()
+        # Get all disease titles
+        cursor.execute("SELECT title FROM [dbo].[ICD11_Codes]")
+        titles = [row[0] for row in cursor.fetchall()]
 
-            # SQL query to find disease definition
-            sql_query_icd11 = """
-                SELECT title
-                FROM [dbo].[ICD11_Codes]
-                WHERE code = ?
-            """
-            cursor.execute(sql_query_icd11, disease_code)
-            icd11_result = cursor.fetchone()
-            if icd11_result:
-                disease_definition = icd11_result[0]
+        # Step 1: Exact match
+        exact_matches = [title for title in titles if title in answer]
 
-            # SQL query to find drugs for the given disease definition
+        if exact_matches:
+            # If there are multiple, pick the first exact match
+            disease_definition = exact_matches[0]
+            disease_name = disease_definition
+        else:
+            # Step 2: Fuzzy match if no exact match found
+            best_match = difflib.get_close_matches(answer, titles, n=1, cutoff=0.3)
+            if best_match:
+                disease_definition = best_match[0]
+                disease_name = disease_definition
+
+        if disease_definition:
+            # Now find drugs linked to the disease
             sql_query = """
                 SELECT x_name
                 FROM [dbo].[KGPrime_db]
                 WHERE y_name = ?
             """
             cursor.execute(sql_query, disease_definition)
-            
-            # Fetch all rows and append drug names to the list
             rows = cursor.fetchall()
             for row in rows:
-                drugs.append(row[0])  # Assuming x_name is the first column
+                drugs.append(row[0])
 
-            # Close the cursor and connection
-            cursor.close()
-            cnxn.close()
+        # Close the cursor and connection
+        cursor.close()
+        cnxn.close()
 
-        except pyodbc.Error as ex:
-            sqlstate = ex.args[0]
-            if sqlstate == '08001':
-                return jsonify({"error": "Error: Could not connect to the database.  Check your server name, instance name, and port number."}), 500
-            elif sqlstate == '28000':
-                return jsonify({"error": "Error: Login failed. Check your username and password."}), 500
-            else:
-                return jsonify({"error": f"Database error: {ex}"}), 500
-        except Exception as e:
-             return jsonify({"error": f"An unexpected error occurred: {e}"}), 500
-    
+    except pyodbc.Error as ex:
+        sqlstate = ex.args[0]
+        if sqlstate == '08001':
+            return jsonify({"error": "Error: Could not connect to the database.  Check your server name, instance name, and port number."}), 500
+        elif sqlstate == '28000':
+            return jsonify({"error": "Error: Login failed. Check your username and password."}), 500
+        else:
+            return jsonify({"error": f"Database error: {ex}"}), 500
+    except Exception as e:
+            return jsonify({"error": f"An unexpected error occurred: {e}"}), 500
+
     # Return the response, including the disease code and drug list
-    return jsonify({"output_string": answer, "disease_code": disease_code, "drugs": drugs, "disease_definition": disease_definition})
+    return jsonify({"output_string": answer, "disease_name": disease_name, "drugs": drugs, "disease_definition": disease_definition})
+
 
 if __name__ == '__main__':
     # Run the server
