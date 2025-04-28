@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module 4. DBlangchainbuilder</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="4.html" class="white">4</a>. DBlangchainbuilder</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cdavid%5Cdocuments%5Crepositories%5Cllmind%5Csrc%5C4.%20dblangchainbuilder.py">c:\users\david\documents\repositories\llmind\src\4. dblangchainbuilder.py</a></td></tr></table>
+    <p></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="db_config.html">db_config</a><br>
+<a href="json.html">json</a><br>
+</td><td class="multicolumn"><a href="pandas.html">pandas</a><br>
+<a href="pyodbc.html">pyodbc</a><br>
+</td><td class="multicolumn"><a href="subprocess.html">subprocess</a><br>
+<a href="threading.html">threading</a><br>
+</td><td class="multicolumn"><a href="time.html">time</a><br>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-create_and_persist_chroma"><strong>create_and_persist_chroma</strong></a>(
+    texts: List[str],
+    model_name: str,
+    persist_directory: str
+) -&gt; langchain_chroma.vectorstores.Chroma</dt><dd><span class="code">Creates&nbsp;a&nbsp;Chroma&nbsp;vector&nbsp;store&nbsp;from&nbsp;a&nbsp;list&nbsp;of&nbsp;texts&nbsp;using&nbsp;a&nbsp;specified&nbsp;embedding&nbsp;model<br>
+and&nbsp;persists&nbsp;it&nbsp;to&nbsp;a&nbsp;directory.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;texts:&nbsp;A&nbsp;list&nbsp;of&nbsp;texts&nbsp;to&nbsp;embed&nbsp;and&nbsp;store.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;model_name:&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;Ollama&nbsp;model&nbsp;to&nbsp;use&nbsp;for&nbsp;embeddings.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;persist_directory:&nbsp;The&nbsp;directory&nbsp;where&nbsp;the&nbsp;Chroma&nbsp;vector&nbsp;store&nbsp;should&nbsp;be&nbsp;saved.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;Chroma&nbsp;vector&nbsp;store&nbsp;instance.</span></dd></dl>
+ <dl><dt><a name="-get_available_ollama_models"><strong>get_available_ollama_models</strong></a>() -&gt; List[str]</dt><dd><span class="code">Retrieves&nbsp;a&nbsp;list&nbsp;of&nbsp;available&nbsp;Ollama&nbsp;models.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;list&nbsp;of&nbsp;model&nbsp;names,&nbsp;or&nbsp;an&nbsp;empty&nbsp;list&nbsp;on&nbsp;error.</span></dd></dl>
+ <dl><dt><a name="-main"><strong>main</strong></a>(
+    base_persist_directory: str = './vectorstore/chroma_db-full',
+    models: Optional[List[str]] = None,
+    table_name: str = 'ICD11_Final_Data'
+) -&gt; None</dt><dd><span class="code">Main&nbsp;function&nbsp;to&nbsp;create&nbsp;and&nbsp;persist&nbsp;Chroma&nbsp;vector&nbsp;stores&nbsp;for&nbsp;ICD-11&nbsp;prompts<br>
+using&nbsp;different&nbsp;Ollama&nbsp;models,&nbsp;reading&nbsp;data&nbsp;from&nbsp;a&nbsp;SQL&nbsp;Server&nbsp;table.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;base_persist_directory:&nbsp;Base&nbsp;directory&nbsp;where&nbsp;Chroma&nbsp;stores&nbsp;will&nbsp;be&nbsp;saved.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;models:&nbsp;List&nbsp;of&nbsp;Ollama&nbsp;model&nbsp;names&nbsp;to&nbsp;use.&nbsp;&nbsp;If&nbsp;None,&nbsp;the&nbsp;user&nbsp;is&nbsp;prompted.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;table_name:&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;table&nbsp;to&nbsp;read&nbsp;the&nbsp;prompts&nbsp;from</span></dd></dl>
+ <dl><dt><a name="-read_data_from_sql"><strong>read_data_from_sql</strong></a>(connection_string: str, table_name: str) -&gt; pandas.core.frame.DataFrame</dt><dd><span class="code">Reads&nbsp;data&nbsp;from&nbsp;a&nbsp;SQL&nbsp;Server&nbsp;table&nbsp;into&nbsp;a&nbsp;Pandas&nbsp;DataFrame.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;connection_string&nbsp;(str):&nbsp;The&nbsp;SQL&nbsp;Server&nbsp;connection&nbsp;string.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;table_name&nbsp;(str):&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;table&nbsp;to&nbsp;read&nbsp;from.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pd.DataFrame:&nbsp;The&nbsp;data&nbsp;from&nbsp;the&nbsp;table.</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>List</strong> = typing.List<br>
+<strong>Optional</strong> = typing.Optional</td></tr></table>
+</body></html>

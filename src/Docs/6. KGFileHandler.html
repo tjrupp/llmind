@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module 6. KGFileHandler</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="6.html" class="white">6</a>. KGFileHandler</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cdavid%5Cdocuments%5Crepositories%5Cllmind%5Csrc%5C6.%20kgfilehandler.py">c:\users\david\documents\repositories\llmind\src\6. kgfilehandler.py</a></td></tr></table>
+    <p></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="db_config.html">db_config</a><br>
+<a href="logging.html">logging</a><br>
+</td><td class="multicolumn"><a href="pandas.html">pandas</a><br>
+<a href="pyodbc.html">pyodbc</a><br>
+</td><td class="multicolumn"><a href="re.html">re</a><br>
+</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-create_table_if_not_exists"><strong>create_table_if_not_exists</strong></a>(
+    connection_string: str,
+    table_name: str,
+    header: List[str]
+) -&gt; None</dt><dd><span class="code">Creates&nbsp;the&nbsp;specified&nbsp;table&nbsp;in&nbsp;SQL&nbsp;Server&nbsp;if&nbsp;it&nbsp;does&nbsp;not&nbsp;already&nbsp;exist.&nbsp;&nbsp;Uses&nbsp;the&nbsp;provided&nbsp;header<br>
+to&nbsp;define&nbsp;the&nbsp;table&nbsp;schema.&nbsp;&nbsp;All&nbsp;columns&nbsp;are&nbsp;created&nbsp;as&nbsp;NVARCHAR(MAX).<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;connection_string&nbsp;(str):&nbsp;The&nbsp;SQL&nbsp;Server&nbsp;connection&nbsp;string.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;table_name&nbsp;(str):&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;table&nbsp;to&nbsp;create.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;header&nbsp;(list):&nbsp;A&nbsp;list&nbsp;of&nbsp;column&nbsp;names&nbsp;for&nbsp;the&nbsp;table.</span></dd></dl>
+ <dl><dt><a name="-insert_data_into_table"><strong>insert_data_into_table</strong></a>(
+    connection_string: str,
+    table_name: str,
+    df: pandas.core.frame.DataFrame,
+    chunk_size: int = 10000
+) -&gt; None</dt><dd><span class="code">Inserts&nbsp;the&nbsp;data&nbsp;from&nbsp;the&nbsp;Pandas&nbsp;DataFrame&nbsp;into&nbsp;the&nbsp;specified&nbsp;SQL&nbsp;Server&nbsp;table&nbsp;in&nbsp;chunks.<br>
+Uses&nbsp;fast_executemany&nbsp;for&nbsp;efficient&nbsp;insertion&nbsp;of&nbsp;large&nbsp;datasets.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;connection_string&nbsp;(str):&nbsp;The&nbsp;SQL&nbsp;Server&nbsp;connection&nbsp;string.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;table_name&nbsp;(str):&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;table&nbsp;to&nbsp;insert&nbsp;data&nbsp;into.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;df&nbsp;(pd.DataFrame):&nbsp;The&nbsp;Pandas&nbsp;DataFrame&nbsp;containing&nbsp;the&nbsp;data&nbsp;to&nbsp;insert.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;chunk_size&nbsp;(int,&nbsp;optional):&nbsp;The&nbsp;number&nbsp;of&nbsp;rows&nbsp;to&nbsp;insert&nbsp;in&nbsp;each&nbsp;chunk.&nbsp;Defaults&nbsp;to&nbsp;10000.</span></dd></dl>
+ <dl><dt><a name="-main"><strong>main</strong></a>()</dt><dd><span class="code">Reads&nbsp;the&nbsp;CSV&nbsp;file&nbsp;into&nbsp;a&nbsp;Pandas&nbsp;DataFrame,&nbsp;filters&nbsp;the&nbsp;DataFrame&nbsp;and<br>
+creates&nbsp;the&nbsp;table&nbsp;in&nbsp;SQL&nbsp;Server&nbsp;(if&nbsp;it&nbsp;doesn't&nbsp;exist),&nbsp;and&nbsp;inserts<br>
+the&nbsp;data&nbsp;into&nbsp;the&nbsp;table.</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>List</strong> = typing.List<br>
+<strong>SQL_SERVER_CONNECTION_STRING</strong> = 'Driver={ODBC Driver 17 for SQL Server};Server=tc...;TrustServerCertificate=no;Connection Timeout=30;'<br>
+<strong>csv_file_path</strong> = '../data/input/kg.csv'<br>
+<strong>csv_header</strong> = ['relation', 'display_relation', 'x_index', 'x_id', 'x_type', 'x_name', 'x_source', 'y_index', 'y_id', 'y_type', 'y_name', 'y_source']<br>
+<strong>icd11_chapter_6_code</strong> = '6'<br>
+<strong>icd11_match_threshold</strong> = 0.8<br>
+<strong>icd11_table_name</strong> = 'ICD11_Codes'<br>
+<strong>table_name</strong> = 'KGPrime_db'</td></tr></table>
+</body></html>

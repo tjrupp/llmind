@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module app</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">app</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cdavid%5Cdocuments%5Crepositories%5Cllmind%5Csrc%5Capp.py">c:\users\david\documents\repositories\llmind\src\app.py</a></td></tr></table>
+    <p></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="csv.html">csv</a><br>
+</td><td class="multicolumn"><a href="langchain.hub.html">langchain.hub</a><br>
+</td><td class="multicolumn"><a href="os.html">os</a><br>
+</td><td class="multicolumn"><a href="time.html">time</a><br>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-format_docs"><strong>format_docs</strong></a>(docs)</dt><dd><span class="code">Formats&nbsp;a&nbsp;list&nbsp;of&nbsp;document&nbsp;objects&nbsp;by&nbsp;joining&nbsp;their&nbsp;`page_content`&nbsp;with&nbsp;double&nbsp;newlines.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;docs&nbsp;(list):&nbsp;List&nbsp;of&nbsp;document&nbsp;objects&nbsp;with&nbsp;a&nbsp;`page_content`&nbsp;attribute.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;Formatted&nbsp;string&nbsp;combining&nbsp;all&nbsp;document&nbsp;contents.</span></dd></dl>
+ <dl><dt><a name="-log_progress"><strong>log_progress</strong></a>(message: str)</dt><dd><span class="code">Appends&nbsp;a&nbsp;message&nbsp;to&nbsp;the&nbsp;log&nbsp;file.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;message&nbsp;(str):&nbsp;The&nbsp;log&nbsp;message.</span></dd></dl>
+ <dl><dt><a name="-main"><strong>main</strong></a>()</dt><dd><span class="code">Main&nbsp;function&nbsp;to&nbsp;iterate&nbsp;through&nbsp;all&nbsp;models&nbsp;and&nbsp;process&nbsp;the&nbsp;input&nbsp;CSV.</span></dd></dl>
+ <dl><dt><a name="-process_model"><strong>process_model</strong></a>(model: str)</dt><dd><span class="code">Processes&nbsp;the&nbsp;input&nbsp;CSV&nbsp;for&nbsp;a&nbsp;specific&nbsp;model:<br>
+&nbsp;&nbsp;-&nbsp;Initializes&nbsp;the&nbsp;vector&nbsp;store&nbsp;and&nbsp;LLM.<br>
+&nbsp;&nbsp;-&nbsp;Builds&nbsp;the&nbsp;QA&nbsp;chain.<br>
+&nbsp;&nbsp;-&nbsp;Iterates&nbsp;over&nbsp;each&nbsp;CSV&nbsp;row,&nbsp;invokes&nbsp;the&nbsp;chain,&nbsp;and&nbsp;writes&nbsp;output.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;model&nbsp;(str):&nbsp;The&nbsp;model&nbsp;to&nbsp;use.</span></dd></dl>
+ <dl><dt><a name="-setup_output_directory"><strong>setup_output_directory</strong></a>(model: str) -&gt; str</dt><dd><span class="code">Ensures&nbsp;that&nbsp;an&nbsp;output&nbsp;directory&nbsp;exists&nbsp;for&nbsp;the&nbsp;given&nbsp;model.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;model&nbsp;(str):&nbsp;The&nbsp;model&nbsp;name.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;Path&nbsp;to&nbsp;the&nbsp;model-specific&nbsp;output&nbsp;directory.</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>INPUT_CSV_PATH</strong> = './data/input/DSM-5-TR_Clinical_Cases_splitted.csv'<br>
+<strong>LOG_FILE_PATH</strong> = './data/log.txt'<br>
+<strong>MODELS</strong> = ['deepseek-r1:1.5b']<br>
+<strong>OUTPUT_DIR_BASE</strong> = './data/output'<br>
+<strong>TOTAL_ROWS</strong> = 103<br>
+<strong>VECTORESTORE_BASE</strong> = './vectorstore'</td></tr></table>
+</body></html>

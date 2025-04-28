@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module 3. DBdsmsplit</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="3.html" class="white">3</a>. DBdsmsplit</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cdavid%5Cdocuments%5Crepositories%5Cllmind%5Csrc%5C3.%20dbdsmsplit.py">c:\users\david\documents\repositories\llmind\src\3. dbdsmsplit.py</a></td></tr></table>
+    <p></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="db_config.html">db_config</a><br>
+</td><td class="multicolumn"><a href="pyodbc.html">pyodbc</a><br>
+</td><td class="multicolumn"><a href="re.html">re</a><br>
+</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-clean_text"><strong>clean_text</strong></a>(text: str) -&gt; str</dt><dd><span class="code">Cleans&nbsp;the&nbsp;input&nbsp;text&nbsp;by&nbsp;removing&nbsp;unwanted&nbsp;characters&nbsp;and&nbsp;patterns.&nbsp;&nbsp;This&nbsp;version&nbsp;is&nbsp;more&nbsp;strict.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;text&nbsp;(str):&nbsp;The&nbsp;text&nbsp;to&nbsp;clean.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;The&nbsp;cleaned&nbsp;text.</span></dd></dl>
+ <dl><dt><a name="-create_table_if_not_exists"><strong>create_table_if_not_exists</strong></a>(connection_string: str) -&gt; None</dt><dd><span class="code">Creates&nbsp;the&nbsp;DSM5_Cases&nbsp;table&nbsp;in&nbsp;the&nbsp;SQL&nbsp;Server&nbsp;database&nbsp;if&nbsp;it&nbsp;does&nbsp;not&nbsp;already&nbsp;exist.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;connection_string&nbsp;(str):&nbsp;The&nbsp;connection&nbsp;string&nbsp;for&nbsp;the&nbsp;SQL&nbsp;Server&nbsp;database.</span></dd></dl>
+ <dl><dt><a name="-insert_or_update_case_data"><strong>insert_or_update_case_data</strong></a>(
+    connection_string: str,
+    case_number: int,
+    introduction: str,
+    discussion: str,
+    diagnosis: str
+) -&gt; None</dt><dd><span class="code">Inserts&nbsp;or&nbsp;updates&nbsp;a&nbsp;single&nbsp;case's&nbsp;data&nbsp;in&nbsp;the&nbsp;DSM5_Cases&nbsp;table.<br>
+It&nbsp;checks&nbsp;if&nbsp;the&nbsp;case_number&nbsp;exists.&nbsp;&nbsp;If&nbsp;it&nbsp;does,&nbsp;it&nbsp;updates&nbsp;the&nbsp;row,&nbsp;otherwise&nbsp;it&nbsp;inserts&nbsp;a&nbsp;new&nbsp;row.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;connection_string&nbsp;(str):&nbsp;The&nbsp;connection&nbsp;string&nbsp;for&nbsp;the&nbsp;SQL&nbsp;Server&nbsp;database.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;case_number&nbsp;(int):&nbsp;The&nbsp;case&nbsp;number.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;introduction&nbsp;(str):&nbsp;The&nbsp;introduction&nbsp;text.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;discussion&nbsp;(str):&nbsp;The&nbsp;discussion&nbsp;text.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;diagnosis&nbsp;(str):&nbsp;The&nbsp;diagnosis&nbsp;text.</span></dd></dl>
+ <dl><dt><a name="-main"><strong>main</strong></a>()</dt><dd><span class="code">Main&nbsp;function&nbsp;to:<br>
+1.&nbsp;&nbsp;Read&nbsp;the&nbsp;DSM-5-TR&nbsp;Clinical&nbsp;Cases&nbsp;text&nbsp;file.<br>
+2.&nbsp;&nbsp;Parse&nbsp;the&nbsp;text&nbsp;to&nbsp;extract&nbsp;individual&nbsp;cases.<br>
+3.&nbsp;&nbsp;Create&nbsp;the&nbsp;DSM5_Cases&nbsp;table&nbsp;in&nbsp;the&nbsp;SQL&nbsp;Server&nbsp;database.<br>
+4.&nbsp;&nbsp;Insert&nbsp;or&nbsp;update&nbsp;the&nbsp;extracted&nbsp;case&nbsp;data&nbsp;into&nbsp;the&nbsp;database.</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>SQL_SERVER_CONNECTION_STRING</strong> = 'Driver={ODBC Driver 17 for SQL Server};Server=tc...;TrustServerCertificate=no;Connection Timeout=30;'<br>
+<strong>input_txt_path</strong> = WindowsPath('data/input/DSM-5-TR_Clinical_Cases.txt')</td></tr></table>
+</body></html>

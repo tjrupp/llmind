@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        nav {
+            background-color: #333;
+            overflow: hidden;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul {
+            margin: 20px 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            justify-content: center;
+            max-width: 1000px;
+            width: 95%;
+        }
+        nav ul li {
+            margin: 0;
+        }
+        nav ul li a {
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            display: block;
+            text-decoration: none;
+            border-radius: 5px;
+            background-image: linear-gradient(to bottom right, #4285F4, #34A853, #F4B400, #EA4335);
+            background-size: 400% 400%;
+            animation: gradient 5s ease infinite;
+            border: none;
+            display: flex; /* Use flexbox for icon alignment */
+            align-items: center;
+            justify-content: center;
+            gap: 8px; /* Space between icon and text */
+            cursor: pointer; /* Change cursor to pointer on hover */
+        }
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+        .container {
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #4285F4;
+        }
+        p {
+            color: #34A853;
+        }
+
+        #content-area {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            width: 95%;
+            max-width: 1000px;
+            text-align: left;
+        }
+        #content-area h2 {
+            color: #4285F4;
+            margin-bottom: 10px;
+        }
+        #content-area p {
+            color: #333;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="1.%20DBicddownloader.html" data-target="content-area">
+                    <i class="fas fa-download"></i> DBicddownloader.html</a></li>
+            <li><a href="2.%20DBICD_processing.html" data-target="content-area">
+                    <i class="fas fa-cog"></i> DBICD_processing.html</a></li>
+            <li><a href="3.%20DBdsmsplit.html" data-target="content-area">
+                    <i class="fas fa-file-alt"></i> DBdsmsplit.html</a></li>
+            <li><a href="4.%20DBlangchainbuilder.html" data-target="content-area">
+                    <i class="fas fa-code-branch"></i> DBlangchainbuilder.html</a></li>
+            <li><a href="5.%20DifferentialDiagnosisTreeReader.html" data-target="content-area">
+                    <i class="fas fa-tree"></i> DifferentialDiagnosisTreeReader.html</a></li>
+            <li><a href="6.%20KGFileHandler.html" data-target="content-area">
+                    <i class="fas fa-file"></i> KGFileHandler.html</a></li>
+            <li><a href="api_cesare.html" data-target="content-area">
+                    <i class="fas fa-terminal"></i> api_cesare.html</a></li>
+            <li><a href="api_main.html" data-target="content-area">
+                    <i class="fas fa-globe"></i> api_main.html</a></li>
+            <li><a href="app.html" data-target="content-area">
+                    <i class="fas fa-desktop"></i> app.html</a></li>
+            <li><a href="db_config.html" data-target="content-area">
+                    <i class="fas fa-database"></i> db_config.html</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Project Documentation</h1>
+        <p>This website provides links to the documentation pages for the project.</p>
+    </div>
+
+    <div id="content-area">
+        <h2>Welcome</h2>
+        <p>Click on a link above to view the documentation.</p>
+    </div>
+
+    <script>
+        const navLinks = document.querySelectorAll('nav ul li a');
+        const contentArea = document.getElementById('content-area');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent page from reloading
+                const href = this.getAttribute('href'); // Get the href attribute
+
+                // Use fetch to load the content from the file
+                fetch(href)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Failed to load ${href}`);
+                        }
+                        return response.text(); // Get the content as text
+                    })
+                    .then(data => {
+                        // Parse the HTML and extract the table content
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(data, 'text/html');
+                        const table = doc.querySelector('body'); //Select the body
+
+                        if (table) {
+                            contentArea.innerHTML = table.outerHTML; // Display the table
+                        } else {
+                            contentArea.innerHTML = `<h2>Content Not Found</h2><p>Could not find relevant table content in ${href}</p>`;
+                        }
+                    })
+                    .catch(error => {
+                        contentArea.innerHTML = `<h2>Error</h2><p>Failed to load content: ${error.message}</p>`;
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
