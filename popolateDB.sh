@@ -19,6 +19,6 @@ pip install --user requests
 pip install --user pdfplumber
 python "./src/db_config.py"
 python "./src/1. DBicddownloader.py"
-python "./src/2. DBICD_processing.py"
+#python "./src/2. DBICD_processing.py"
 python "./src/3. DBdsmsplit.py"
 python "./src/6. KGFileHandler.py"

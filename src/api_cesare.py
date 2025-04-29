@@ -58,6 +58,8 @@ def askLLM():
     # Remove newline characters from the answer
     answer = answer.replace("\n", "")
     
+    short_answer = qa_chain.invoke(f"starting from the previous answer: {answer}, please give me just the name of the disease and nothing else according to icd11")
+    short_answer = short_answer.replace("\n", "").strip()
     # # Extract the disease code using a regular expression
     # disease_code_pattern = r"6[a-zA-Z0-9]{3}"
     # match = re.search(disease_code_pattern, answer)
@@ -139,11 +141,11 @@ def askLLM():
         cursor = cnxn.cursor()
 
         # Get all disease titles
-        cursor.execute("SELECT title FROM [dbo].[ICD11_Codes]")
+        cursor.execute("SELECT title FROM [dbo].[ICD11_Codes] where code like '6%'")
         titles = [row[0] for row in cursor.fetchall()]
 
         # Step 1: Exact match
-        exact_matches = [title for title in titles if title in answer]
+        exact_matches = [title for title in titles if title in short_answer]
 
         if exact_matches:
             # If there are multiple, pick the first exact match
@@ -151,7 +153,7 @@ def askLLM():
             disease_name = disease_definition
         else:
             # Step 2: Fuzzy match if no exact match found
-            best_match = difflib.get_close_matches(answer, titles, n=1, cutoff=0.3)
+            best_match = difflib.get_close_matches(short_answer, titles, n=1, cutoff=0.6)
             if best_match:
                 disease_definition = best_match[0]
                 disease_name = disease_definition
