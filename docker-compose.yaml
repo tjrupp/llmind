@@ -1,0 +1,53 @@
+services:
+  sql1:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql1
+    hostname: sql1
+    user: root
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "LLMind2025!"
+    ports:
+      - "1433:1433"
+    #  If you need the sql server data to persist, uncomment the volumes section
+    volumes:
+      - type: bind
+        source: "C:\\Users\\david\\LLMind2" # For Windows
+        target: /var/opt/mssql/data
+      # - type: bind
+      #   source: "%userprofile%/LLMind2" # For Linux
+      #   target: /var/opt/mssql
+    #command: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -C -P "$$MSSQL_SA_PASSWORD" -Q 'IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = ''llmind'') CREATE DATABASE llmind;' # corrected command
+  icd-api:
+    image: whoicd/icd-api
+    ports:
+      - "80:80"
+    environment:
+      acceptLicense: "true"
+      saveAnalytics: "true"
+      include: "2025-01_en"
+    #  Add a dependency on sql1 so that icd-api starts after sql1
+    depends_on:
+      - sql1
+  python-app:
+    image: python:3.13.3-bullseye # Use a slim Python image to keep it lightweight
+    container_name: python-app
+    volumes:
+      - type: bind
+        source: ./ # Replace with the actual path to your project
+        target: /app # Mount your project directory into the container's /app directory
+    working_dir: /app # Set the working directory inside the container
+    command: sh ./popolateDB.sh # Keep the container running indefinitely
+    environment:
+      #  Any environment variables your Python app needs
+      #  Example:
+      #  - DATABASE_URL=your_database_connection_string
+      ACCEPT_EULA: "Y"
+      PYTHONUNBUFFERED: "1" # Ensure that Python output is not buffered
+    depends_on:
+      - sql1 #  Make sure this starts after the database is ready
+    # ports: # Expose any ports your Python app might be listening on
+    #   - "5000:5000"
+# If you uncommented the volumes section for sql1, you need to define the volume
+# volumes:
+#   sql_data:

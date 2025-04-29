@@ -10,8 +10,8 @@ import db_config
 # -----------------------------------------------------------------------------
 
 # API base URL and endpoint templates
-BASE_URI_TEMPLATE = 'http://localhost/icd/release/11/2024-01/mms/{}'
-ROOT_URI = 'http://localhost/icd/release/11/2024-01/mms'
+BASE_URI_TEMPLATE = 'http://llmind-icd-api-1/icd/release/11/2025-01/mms/{}?include=diagnosticCriteria'
+ROOT_URI = 'http://llmind-icd-api-1/icd/release/11/2025-01/mms'
 
 # HTTP headers for API requests
 HEADERS = {
@@ -62,6 +62,7 @@ def retrieve_code(uri: str, session: requests.Session, results: List[Dict]) -> N
             'longdefinition': data.get('longdefinition', {}).get('@value', '').replace(";", "~"),
             'inclusions': "; ".join([inc.get('label', {}).get('@value', '').replace(";", "~") for inc in data.get('inclusion', [])]),
             'exclusions': "; ".join([exc.get('label', {}).get('@value', '').replace(";", "~") for exc in data.get('exclusion', [])]),
+            'diagnosticCriteria': data.get('diagnosticCriteria', {}).get('@value', '').replace(";", "~"),
         }
         results.append(entry)
 
@@ -101,7 +102,8 @@ def create_table_if_not_exists(connection_string: str) -> None:
                     definition NVARCHAR(MAX),
                     longdefinition NVARCHAR(MAX),
                     inclusions NVARCHAR(MAX),
-                    exclusions NVARCHAR(MAX)
+                    exclusions NVARCHAR(MAX),
+                    diagnosticCriteria NVARCHAR(MAX)
                 )
             """)
             cnxn.commit()
@@ -129,8 +131,8 @@ def insert_data_into_table(connection_string: str, data: List[Dict]) -> None:
 
         # Use a parameterized query to prevent SQL injection.
         sql = """
-            INSERT INTO ICD11_Codes (code, title, definition, longdefinition, inclusions, exclusions)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO ICD11_Codes (code, title, definition, longdefinition, inclusions, exclusions,diagnosticCriteria)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         """
         for row in data:
             try:
@@ -140,7 +142,8 @@ def insert_data_into_table(connection_string: str, data: List[Dict]) -> None:
                     row['definition'],
                     row['longdefinition'],
                     row['inclusions'],
-                    row['exclusions']
+                    row['exclusions'],
+                    row['diagnosticCriteria']
                 ))
             except pyodbc.Error as e:
                 print(f"Error inserting row: {e}.  Row data: {row}")

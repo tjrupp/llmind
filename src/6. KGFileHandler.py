@@ -11,7 +11,7 @@ from difflib import SequenceMatcher
 # ------------------------------
 
 # Path to the CSV file
-csv_file_path = "../data/input/kg.csv"  # Update the path
+csv_file_path = "./data/input/kg.csv"  # Update the path
 
 # Database connection string (replace with your actual connection details)
 SQL_SERVER_CONNECTION_STRING = db_config.SQL_SERVER_CONNECTION_STRING # Use the connection string from db_config
