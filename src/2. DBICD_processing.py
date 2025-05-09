@@ -1,3 +1,6 @@
+#DA CANCELLARE
+#SOSTITUITO DA CHIAMATA IN FILE NUMERO 1
+
 import pandas as pd
 import numpy as np
 import re
