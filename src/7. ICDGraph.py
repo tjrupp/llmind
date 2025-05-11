@@ -233,9 +233,9 @@ def insert_symptoms_into_db(connection_string, symptoms_data):
 
 
 
-def generate_ttl(icd11_data, diagnostic_criteria_data, symptoms_data):
+def generate_ttl(icd11_data, diagnostic_criteria_data, symptoms_data, prescriptions_data):
     """
-    Generates TTL triples from the ICD-11 data, diagnostic criteria, and symptoms.
+    Generates TTL triples from the ICD-11 data, diagnostic criteria, symptoms, and prescriptions.
 
     Args:
         icd11_data: A list of dictionaries, where each dictionary represents an ICD-11 entity.
@@ -243,7 +243,8 @@ def generate_ttl(icd11_data, diagnostic_criteria_data, symptoms_data):
             lists of dictionaries, each representing a diagnostic criterion.
         symptoms_data: A dictionary where keys are ICD-11 codes and values are lists of
             symptom strings.
-
+        prescriptions_data: A dictionary where keys are ICD-11 codes and values are lists of
+            drug prescription strings.
     Returns:
         A string containing the TTL triples. Returns an empty string if data is None or empty.
     """
@@ -296,14 +297,20 @@ def generate_ttl(icd11_data, diagnostic_criteria_data, symptoms_data):
                 criterion_text = criterion['text']
                 escaped_text = criterion_text.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
                 ttl_triples.append(f"<{entity_uri}> icd:hasCriterion [ rdf:type <http://id.who.int/icd/property/diagnosticCriterion> ;"
-                                   f" icd:criterionType \"{criterion_type}\" ;"
-                                   f" icd:criterionText \"{escaped_text}\" ] .")
+                                   f" diag:criterionType \"{criterion_type}\" ;"
+                                   f" diag:criterionText \"{escaped_text}\" ] .")
         
         # Handle symptoms
         if entity_id in symptoms_data:
             for symptom in symptoms_data[entity_id]:
                 escaped_symptom = symptom.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
                 ttl_triples.append(f"<{entity_uri}> icd:hasSymptom \"{escaped_symptom}\" .")
+
+        # Handle prescriptions
+        if entity_id in prescriptions_data:
+            for prescription in prescriptions_data[entity_id]:
+                escaped_prescription = prescription.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
+                ttl_triples.append(f"<{entity_uri}> icd:treatment \"{escaped_prescription}\" .")
 
         #  The SQL table doesn't have parent/child, so we can't represent the hierarchy.
         #  If your SQL Server table *does* have parent/child relationships, you'll need to
@@ -354,7 +361,7 @@ def get_symptoms_from_db(connection_string):
     try:
         conn = pyodbc.connect(connection_string)
         cursor = conn.cursor()
-        query = "SELECT code, symptom_text FROM llmind.dbo.ICD11_Symptoms"
+        query = "SELECT code, symptom_text FROM  llmind.dbo.ICD11_Symptoms"
         cursor.execute(query)
         results = {}
         for row in cursor.fetchall():
@@ -368,7 +375,65 @@ def get_symptoms_from_db(connection_string):
         print(f"Error connecting to or querying the database for symptoms: {e}")
         return None
 
+def get_prescriptions_from_db(connection_string):
+    """
+    Retrieves prescription data from the KGPrime_db table, filtered by disease title.
 
+    Args:
+        connection_string:  The SQL Server connection string.
+
+    Returns:
+        A dictionary where keys are ICD-11 codes and values are lists of
+        prescription strings.
+    """
+    try:
+        conn = pyodbc.connect(connection_string)
+        cursor = conn.cursor()
+        query = """
+                select code,prescription_text
+                FROM llmind.dbo.ICD11_Prescriptions
+            """
+        cursor.execute(query)
+        results = {}
+        for row in cursor.fetchall():
+            disease_code = row.code.strip()  # ICD-11 code is in y_id
+            prescription_name = row.prescription_text.strip() # Prescription is in x_name
+            if disease_code not in results:
+                results[disease_code] = []
+            results[disease_code].append(prescription_name)
+        conn.close()
+        return results
+    except pyodbc.Error as e:
+        print(f"Error querying the database for prescriptions: {e}")
+        return None
+
+
+def insert_prescriptions_into_db(connection_string, prescriptions_data):
+    """
+    Inserts prescriptions into the ICD11_Prescriptions table.
+
+    Args:
+        connection_string: The SQL Server connection string.
+        prescriptions_data: A list of tuples, where each tuple contains (code, prescription_text).
+    """
+    try:
+        conn = pyodbc.connect(connection_string)
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+                insert into dbo.ICD11_Prescriptions
+                SELECT  code, x_name
+                FROM llmind.dbo.KGPrime_db k
+                left join llmind.dbo.ICD11_Codes c on k.y_name like '%'+c.title+'%'
+                where code is not null
+            """
+        )
+        conn.commit()
+        conn.close()
+    except pyodbc.Error as e:
+        print(f"Error inserting prescriptions into the database: {e}")
+        return False  # Indicate failure
+    return True
 
 def main():
     """
@@ -379,7 +444,8 @@ def main():
         f.write("@prefix icd: <http://id.who.int/icd/entity/> .\n")
         f.write("@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n")
         f.write("@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n\n")
-        f.write("@prefix diag: <http://id.who.int/icd/property/> .\n\n")  # Corrected prefix declaration
+        f.write("@prefix diag: <http://id.who.int/icd/property/> .\n\n")
+        f.write("@prefix treat: <http://id.who.int/icd/treatment/> .\n\n")  # New
 
     try:
         conn = pyodbc.connect(SQL_SERVER_CONNECTION_STRING)
@@ -391,6 +457,9 @@ def main():
 
         cursor.execute("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'llmind' AND TABLE_NAME = 'ICD11_Symptoms'")
         table_exists_symptoms = cursor.fetchone()
+        
+        cursor.execute("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'llmind' AND TABLE_NAME = 'ICD11_Prescriptions'")
+        table_exists_prescriptions = cursor.fetchone()
         
         if not table_exists_criteria:
             # Create the table if it doesn't exist
@@ -419,6 +488,19 @@ def main():
             print("Table ICD11_Symptoms created.")
         else:
             print("Table ICD11_Symptoms already exists.")
+
+        if not table_exists_prescriptions:
+            cursor.execute("""
+                CREATE TABLE llmind.dbo.ICD11_Prescriptions (
+                    code NVARCHAR(255) NOT NULL,
+                    prescription_text VARCHAR(255) NOT NULL,
+                    FOREIGN KEY (code) REFERENCES llmind.dbo.ICD11_Codes(code)
+                )
+            """)
+            conn.commit()
+            print("Table ICD11_Prescriptions created.")
+        else:
+            print("Table ICD11_Prescriptions already exists.")
         
         conn.close()
     except pyodbc.Error as e:
@@ -432,6 +514,7 @@ def main():
     # Process and insert diagnostic criteria and symptoms
     diagnostic_criteria_to_insert = []
     symptoms_to_insert = []
+    prescriptions_to_insert = []
     for entity_data in icd11_data:
         code = entity_data['code']
         diagnostic_criteria_text = entity_data.get('diagnosticCriteria')  # Get the raw text
@@ -462,10 +545,19 @@ def main():
     else:
         print("No symptoms found to insert.")
 
+     # Extract and insert prescriptions
+    if insert_prescriptions_into_db(SQL_SERVER_CONNECTION_STRING, prescriptions_to_insert):
+            print("Prescriptions inserted into the database.")
+    else:
+            print("Failed to insert prescriptions into the database.")
+
+
+
     # Fetch diagnostic criteria and symptoms *from the database*
     diagnostic_criteria_data = get_diagnostic_criteria_from_db(SQL_SERVER_CONNECTION_STRING)
     symptoms_data = get_symptoms_from_db(SQL_SERVER_CONNECTION_STRING)
-    
+    prescriptions_data = get_prescriptions_from_db(SQL_SERVER_CONNECTION_STRING) # Get prescriptions
+
     if not diagnostic_criteria_data:
         print("Failed to retrieve diagnostic criteria from the database.")
         diagnostic_criteria_data = {}  # Ensure it's an empty dict if there's an error
@@ -473,9 +565,13 @@ def main():
     if not symptoms_data:
         print("Failed to retrieve symptoms from the database.")
         symptoms_data = {}
+    
+    if not prescriptions_data:
+        print("Failed to retrieve prescriptions from the database.")
+        prescriptions_data = {}
 
     # Generate the TTL file
-    ttl_output = generate_ttl(icd11_data, diagnostic_criteria_data, symptoms_data)
+    ttl_output = generate_ttl(icd11_data, diagnostic_criteria_data, symptoms_data, prescriptions_data)
     if ttl_output: # Make sure there is something to write
         with open(TTL_FILE, "a", encoding="utf-8") as f:
             f.write(ttl_output)
