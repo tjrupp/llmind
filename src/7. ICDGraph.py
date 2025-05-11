@@ -5,22 +5,23 @@ import pyodbc  # For connecting to SQL Server
 import db_config
 import pyodbc
 import re
-
+import random
 
 # Output file for the TTL data
 TTL_FILE = "icd11_knowledge_graph.ttl"
+# Output file for the HTML visualization
+HTML_FILE = "icd11_taxonomy.html"
 
 # SQL Server connection string
 #SQL_SERVER_CONNECTION_STRING = "Driver={ODBC Driver 17 for SQL Server};Server=localhost;Database=llmind;Uid=sa;Pwd=LLMind2025!;Encrypt=yes;TrustServerCertificate=yes;Connection Timeout=30;"
-
 
 # -----------------------------------------------------------------------------
 # Configuration Section
 # -----------------------------------------------------------------------------
 
 # API base URL and endpoint templates
-BASE_URI_TEMPLATE = 'http://llmind-icd-api-1/icd/release/11/2025-01/mms/{}?include=diagnosticCriteria'
-ROOT_URI = 'http://llmind-icd-api-1/icd/release/11/2025-01/mms'
+BASE_URI_TEMPLATE = 'http://localhost/icd/release/11/2025-01/mms/{}?include=diagnosticCriteria'
+ROOT_URI = 'http://localhost/icd/release/11/2025-01/mms'
 
 # HTTP headers for API requests
 HEADERS = {
@@ -28,6 +29,8 @@ HEADERS = {
     'Accept-Language': 'en',
     'API-Version': 'v2'
 }
+
+
 
 # Database connection string.  **Replace with your actual connection details.**
 # Important:  Store this securely, e.g., in environment variables.  DO NOT hardcode in production code.
@@ -42,8 +45,7 @@ SQL_SERVER_CONNECTION_STRING = db_config.SQL_SERVER_CONNECTION_STRING
 # Data Retrieval Functions
 # -----------------------------------------------------------------------------
 
-
-def retrieve_code(uri: str, session: requests.Session, results: List[Dict]) -> None:
+def retrieve_code(uri: str, session: requests.Session, results: List[Dict], parent_id: str,fll :int) -> None:
     """
     Recursively retrieves ICD code data from the API starting at the given URI.
     Processes each node: if the node is a 'category' without children (i.e. a leaf node),
@@ -73,16 +75,57 @@ def retrieve_code(uri: str, session: requests.Session, results: List[Dict]) -> N
             'inclusions': "; ".join([inc.get('label', {}).get('@value', '').replace(";", "~") for inc in data.get('inclusion', [])]),
             'exclusions': "; ".join([exc.get('label', {}).get('@value', '').replace(";", "~") for exc in data.get('exclusion', [])]),
             'diagnosticCriteria': data.get('diagnosticCriteria', {}).get('@value', '').replace(";", "~"),
+            'category_code': parent_id,  # Add the category code here
         }
         results.append(entry)
 
     # If the node contains children, build their URIs and recursively process each one.
     if 'child' in data:
+        hierarchy = []
+        fll += random.randint(1, 99999)
+        parent_id = extract_hierarchy(data, hierarchy,fll,parent_id)
         for child in data['child']:
             # The unique identifier is extracted from the child URL string.
             child_id = child.split("/mms/")[-1]
             child_uri = BASE_URI_TEMPLATE.format(child_id)
-            retrieve_code(child_uri, session, results)
+            retrieve_code(child_uri, session, results,parent_id,fll)
+
+
+def extract_hierarchy(data, hierarchy,fll,parentId):
+    """
+    Extracts the hierarchical information (code, title, definition) from the ICD-11 data.
+
+    Args:
+        data (dict): The ICD-11 data for a single entity.
+        hierarchy (list): The list to store hierarchy at each level
+    """
+    if not data:
+        return
+    
+    code = data.get('code', '')
+    if code == '':
+        code = 'FLL'+str(fll)
+    # Extract the code
+    # Extract the code, 
+    title = data.get('title', {}).get('@value', '')
+    definition = data.get('definition', {}).get('@value', '')
+    try:
+        conn = pyodbc.connect(SQL_SERVER_CONNECTION_STRING)
+        cursor = conn.cursor()
+        # Use executemany for efficient insertion of multiple rows
+        cursor.execute(
+            f"INSERT INTO llmind.dbo.ICD11_Categories (code, title, definition, parent) VALUES ('{code}', '{title.replace("'",'')}', '{definition.replace("'",'')}','{parentId}')",
+        )
+        conn.commit()
+        conn.close()
+    except pyodbc.Error as e:
+        print(f"Error inserting diagnostic categories into the database: {e}")
+        print(f"INSERT INTO llmind.dbo.ICD11_Categories (code, title, definition, parent) VALUES ('{code}', '{title.replace("'",'')}', '{definition.replace("'",'')}','{parentId}')")
+
+    hierarchy.append({'code': code, 'title': title, 'definition': definition})
+    return code
+
+
 
 # -----------------------------------------------------------------------------
 # Database Interaction Functions
@@ -105,6 +148,18 @@ def create_table_if_not_exists(connection_string: str) -> None:
 
         if not table_exists:
             # Create the table with appropriate data types.  Use NVARCHAR for Unicode support.
+            # Create the ICD11_Categories table
+            cursor.execute("""
+                CREATE TABLE ICD11_Categories (
+                    code NVARCHAR(255) PRIMARY KEY,
+                    title NVARCHAR(MAX),
+                    definition NVARCHAR(MAX),
+                    parent NVARCHAR(255) -- Add 
+                )
+            """)
+            cnxn.commit()
+            print("ICD11_Categories table created successfully.")
+
             cursor.execute("""
                 CREATE TABLE ICD11_Codes (
                     code NVARCHAR(255) PRIMARY KEY,
@@ -113,13 +168,17 @@ def create_table_if_not_exists(connection_string: str) -> None:
                     longdefinition NVARCHAR(MAX),
                     inclusions NVARCHAR(MAX),
                     exclusions NVARCHAR(MAX),
-                    diagnosticCriteria NVARCHAR(MAX)
+                    diagnosticCriteria NVARCHAR(MAX),
+                    category_code NVARCHAR(255),  -- Add category code
+                    FOREIGN KEY (category_code) REFERENCES ICD11_Categories(code) --FK
                 )
             """)
             cnxn.commit()
             print("ICD11_Codes table created successfully.")
+
+
         else:
-            print("ICD11_Codes table already exists.")
+            print("ICD11_Codes and ICD11_Categories tables already exist.")
         cursor.close()
         cnxn.close()
     except Exception as e:
@@ -141,8 +200,8 @@ def insert_data_into_table(connection_string: str, data: List[Dict]) -> None:
 
         # Use a parameterized query to prevent SQL injection.
         sql = """
-            INSERT INTO ICD11_Codes (code, title, definition, longdefinition, inclusions, exclusions,diagnosticCriteria)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO ICD11_Codes (code, title, definition, longdefinition, inclusions, exclusions,diagnosticCriteria, category_code)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """
         for row in data:
             try:
@@ -153,7 +212,8 @@ def insert_data_into_table(connection_string: str, data: List[Dict]) -> None:
                     row['longdefinition'],
                     row['inclusions'],
                     row['exclusions'],
-                    row['diagnosticCriteria']
+                    row['diagnosticCriteria'],
+                    row.get('category_code')  # Include the category code in the insert
                 ))
             except pyodbc.Error as e:
                 print(f"Error inserting row: {e}.  Row data: {row}")
@@ -185,7 +245,7 @@ def get_icd11_data_from_db(connection_string):
         conn = pyodbc.connect(connection_string)
         cursor = conn.cursor()
         # Query to fetch all data from the ICD11_Codes table, including diagnosticCriteria
-        query = "SELECT code, title, definition, longdefinition, inclusions, exclusions, diagnosticCriteria FROM llmind.dbo.ICD11_Codes"
+        query = "SELECT cd.code as code, cd.title as title, cd.definition as definition, longdefinition, inclusions, exclusions, diagnosticCriteria, category_code, ct.title as parent, ct2.title as secondParent FROM llmind.dbo.ICD11_Codes cd  left join ICD11_Categories ct on cd.category_code = ct.code left join ICD11_Categories ct2 on ct.parent = ct2.code"
         cursor.execute(query)
         columns = [column[0] for column in cursor.description]  # Get column names
         results = []
@@ -253,22 +313,21 @@ def parse_diagnostic_criteria(diagnostic_criteria_text):
     return criteria
 
 
+
 def extract_symptoms(definition, longdefinition):
     """
-    Extracts symptoms from the definition and long definition.
-    This is a simplified example and might need more sophisticated NLP techniques.
+    Extracts symptoms from the definition and long definition, standardizing the output.
 
     Args:
         definition: The definition string.
         longdefinition: The long definition string.
 
     Returns:
-        A list of symptom strings.
+        A list of symptom strings, standardized according to the requirements.
     """
     symptoms = []
-    # Combine definition and long definition for more comprehensive extraction
     text = f"{definition} {longdefinition}"
-    # Simplified symptom extraction using regular expressions (Improve as needed)
+
     symptom_keywords = [
         "symptoms include", "symptoms are", "characterized by", "manifested by",
         "presents with", "associated with", "signs and symptoms of", "features include"
@@ -277,10 +336,18 @@ def extract_symptoms(definition, longdefinition):
         match = re.search(rf"{keyword}\s*([\w\s,()-]+?)(?:\.|$)", text, re.IGNORECASE)
         if match:
             symptom_string = match.group(1).strip()
-            # Further split by commas and "and"
-            symptoms.extend([s.strip() for s in re.split(r",\s*|and\s*", symptom_string)])
-    # Remove empty strings
-    symptoms = [s for s in symptoms if s]
+            # Split by commas and "or"
+            for s in re.split(r",\s*|or\s*", symptom_string):
+                s = s.strip()
+                if s:
+                    # Remove articles and standardize case
+                    s = re.sub(r"^(a|an|the)\s+", "", s, flags=re.IGNORECASE)
+                    # Remove first letter and space
+                    if len(s) > 2 and s[1:2] == ' ':
+                        s = s[2:]
+                    s = s.capitalize()
+                    if len(s) <= 30 and len(s) > 2 and s[-1].isalpha():  # Check length and last char
+                        symptoms.append(s)
 
     # Secondary check using the provided symptom list
     additional_symptoms = [
@@ -325,7 +392,6 @@ def extract_symptoms(definition, longdefinition):
         "Significant impairment in social functioning",
         "Significant impairment in educational functioning",
         "Significant impairment in occupational functioning",
-        "Significant impairment in other important areas of functioning",
         "Numbness",
         "Tightness",
         "Tingling",
@@ -363,13 +429,214 @@ def extract_symptoms(definition, longdefinition):
         "Significant impairment in social functioning",
         "Significant impairment in educational functioning",
         "Significant impairment in occupational functioning",
-        "Significant impairment in other important areas of functioning"
+        "Difficulties in the acquisition and comprehension of complex language concepts",
+        "Difficulties in the acquisition of academic skills",
+        "Limited language",
+        "Limited capacity for acquisition of academic skills",
+        "Motor impairments",
+        "Very limited communication abilities",
+        "Restricted capacity for acquisition of basic concrete skills",
+        "Co-occurring motor and sensory impairments",
+        "Difficulties in the acquisition of speech",
+        "Difficulties in the production of speech",
+        "Difficulties in the perception of speech",
+        "Errors of pronunciation (in number or types)",
+        "Reduced intelligibility of speech",
+        "Frequent disruption of the normal rhythmic flow of speech",
+        "Pervasive disruption of the normal rhythmic flow of speech",
+        "Repetitions in sounds",
+        "Repetitions in syllables",
+        "Repetitions in words",
+        "Repetitions in phrases",
+        "Prolongations in sounds",
+        "Prolongations in syllables",
+        "Prolongations in words",
+        "Prolongations in phrases",
+        "Blocking (speech)",
+        "Word avoidance",
+        "Word substitutions",
+        "Persistent difficulties in the acquisition of language",
+        "Persistent difficulties in the understanding of language",
+        "Persistent difficulties in the production of language",
+        "Persistent difficulties in the use of language",
+        "Markedly below expected level of receptive language (understanding spoken or signed language)",
+        "Persistent impairment in expressive language (producing and using spoken or signed language)",
+        "Markedly below expected level of expressive language (producing and using spoken or signed language)",
+        "Persistent and marked difficulties with the understanding of language in social contexts (e.g., making inferences, understanding verbal humour, resolving ambiguous meaning)",
+        "Persistent and marked difficulties with the use of language in social contexts",
+        "Significant difficulties in learning word reading accuracy",
+        "Significant difficulties in learning reading fluency",
+        "Significant difficulties in learning reading comprehension",
+        "Significant difficulties in learning spelling accuracy",
+        "Significant difficulties in learning grammar and punctuation accuracy",
+        "Significant difficulties in learning organisation and coherence of ideas in writing",
+        "Significant difficulties in learning number sense",
+        "Significant difficulties in the memorization of number facts",
+        "Significant difficulties in accurate calculation",
+        "Significant difficulties in fluent calculation",
+        "Significant difficulties in accurate mathematical reasoning",
+        "Significant difficulties in learning academic skills other than reading, mathematics, and written expression",
+        "Significant delay in the acquisition of gross motor skills",
+        "Significant delay in the acquisition of fine motor skills",
+        "Impairment in the execution of coordinated motor skills",
+        "Clumsiness",
+        "Slowness of motor performance",
+        "Inaccuracy of motor performance",
+        "Difficulty in sustaining attention to tasks that do not provide a high level of stimulation",
+        "Difficulty in sustaining attention to tasks that do not provide frequent rewards",
+        "Distractibility",
+        "Problems with organisation",
+        "Some hyperactive-impulsive symptoms",
+        "Excessive motor activity (hyperactivity)",
+        "Difficulties with remaining still (hyperactivity)",
+        "Impulsivity (tendency to act without deliberation)",
+        "Lack of consideration of risks and consequences (impulsivity)",
+        "Some inattentive symptoms",
+        "Voluntary repetitive movements",
+        "Stereotyped movements",
+        "Apparently purposeless movements",
+        "Often rhythmic movements",
+        "Body rocking",
+        "Head rocking",
+        "Finger-flicking mannerisms",
+        "Hand flapping",
+        "Self-injurious behaviours",
+        "Head banging",
+        "Face slapping",
+        "Eye poking",
+        "Biting of the hands",
+        "Biting of the lips",
+        "Biting of other body parts",
+        "Persistent delusions",
+        "Persistent hallucinations (most commonly verbal auditory hallucinations)",
+        "Disorganised thinking (formal thought disorder)",
+        "Loose associations",
+        "Thought derailment",
+        "Incoherence",
+        "Grossly disorganised behaviourBehaviour that appears bizarre",
+        "Purposeless behaviour",
+        "Non-goal-directed behaviour",
+        "Experiences of passivity and controlFeeling that one's feelings are under external control",
+        "Feeling that one's impulses are under external control",
+        "Feeling that one's thoughts are under external control",
+        "Constricted affect",
+        "Blunted affect",
+        "Flat affect",
+        "Alogia (paucity of speech)",
+        "Avolition (general lack of drive)",
+        "Lack of motivation to pursue meaningful goals (avolition)",
+        "Asociality (reduced or absent engagement with others)",
+        "Reduced interest in social interaction (asociality)",
+        "Anhedonia (inability to experience pleasure)",
+        "Depressed mood (feeling down, sad)",
+        "Tearfulness (sign of depressed mood)",
+        "Defeated appearance (sign of depressed mood)",
+        "Elevated mood",
+        "Euphoric mood",
+        "Irritable mood",
+        "Expansive mood",
+        "Rapid changes among different mood states (mood lability)",
+        "Increased subjective experience of energy",
+        "Increased goal-directed activity",
+        "Psychomotor agitationExcessive motor activity",
+        "Purposeless behaviours",
+        "Fidgeting",
+        "Shifting",
+        "Fiddling",
+        "Inability to sit or stand still",
+        "Wringing of the hands",
+        "Psychomotor retardationVisible generalised slowing of movements",
+        "Slowing of speech",
+        "Catatonic symptomsExcitement",
+        "Posturing",
+        "Waxy flexibility",
+        "Negativism",
+        "Mutism",
+        "Stupor",
+        "Impairment in speed of processing",
+        "Impairment in attention/concentration",
+        "Impairment in orientation",
+        "Impairment in judgment",
+        "Impairment in abstraction",
+        "Impairment in verbal learning",
+        "Impairment in visual learning",
+        "Impairment in working memory",
+        "Euphoria",
+        "Irritability",
+        "Expansiveness",
+        "Increased activity",
+        "Rapid speech",
+        "Pressured speech",
+        "Flight of ideas",
+        "Increased self-esteem",
+        "Grandiosity",
+        "Decreased need for sleep",
+        "Distractibility",
+        "Impulsive behaviour",
+        "Reckless behaviour",
+        "Mild elevation of mood",
+        "Rapid or racing thoughts",
+        "Increase in sexual drive",
+        "Increase in sociability",
+        "Depressed mood",
+        "Diminished interest in activities",
+        "Difficulty concentrating",
+        "Feelings of worthlessness",
+        "Excessive or inappropriate guilt",
+        "Hopelessness",
+        "Recurrent thoughts of death",
+        "Recurrent thoughts of suicide",
+        "Changes in appetite",
+        "Changes in sleep",
+        "Reduced energy",
+        "Fatigue",
+        "Presence of several prominent manic symptoms",
+        "Presence of several prominent depressive symptoms",
+        "Symptoms occur simultaneously or alternate very rapidly",
+        "Altered mood state (depressed, dysphoric, euphoric, or expansive)",
+        "Persistent instability of mood",
+        "Eccentricities in behaviour",
+        "Eccentricities in appearance",
+        "Eccentricities in speech",
+        "Cognitive distortions",
+        "Perceptual distortions",
+        "Unusual beliefs",
+        "Discomfort with interpersonal relationships",
+        "Reduced capacity for interpersonal relationships",
+        "Constricted affect",
+        "Inappropriate affect",
+        "Paranoid ideas",
+        "Ideas of reference",
+        "Other psychotic symptoms",
+        "Hallucinations in any modality",
+        "Symptoms of decreased psychomotor activity",
+        "Symptoms of increased psychomotor activity",
+        "Symptoms of abnormal psychomotor activity"
     ]
     for symptom in additional_symptoms:
         if re.search(rf"\b{re.escape(symptom)}\b", text, re.IGNORECASE):
-            symptoms.append(symptom)
+             # Remove articles and standardize case for additional symptoms too
+            symptom = re.sub(r"^(a|an|the)\s+", "", symptom, flags=re.IGNORECASE)
+            # Remove first letter and space
+            if len(symptom) > 2 and symptom[1:2] == ' ':
+                symptom = symptom[2:]
+            s = symptom.capitalize() # Fix: Assign to s before the length check
+            if len(s) <= 30 and len(s) > 2 and s[-1].isalpha():
+                symptoms.append(s)
 
-    return list(set(symptoms)) #prevent duplicates
+    # Split symptoms containing "or" into separate entries
+    split_symptoms = []
+    for symptom in symptoms:
+        if "or" in symptom:
+            parts = symptom.split("or")
+            for part in parts:
+                part = part.strip()
+                if part and len(part) <= 30 and len(part) > 2 and part[-1].isalpha():
+                  split_symptoms.append(part)
+        else:
+            split_symptoms.append(symptom)
+
+    return list(set(split_symptoms))  # Remove duplicates after splitting
 
 
 
@@ -453,6 +720,16 @@ def generate_ttl(icd11_data, diagnostic_criteria_data, symptoms_data, prescripti
             escaped_exclusions = exclusions.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
             ttl_triples.append(f"<{entity_uri}> icd:exclusions \"{escaped_exclusions}\" .")
 
+        parent = entity_data.get("parent")
+        if parent:
+            parent_exclusions = parent.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
+            ttl_triples.append(f"<{entity_uri}> icd:hasParent \"{parent_exclusions}\" .")    
+
+        secondParent = entity_data.get("secondParent")
+        if secondParent:
+            secondParent_exclusions = secondParent.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
+            ttl_triples.append(f"<{entity_uri}> icd:hasSecondParent \"{secondParent_exclusions}\" .")        
+
         # Handle diagnostic criteria from the separate table
         if entity_id in diagnostic_criteria_data:
             for criterion in diagnostic_criteria_data[entity_id]:
@@ -481,6 +758,7 @@ def generate_ttl(icd11_data, diagnostic_criteria_data, symptoms_data, prescripti
 
     return "\n".join(ttl_triples)
 
+
 def get_diagnostic_criteria_from_db(connection_string):
     """
     Retrieves diagnostic criteria from the SQL Server database's ICD11_DiagnosticCriteria table.
@@ -502,7 +780,7 @@ def get_diagnostic_criteria_from_db(connection_string):
             code, criterion_type, criterion_text = row
             if code not in results:
                 results[code] = []
-            results[code].append({'type': criterion_type, 'text': criterion_text})
+            results[code].append({'type': criterion_type, 'text':criterion_text})
         conn.close()
         return results
     except pyodbc.Error as e:
@@ -543,7 +821,7 @@ def get_prescriptions_from_db(connection_string):
     Retrieves prescription data from the KGPrime_db table, filtered by disease title.
 
     Args:
-        connection_string:  The SQL Server connection string.
+        connection_string:The SQL Server connection string.
 
     Returns:
         A dictionary where keys are ICD-11 codes and values are lists of
@@ -569,6 +847,7 @@ def get_prescriptions_from_db(connection_string):
     except pyodbc.Error as e:
         print(f"Error querying the database for prescriptions: {e}")
         return None
+
 
 
 def insert_prescriptions_into_db(connection_string, prescriptions_data):
@@ -598,6 +877,170 @@ def insert_prescriptions_into_db(connection_string, prescriptions_data):
         return False  # Indicate failure
     return True
 
+
+def build_taxonomy_data(icd11_data: List[Dict]) -> Dict:
+    """
+    Builds a hierarchical taxonomy data structure from the ICD-11 data, using parent-child relationships.
+
+    Args:
+        icd11_data: A list of dictionaries, where each dictionary represents an ICD-11 entity.
+
+    Returns:
+        A dictionary representing the taxonomy, ready for D3.js visualization.
+    """
+    # Create a mapping of code to entity for easy access.
+    entity_map = {entity['code']: entity for entity in icd11_data}
+
+    # Function to recursively build the tree.
+    def build_tree(parent_code=None):
+        nodes = []
+        for entity in icd11_data:
+            code = entity['code']
+            title = entity['title']
+            
+            if parent_code is None: # Root
+                if 'child' in entity:
+                    for child_code_full in entity['child']:
+                         child_code = child_code_full.split('/')[-1]
+                         if child_code in entity_map:
+                            child_entity = entity_map[child_code]
+                            child_node = {
+                                'name': child_entity['title'],
+                                'code' : child_entity['code'], # ADDED
+                                'definition': child_entity['definition'], # ADDED
+                                'children': build_tree(child_code)
+                            }
+                            nodes.append(child_node)
+            elif parent_code in entity_map and 'child' in entity_map[parent_code]:
+                
+                for child_code_full in entity_map[parent_code]['child']:
+                    
+                    child_code = child_code_full.split('/')[-1]
+                    if child_code == code:
+                        node =  {'name': title, 
+                                 'code': code, #ADDED
+                                 'definition': entity['definition'], #ADDED
+                                 'children': []}
+                        if 'child' in entity:
+                            for child_code_full2 in entity['child']:
+                                child_code2 = child_code_full2.split('/')[-1]
+                                if child_code2 in entity_map:
+                                    child_entity2 = entity_map[child_code2]
+                                    child_node2 = {
+                                        'name': child_entity2['title'],
+                                        'code':child_entity2['code'], #ADDED
+                                        'definition':child_entity2['definition'], #ADDED
+                                        'children': build_tree(child_code2)
+                                    }
+                                    node['children'].append(child_node2)
+                        nodes.append(node)
+        return nodes
+
+    # Find the root.  This might require some logic depending on your data structure.
+    #  For this example, I'm assuming there's a top-level category with no parent.
+    root_nodes = build_tree()
+    
+    # If there are multiple roots, which is incorrect,  we need to create a single root.
+    if (len(root_nodes)) > 1:
+        root_node = {'name': 'ICD-11 Root', 'children': root_nodes}
+    elif len(root_nodes) == 1:
+        root_node = root_nodes[0]
+    else:
+        root_node = {'name': 'ICD-11 Root', 'children': []}
+        
+
+    return root_node
+
+
+
+def generate_html_tree(taxonomy_data: Dict) -> str:
+    """
+    Generates an HTML file with a D3.js tree visualization of the ICD-11 taxonomy.
+
+    Args:
+        taxonomy_data: A dictionary representing the taxonomy.
+
+    Returns:
+        A string containing the HTML code.
+    """
+    html_content = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Tree Visualization</title>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <style>
+            .node circle {{ fill: #fff; stroke: steelblue; stroke-width: 2px; }}
+            .node text {{ font: 12px sans-serif; }}
+            .link {{ fill: none; stroke: #ccc; stroke-width: 1.5px; }}
+        </style>
+    </head>
+    <body>
+        <div id="tree-container"></div>
+        <script>
+            const data = {json.dumps(taxonomy_data)};
+
+            const width = 7000;
+            const height = 7000;  // Increased height for more vertical space
+
+            const svg = d3.select("#tree-container")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .append("g")
+                .attr("transform", "translate(40,0)");
+
+            const root = d3.hierarchy(data);
+            // Increased the height parameter (first value) to create more space between levels
+            const treeLayout = d3.tree().size([height - 200, width - 160]);
+
+            treeLayout(root);
+
+            // Links
+            svg.selectAll(".link")
+                .data(root.links())
+                .enter()
+                .append("path")
+                .attr("class", "link")
+                .attr("d", d3.linkHorizontal()
+                    .x(d => d.y)
+                    .y(d => d.x));
+
+            // Nodes
+            const node = svg.selectAll(".node")
+                .data(root.descendants())
+                .enter()
+                .append("g")
+                .attr("class", "node")
+                .attr("transform", d => `translate(${{d.y}},${{d.x}})`);
+
+            node.append("circle")
+                .attr("r", 4.5);
+
+            node.append("text")
+            .attr("dy", ".31em")
+            .attr("x", d => d.children ? -8 : 8)
+            .style("text-anchor", d => d.children ? "end" : "start")
+            .text(d => d.data.name)
+            .append("title")  // Add title for tooltip
+            .text(d => `Code: ${{d.data.code}}\\nDefinition: ${{d.data.definition}}`);
+
+        // Add zoom functionality
+        const zoom = d3.zoom()
+            .scaleExtent([0.1, 5])
+            .on("zoom", (event) => {{
+                svg.attr("transform", event.transform);
+            }});
+
+        d3.select("svg").call(zoom);
+        </script>
+    </body>
+    </html>
+    """
+    return html_content
+
+
 def main():
     """
     Main function to:
@@ -607,16 +1050,33 @@ def main():
     4. Generate TTL triples from the ICD-11 data extraction.
     """
     results: List[Dict] = []
-
-    # Using a persistent session for better performance (reuse connections)
-    with requests.Session() as session:
-        retrieve_code(ROOT_URI, session, results)
-
     # Create the table if it doesn't exist.
     create_table_if_not_exists(SQL_SERVER_CONNECTION_STRING)
+    # Using a persistent session for better performance (reuse connections)
+    with requests.Session() as session:
+        retrieve_code(ROOT_URI, session, results,'',0)
 
-    # Insert the data into the SQL Server table.
-    insert_data_into_table(SQL_SERVER_CONNECTION_STRING, results)
+
+
+    # Check if ICD11_Codes table exists before inserting data
+    try:
+        cnxn = pyodbc.connect(SQL_SERVER_CONNECTION_STRING)
+        cursor = cnxn.cursor()
+        cursor.execute("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'ICD11_Codes'")
+        table_exists = cursor.fetchone()
+        cursor.close()
+        cnxn.close()
+
+        #if not table_exists:
+            # Insert the data into the SQL Server table.
+        insert_data_into_table(SQL_SERVER_CONNECTION_STRING, results)
+        #else:
+        #    print("ICD11_Codes table already exists. Skipping data insertion.")
+
+    except Exception as e:
+        print(f"Error checking for table: {e}")
+        #  Consider more sophisticated error handling (e.g., logging, retrying)
+        raise
 
     # Initialize TTL file with prefixes
     with open(TTL_FILE, "w", encoding="utf-8") as f:
@@ -757,6 +1217,16 @@ def main():
         print(f"TTL data written to {TTL_FILE}")
     else:
         print("No TTL data to write.")
+
+    # Generate taxonomy data and print it
+    taxonomy_data = build_taxonomy_data(icd11_data)
+    print(json.dumps(taxonomy_data, indent=4))  # Print the taxonomy
+
+    # Generate and save the HTML file
+    html_output = generate_html_tree(taxonomy_data)
+    with open(HTML_FILE, "w", encoding="utf-8") as f:
+        f.write(html_output)
+    print(f"Taxonomy visualization saved to {HTML_FILE}")
 
 
 
