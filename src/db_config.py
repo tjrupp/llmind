@@ -1,5 +1,4 @@
 # db_config.py
-#SQL_SERVER_CONNECTION_STRING = "Driver={ODBC Driver 17 for SQL Server};Server=tcp:llmind.database.windows.net,1433;Database=llmind;Uid=davide;Pwd=Wiicfck8uz!;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
 SQL_SERVER_CONNECTION_STRING = "Driver={ODBC Driver 17 for SQL Server};Server=tcp:sql1,1433;Database=llmind;Uid=sa;Pwd=LLMind2025!;Encrypt=yes;TrustServerCertificate=yes;Connection Timeout=30;"
 import pyodbc
 
