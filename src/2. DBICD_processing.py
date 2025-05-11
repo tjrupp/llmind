@@ -30,27 +30,49 @@ def clean_text(text):
     return text
 
 
-def dataframe_to_prompts(df):
+def dataframe_to_prompts(df: pd.DataFrame) -> pd.DataFrame:
     """
     Create a prompt for each disorder based on its title, code, definition,
-    inclusions, and exclusions.  This function remains largely the same as it's used
-    to structure the prompt *before* writing to the database.
+    inclusions, and exclusions from a DataFrame structured like the output
+    of the retrieve_code process.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing disorder information with columns
+                           'code', 'title', 'definition', 'inclusions', 'exclusions'.
+
+    Returns:
+        pd.DataFrame: A DataFrame with columns 'code', 'name', and 'prompt'.
     """
     def create_prompt(row):
+        """Helper function to create a prompt string for a single row.
+         Create a prompt for each disorder based on its title, code, definition, 
+         inclusions, and exclusions. This function remains largely the same as it's used
+         to structure the prompt *before* writing to the database.
+         """
         prompt = ""
         if isinstance(row['definition'], str):
             prompt = (
                 f"Disorder Name: {row['title']}\n"
                 f"Disorder Code: {row['code']}\n"
                 f"Disorder symptoms: {row['definition']}\n"
-            )
-        if isinstance(row['inclusions'], str):
-            prompt += f"If you have {row['inclusions']} other inclusions could be: {row['inclusions']}\n"
-        if isinstance(row['exclusions'], str):
-            prompt += f"If you diagnose this disease exclude: {row['exclusions']}"
-        return prompt
+                )
+        # Include inclusions if present
+        if isinstance(row.get('inclusions'), str) and row['inclusions']:
+             prompt += f"If you have {row['inclusions']} other inclusions could be: {row['inclusions']}\n"
+        # Include exclusions if present
+        if isinstance(row.get('exclusions'), str) and row['exclusions']:
+             prompt += f"If you diagnose this disease exclude: {row['exclusions']}"
+        # Include diagnostic criteria if present
+        if isinstance(row.get('diagnosticCriteria'), str) and row['diagnosticCriteria']:
+             prompt += f"The Diagnostic Criteria for this disorder: {row['diagnosticCriteria']}\n"
 
+        return prompt.strip() # Remove leading/trailing whitespace
+
+    # Apply the create_prompt function to each row of the DataFrame
+    # axis=1 ensures the function is applied row-wise
     prompts_series = df.apply(create_prompt, axis=1)
+
+    # Create the resulting DataFrame
     return pd.DataFrame({
         "code": df["code"],
         "name": df["title"],
