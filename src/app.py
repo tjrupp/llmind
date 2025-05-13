@@ -18,7 +18,7 @@ OUTPUT_DIR_BASE = './data/output'
 VECTORESTORE_BASE = './vectorstore'
 
 # List of models to be processed.
-MODELS = ["deepseek-r1:1.5b"]
+MODELS = ["gemma2:27b"]
 # Total number of rows in the CSV (update if known dynamically)
 TOTAL_ROWS = 103
 

@@ -663,100 +663,100 @@ def insert_symptoms_into_db(connection_string, symptoms_data):
 
 
 
-def generate_ttl(icd11_data, diagnostic_criteria_data, symptoms_data, prescriptions_data):
-    """
-    Generates TTL triples from the ICD-11 data, diagnostic criteria, symptoms, and prescriptions.
+# def generate_ttl(icd11_data, diagnostic_criteria_data, symptoms_data, prescriptions_data):
+#     """
+#     Generates TTL triples from the ICD-11 data, diagnostic criteria, symptoms, and prescriptions.
 
-    Args:
-        icd11_data: A list of dictionaries, where each dictionary represents an ICD-11 entity.
-        diagnostic_criteria_data: A dictionary where keys are ICD-11 codes and values are
-            lists of dictionaries, each representing a diagnostic criterion.
-        symptoms_data: A dictionary where keys are ICD-11 codes and values are lists of
-            symptom strings.
-        prescriptions_data: A dictionary where keys are ICD-11 codes and values are lists of
-            drug prescription strings.
-    Returns:
-        A string containing the TTL triples. Returns an empty string if data is None or empty.
-    """
-    if not icd11_data:
-        return ""
+#     Args:
+#         icd11_data: A list of dictionaries, where each dictionary represents an ICD-11 entity.
+#         diagnostic_criteria_data: A dictionary where keys are ICD-11 codes and values are
+#             lists of dictionaries, each representing a diagnostic criterion.
+#         symptoms_data: A dictionary where keys are ICD-11 codes and values are lists of
+#             symptom strings.
+#         prescriptions_data: A dictionary where keys are ICD-11 codes and values are lists of
+#             drug prescription strings.
+#     Returns:
+#         A string containing the TTL triples. Returns an empty string if data is None or empty.
+#     """
+#     if not icd11_data:
+#         return ""
 
-    ttl_triples = []
+#     ttl_triples = []
 
-    for entity_data in icd11_data:
-        entity_id = entity_data.get("code")
-        if not entity_id:
-            print(f"Entity has no code: {entity_data}")
-            continue  # Skip this entity
+#     for entity_data in icd11_data:
+#         entity_id = entity_data.get("code")
+#         if not entity_id:
+#             print(f"Entity has no code: {entity_data}")
+#             continue  # Skip this entity
 
-        entity_uri = f"icd:{entity_id}"
+#         entity_uri = f"icd:{entity_id}"
 
-        # Add type information.  For simplicity, assume all are icd:Disease.
-        ttl_triples.append(f"<{entity_uri}> rdf:type icd:Disease .")
+#         # Add type information.  For simplicity, assume all are icd:Disease.
+#         ttl_triples.append(f"<{entity_uri}> rdf:type icd:Disease .")
 
-        title = entity_data.get("title")
-        if title:
-            escaped_title = title.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
-            ttl_triples.append(f"<{entity_uri}> icd:title \"{escaped_title}\" .")
+#         title = entity_data.get("title")
+#         if title:
+#             escaped_title = title.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
+#             ttl_triples.append(f"<{entity_uri}> icd:title \"{escaped_title}\" .")
 
-        definition = entity_data.get("definition")
-        if definition:
-            escaped_definition = definition.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
-            ttl_triples.append(f"<{entity_uri}> icd:definition \"{escaped_definition}\" .")
+#         definition = entity_data.get("definition")
+#         if definition:
+#             escaped_definition = definition.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
+#             ttl_triples.append(f"<{entity_uri}> icd:definition \"{escaped_definition}\" .")
         
-        longdefinition = entity_data.get("longdefinition")
-        if longdefinition:
-            escaped_longdefinition = longdefinition.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
-            ttl_triples.append(f"<{entity_uri}> icd:longdefinition \"{escaped_longdefinition}\" .")
+#         longdefinition = entity_data.get("longdefinition")
+#         if longdefinition:
+#             escaped_longdefinition = longdefinition.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
+#             ttl_triples.append(f"<{entity_uri}> icd:longdefinition \"{escaped_longdefinition}\" .")
 
-        # Inclusions and exclusions are lists in the database, handle them
-        inclusions = entity_data.get("inclusions")
-        if inclusions:
-            escaped_inclusions = inclusions.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
-            ttl_triples.append(f"<{entity_uri}> icd:inclusions \"{escaped_inclusions}\" .")
+#         # Inclusions and exclusions are lists in the database, handle them
+#         inclusions = entity_data.get("inclusions")
+#         if inclusions:
+#             escaped_inclusions = inclusions.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
+#             ttl_triples.append(f"<{entity_uri}> icd:inclusions \"{escaped_inclusions}\" .")
 
-        exclusions = entity_data.get("exclusions")
-        if exclusions:
-            escaped_exclusions = exclusions.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
-            ttl_triples.append(f"<{entity_uri}> icd:exclusions \"{escaped_exclusions}\" .")
+#         exclusions = entity_data.get("exclusions")
+#         if exclusions:
+#             escaped_exclusions = exclusions.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
+#             ttl_triples.append(f"<{entity_uri}> icd:exclusions \"{escaped_exclusions}\" .")
 
-        parent = entity_data.get("parent")
-        if parent:
-            parent_exclusions = parent.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
-            ttl_triples.append(f"<{entity_uri}> icd:hasParent \"{parent_exclusions}\" .")    
+#         parent = entity_data.get("parent")
+#         if parent:
+#             parent_exclusions = parent.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
+#             ttl_triples.append(f"<{entity_uri}> icd:hasParent \"{parent_exclusions}\" .")    
 
-        secondParent = entity_data.get("secondParent")
-        if secondParent:
-            secondParent_exclusions = secondParent.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
-            ttl_triples.append(f"<{entity_uri}> icd:hasSecondParent \"{secondParent_exclusions}\" .")        
+#         secondParent = entity_data.get("secondParent")
+#         if secondParent:
+#             secondParent_exclusions = secondParent.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
+#             ttl_triples.append(f"<{entity_uri}> icd:hasSecondParent \"{secondParent_exclusions}\" .")        
 
-        # Handle diagnostic criteria from the separate table
-        if entity_id in diagnostic_criteria_data:
-            for criterion in diagnostic_criteria_data[entity_id]:
-                criterion_type = criterion['type']
-                criterion_text = criterion['text']
-                escaped_text = criterion_text.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
-                ttl_triples.append(f"<{entity_uri}> icd:hasCriterion [ rdf:type <http://id.who.int/icd/property/diagnosticCriterion> ;"
-                                   f" diag:criterionType \"{criterion_type}\" ;"
-                                   f" diag:criterionText \"{escaped_text}\" ] .")
+#         # Handle diagnostic criteria from the separate table
+#         if entity_id in diagnostic_criteria_data:
+#             for criterion in diagnostic_criteria_data[entity_id]:
+#                 criterion_type = criterion['type']
+#                 criterion_text = criterion['text']
+#                 escaped_text = criterion_text.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
+#                 ttl_triples.append(f"<{entity_uri}> icd:hasCriterion [ rdf:type <http://id.who.int/icd/property/diagnosticCriterion> ;"
+#                                    f" diag:criterionType \"{criterion_type}\" ;"
+#                                    f" diag:criterionText \"{escaped_text}\" ] .")
         
-        # Handle symptoms
-        if entity_id in symptoms_data:
-            for symptom in symptoms_data[entity_id]:
-                escaped_symptom = symptom.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
-                ttl_triples.append(f"<{entity_uri}> icd:hasSymptom \"{escaped_symptom}\" .")
+#         # Handle symptoms
+#         if entity_id in symptoms_data:
+#             for symptom in symptoms_data[entity_id]:
+#                 escaped_symptom = symptom.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
+#                 ttl_triples.append(f"<{entity_uri}> icd:hasSymptom \"{escaped_symptom}\" .")
 
-        # Handle prescriptions
-        if entity_id in prescriptions_data:
-            for prescription in prescriptions_data[entity_id]:
-                escaped_prescription = prescription.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
-                ttl_triples.append(f"<{entity_uri}> icd:treatment \"{escaped_prescription}\" .")
+#         # Handle prescriptions
+#         if entity_id in prescriptions_data:
+#             for prescription in prescriptions_data[entity_id]:
+#                 escaped_prescription = prescription.replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r')
+#                 ttl_triples.append(f"<{entity_uri}> icd:treatment \"{escaped_prescription}\" .")
 
-        #  The SQL table doesn't have parent/child, so we can't represent the hierarchy.
-        #  If your SQL Server table *does* have parent/child relationships, you'll need to
-        #  modify the SQL query and this function to handle that.
+#         #  The SQL table doesn't have parent/child, so we can't represent the hierarchy.
+#         #  If your SQL Server table *does* have parent/child relationships, you'll need to
+#         #  modify the SQL query and this function to handle that.
 
-    return "\n".join(ttl_triples)
+#     return "\n".join(ttl_triples)
 
 
 def get_diagnostic_criteria_from_db(connection_string):
@@ -878,167 +878,167 @@ def insert_prescriptions_into_db(connection_string, prescriptions_data):
     return True
 
 
-def build_taxonomy_data(icd11_data: List[Dict]) -> Dict:
-    """
-    Builds a hierarchical taxonomy data structure from the ICD-11 data, using parent-child relationships.
+# def build_taxonomy_data(icd11_data: List[Dict]) -> Dict:
+#     """
+#     Builds a hierarchical taxonomy data structure from the ICD-11 data, using parent-child relationships.
 
-    Args:
-        icd11_data: A list of dictionaries, where each dictionary represents an ICD-11 entity.
+#     Args:
+#         icd11_data: A list of dictionaries, where each dictionary represents an ICD-11 entity.
 
-    Returns:
-        A dictionary representing the taxonomy, ready for D3.js visualization.
-    """
-    # Create a mapping of code to entity for easy access.
-    entity_map = {entity['code']: entity for entity in icd11_data}
+#     Returns:
+#         A dictionary representing the taxonomy, ready for D3.js visualization.
+#     """
+#     # Create a mapping of code to entity for easy access.
+#     entity_map = {entity['code']: entity for entity in icd11_data}
 
-    # Function to recursively build the tree.
-    def build_tree(parent_code=None):
-        nodes = []
-        for entity in icd11_data:
-            code = entity['code']
-            title = entity['title']
+#     # Function to recursively build the tree.
+#     def build_tree(parent_code=None):
+#         nodes = []
+#         for entity in icd11_data:
+#             code = entity['code']
+#             title = entity['title']
             
-            if parent_code is None: # Root
-                if 'child' in entity:
-                    for child_code_full in entity['child']:
-                         child_code = child_code_full.split('/')[-1]
-                         if child_code in entity_map:
-                            child_entity = entity_map[child_code]
-                            child_node = {
-                                'name': child_entity['title'],
-                                'code' : child_entity['code'], # ADDED
-                                'definition': child_entity['definition'], # ADDED
-                                'children': build_tree(child_code)
-                            }
-                            nodes.append(child_node)
-            elif parent_code in entity_map and 'child' in entity_map[parent_code]:
+#             if parent_code is None: # Root
+#                 if 'child' in entity:
+#                     for child_code_full in entity['child']:
+#                          child_code = child_code_full.split('/')[-1]
+#                          if child_code in entity_map:
+#                             child_entity = entity_map[child_code]
+#                             child_node = {
+#                                 'name': child_entity['title'],
+#                                 'code' : child_entity['code'], # ADDED
+#                                 'definition': child_entity['definition'], # ADDED
+#                                 'children': build_tree(child_code)
+#                             }
+#                             nodes.append(child_node)
+#             elif parent_code in entity_map and 'child' in entity_map[parent_code]:
                 
-                for child_code_full in entity_map[parent_code]['child']:
+#                 for child_code_full in entity_map[parent_code]['child']:
                     
-                    child_code = child_code_full.split('/')[-1]
-                    if child_code == code:
-                        node =  {'name': title, 
-                                 'code': code, #ADDED
-                                 'definition': entity['definition'], #ADDED
-                                 'children': []}
-                        if 'child' in entity:
-                            for child_code_full2 in entity['child']:
-                                child_code2 = child_code_full2.split('/')[-1]
-                                if child_code2 in entity_map:
-                                    child_entity2 = entity_map[child_code2]
-                                    child_node2 = {
-                                        'name': child_entity2['title'],
-                                        'code':child_entity2['code'], #ADDED
-                                        'definition':child_entity2['definition'], #ADDED
-                                        'children': build_tree(child_code2)
-                                    }
-                                    node['children'].append(child_node2)
-                        nodes.append(node)
-        return nodes
+#                     child_code = child_code_full.split('/')[-1]
+#                     if child_code == code:
+#                         node =  {'name': title, 
+#                                  'code': code, #ADDED
+#                                  'definition': entity['definition'], #ADDED
+#                                  'children': []}
+#                         if 'child' in entity:
+#                             for child_code_full2 in entity['child']:
+#                                 child_code2 = child_code_full2.split('/')[-1]
+#                                 if child_code2 in entity_map:
+#                                     child_entity2 = entity_map[child_code2]
+#                                     child_node2 = {
+#                                         'name': child_entity2['title'],
+#                                         'code':child_entity2['code'], #ADDED
+#                                         'definition':child_entity2['definition'], #ADDED
+#                                         'children': build_tree(child_code2)
+#                                     }
+#                                     node['children'].append(child_node2)
+#                         nodes.append(node)
+#         return nodes
 
-    # Find the root.  This might require some logic depending on your data structure.
-    #  For this example, I'm assuming there's a top-level category with no parent.
-    root_nodes = build_tree()
+#     # Find the root.  This might require some logic depending on your data structure.
+#     #  For this example, I'm assuming there's a top-level category with no parent.
+#     root_nodes = build_tree()
     
-    # If there are multiple roots, which is incorrect,  we need to create a single root.
-    if (len(root_nodes)) > 1:
-        root_node = {'name': 'ICD-11 Root', 'children': root_nodes}
-    elif len(root_nodes) == 1:
-        root_node = root_nodes[0]
-    else:
-        root_node = {'name': 'ICD-11 Root', 'children': []}
+#     # If there are multiple roots, which is incorrect,  we need to create a single root.
+#     if (len(root_nodes)) > 1:
+#         root_node = {'name': 'ICD-11 Root', 'children': root_nodes}
+#     elif len(root_nodes) == 1:
+#         root_node = root_nodes[0]
+#     else:
+#         root_node = {'name': 'ICD-11 Root', 'children': []}
         
 
-    return root_node
+#     return root_node
 
 
 
-def generate_html_tree(taxonomy_data: Dict) -> str:
-    """
-    Generates an HTML file with a D3.js tree visualization of the ICD-11 taxonomy.
+# def generate_html_tree(taxonomy_data: Dict) -> str:
+#     """
+#     Generates an HTML file with a D3.js tree visualization of the ICD-11 taxonomy.
 
-    Args:
-        taxonomy_data: A dictionary representing the taxonomy.
+#     Args:
+#         taxonomy_data: A dictionary representing the taxonomy.
 
-    Returns:
-        A string containing the HTML code.
-    """
-    html_content = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8">
-        <title>D3 Tree Visualization</title>
-        <script src="https://d3js.org/d3.v7.min.js"></script>
-        <style>
-            .node circle {{ fill: #fff; stroke: steelblue; stroke-width: 2px; }}
-            .node text {{ font: 12px sans-serif; }}
-            .link {{ fill: none; stroke: #ccc; stroke-width: 1.5px; }}
-        </style>
-    </head>
-    <body>
-        <div id="tree-container"></div>
-        <script>
-            const data = {json.dumps(taxonomy_data)};
+#     Returns:
+#         A string containing the HTML code.
+#     """
+#     html_content = f"""
+#     <!DOCTYPE html>
+#     <html>
+#     <head>
+#         <meta charset="utf-8">
+#         <title>D3 Tree Visualization</title>
+#         <script src="https://d3js.org/d3.v7.min.js"></script>
+#         <style>
+#             .node circle {{ fill: #fff; stroke: steelblue; stroke-width: 2px; }}
+#             .node text {{ font: 12px sans-serif; }}
+#             .link {{ fill: none; stroke: #ccc; stroke-width: 1.5px; }}
+#         </style>
+#     </head>
+#     <body>
+#         <div id="tree-container"></div>
+#         <script>
+#             const data = {json.dumps(taxonomy_data)};
 
-            const width = 7000;
-            const height = 7000;  // Increased height for more vertical space
+#             const width = 7000;
+#             const height = 7000;  // Increased height for more vertical space
 
-            const svg = d3.select("#tree-container")
-                .append("svg")
-                .attr("width", width)
-                .attr("height", height)
-                .append("g")
-                .attr("transform", "translate(40,0)");
+#             const svg = d3.select("#tree-container")
+#                 .append("svg")
+#                 .attr("width", width)
+#                 .attr("height", height)
+#                 .append("g")
+#                 .attr("transform", "translate(40,0)");
 
-            const root = d3.hierarchy(data);
-            // Increased the height parameter (first value) to create more space between levels
-            const treeLayout = d3.tree().size([height - 200, width - 160]);
+#             const root = d3.hierarchy(data);
+#             // Increased the height parameter (first value) to create more space between levels
+#             const treeLayout = d3.tree().size([height - 200, width - 160]);
 
-            treeLayout(root);
+#             treeLayout(root);
 
-            // Links
-            svg.selectAll(".link")
-                .data(root.links())
-                .enter()
-                .append("path")
-                .attr("class", "link")
-                .attr("d", d3.linkHorizontal()
-                    .x(d => d.y)
-                    .y(d => d.x));
+#             // Links
+#             svg.selectAll(".link")
+#                 .data(root.links())
+#                 .enter()
+#                 .append("path")
+#                 .attr("class", "link")
+#                 .attr("d", d3.linkHorizontal()
+#                     .x(d => d.y)
+#                     .y(d => d.x));
 
-            // Nodes
-            const node = svg.selectAll(".node")
-                .data(root.descendants())
-                .enter()
-                .append("g")
-                .attr("class", "node")
-                .attr("transform", d => `translate(${{d.y}},${{d.x}})`);
+#             // Nodes
+#             const node = svg.selectAll(".node")
+#                 .data(root.descendants())
+#                 .enter()
+#                 .append("g")
+#                 .attr("class", "node")
+#                 .attr("transform", d => `translate(${{d.y}},${{d.x}})`);
 
-            node.append("circle")
-                .attr("r", 4.5);
+#             node.append("circle")
+#                 .attr("r", 4.5);
 
-            node.append("text")
-            .attr("dy", ".31em")
-            .attr("x", d => d.children ? -8 : 8)
-            .style("text-anchor", d => d.children ? "end" : "start")
-            .text(d => d.data.name)
-            .append("title")  // Add title for tooltip
-            .text(d => `Code: ${{d.data.code}}\\nDefinition: ${{d.data.definition}}`);
+#             node.append("text")
+#             .attr("dy", ".31em")
+#             .attr("x", d => d.children ? -8 : 8)
+#             .style("text-anchor", d => d.children ? "end" : "start")
+#             .text(d => d.data.name)
+#             .append("title")  // Add title for tooltip
+#             .text(d => `Code: ${{d.data.code}}\\nDefinition: ${{d.data.definition}}`);
 
-        // Add zoom functionality
-        const zoom = d3.zoom()
-            .scaleExtent([0.1, 5])
-            .on("zoom", (event) => {{
-                svg.attr("transform", event.transform);
-            }});
+#         // Add zoom functionality
+#         const zoom = d3.zoom()
+#             .scaleExtent([0.1, 5])
+#             .on("zoom", (event) => {{
+#                 svg.attr("transform", event.transform);
+#             }});
 
-        d3.select("svg").call(zoom);
-        </script>
-    </body>
-    </html>
-    """
-    return html_content
+#         d3.select("svg").call(zoom);
+#         </script>
+#     </body>
+#     </html>
+#     """
+#     return html_content
 
 
 def main():
@@ -1210,23 +1210,23 @@ def main():
         prescriptions_data = {}
 
     # Generate the TTL file
-    ttl_output = generate_ttl(icd11_data, diagnostic_criteria_data, symptoms_data, prescriptions_data)
-    if ttl_output: # Make sure there is something to write
-        with open(TTL_FILE, "a", encoding="utf-8") as f:
-            f.write(ttl_output)
-        print(f"TTL data written to {TTL_FILE}")
-    else:
-        print("No TTL data to write.")
+    # ttl_output = generate_ttl(icd11_data, diagnostic_criteria_data, symptoms_data, prescriptions_data)
+    # if ttl_output: # Make sure there is something to write
+    #     with open(TTL_FILE, "a", encoding="utf-8") as f:
+    #         f.write(ttl_output)
+    #     print(f"TTL data written to {TTL_FILE}")
+    # else:
+    #     print("No TTL data to write.")
 
     # Generate taxonomy data and print it
-    taxonomy_data = build_taxonomy_data(icd11_data)
-    print(json.dumps(taxonomy_data, indent=4))  # Print the taxonomy
+    # taxonomy_data = build_taxonomy_data(icd11_data)
+    # print(json.dumps(taxonomy_data, indent=4))  # Print the taxonomy
 
     # Generate and save the HTML file
-    html_output = generate_html_tree(taxonomy_data)
-    with open(HTML_FILE, "w", encoding="utf-8") as f:
-        f.write(html_output)
-    print(f"Taxonomy visualization saved to {HTML_FILE}")
+    # html_output = generate_html_tree(taxonomy_data)
+    # with open(HTML_FILE, "w", encoding="utf-8") as f:
+    #     f.write(html_output)
+    # print(f"Taxonomy visualization saved to {HTML_FILE}")
 
 
 
